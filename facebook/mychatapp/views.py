@@ -131,4 +131,5 @@ def chatNotification(request):
     else:
         return redirect('login')
 
-
+def home(request):
+    return render(request, 'index.html')
