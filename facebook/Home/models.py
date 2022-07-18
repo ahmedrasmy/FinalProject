@@ -23,7 +23,7 @@ class Useraccount(models.Model):
 
 class Posts(models.Model):
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
-    postdate = models.DateField()
+    postdate = models.DateTimeField(auto_now_add=True, blank=True)
     postcontent = models.TextField()
 
 
@@ -45,7 +45,7 @@ class Postlike(models.Model):
 class Comments(models.Model):
     post = models.ForeignKey(Posts, on_delete=models.CASCADE)
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
-    commentdate = models.DateField()
+    commentdate = models.DateTimeField(auto_now_add=True, blank=True)
     commentcontent = models.TextField()
 
 
