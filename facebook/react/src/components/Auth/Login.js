@@ -1,5 +1,6 @@
 import React from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
+
+import CSRF from "./CSRF";
 
 function Login() {
 
@@ -16,15 +17,16 @@ function Login() {
                         life.</h3>
                 </div>
                 <div className="col-md-5">
-                    <form className="login-form" action="#">
+                    <form className="login-form" action="/chats/login/" method="post">
+                        <CSRF/>
                         <div className="mb-3">
-                            <input type="text" className="form-control" placeholder="Email address or phone number"
+                            <input type="text" className="form-control" name="Email" placeholder="Email address or phone number"
                                    required/>
                         </div>
                         <div className="mb-3">
-                            <input type="password" className="form-control" placeholder="Password" required/>
+                            <input type="password" className="form-control" name="password" placeholder="Password" required/>
                         </div>
-                        <button type="button" className="btn btn-primary btn-lg btn-block mt-3">Login</button>
+                        <button type="submit" className="btn btn-primary btn-lg btn-block mt-3">Login</button>
                         <div className="text-center pt-3 pb-3">
                             <a href="#" className="">Forgotten password?</a>
                             <hr/>
@@ -39,6 +41,4 @@ function Login() {
 
     </>
 }
-
-
 export default Login;

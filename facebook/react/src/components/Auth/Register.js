@@ -1,5 +1,6 @@
 import {useState} from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
+
+import CSRF from "./CSRF";
 
 function Register() {
 
@@ -153,8 +154,8 @@ function Register() {
                                     color: "rgb(90, 90, 90)",
                                     backgroundColor: "rgb(90, 90, 90)"
                                 }}/>
-                                <form>
-
+                                <form  method='post' action='/chats/register/'>
+                                    <CSRF/>
                                     <div className="row">
                                         <div className="col-md-6">
 
@@ -252,7 +253,8 @@ function Register() {
                                                 <label className="form-label" htmlFor="emailAddress">Date of
                                                     birth</label>
                                                 <input type="date" id="emailAddress"
-                                                       className="form-control form-control-lg"/>
+                                                       className="form-control form-control-lg"
+                                                        name="birthdate"/>
 
                                             </div>
 
@@ -269,7 +271,7 @@ function Register() {
                                             <div className="form-check form-check-inline">
                                                 <input className="form-check-input" type="radio"
                                                        name="inlineRadioOptions" id="femaleGender"
-                                                       value="option1"/>
+                                                       value="Female"/>
                                                 <label className="form-check-label"
                                                        htmlFor="femaleGender">Female</label>
                                             </div>
@@ -277,18 +279,12 @@ function Register() {
                                             <div className="form-check form-check-inline">
                                                 <input className="form-check-input" type="radio"
                                                        name="inlineRadioOptions" id="maleGender"
-                                                       value="option2"/>
+                                                       value="Male"/>
                                                 <label className="form-check-label"
                                                        htmlFor="maleGender">Male</label>
                                             </div>
 
-                                            <div className="form-check form-check-inline">
-                                                <input className="form-check-input" type="radio"
-                                                       name="inlineRadioOptions" id="otherGender"
-                                                       value="option3"/>
-                                                <label className="form-check-label"
-                                                       htmlFor="otherGender">Other</label>
-                                            </div>
+
 
 
                                         </div>
