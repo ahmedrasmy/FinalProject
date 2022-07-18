@@ -7,7 +7,7 @@ urlpatterns = [
     path('sent_msg/<str:pk>', sentMessages, name = "sent_msg"),
     path('rec_msg/<str:pk>', receivedMessages, name = "rec_msg"),
     path('notification', chatNotification, name = "notification"),
-    path('register/', register, name='register'),
+    path('register/', register_user, name='register'),
     path('login/', login, name='login'),
     path('logout/', logout, name='logout'),
     
