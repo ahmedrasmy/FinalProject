@@ -1,7 +1,7 @@
 from socket import fromshare
 from django import forms
 from django.forms import ModelForm
-from .models import ChatMessage
+from Home.models import ChatMessage
 
 
 class ChatMessageForm(ModelForm):
