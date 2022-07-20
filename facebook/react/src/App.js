@@ -7,6 +7,7 @@ import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import Home from './components/Home/Home';
 import Profilee from './components/Profile/Profile'
+import 'bootstrap/dist/css/bootstrap.css';
 function App() {
   return (
     <Router>
@@ -19,8 +20,8 @@ function App() {
 
                     <Route exact path={"/chats/register"} component={Register}/>
                     <Route exact path={"/chats/login"} component={Login}/>
-                    <Route exact path={"/chats/home"} component={Home}/>
-                     <Route exact path={"/chats/profile"} component={Profilee}/>
+                    <Route exact path={"/chats/Home/:pk"} component={Home}/>
+                    <Route exact path={"/chats/profile/"} component={Profilee}/>
 
 </Switch>
             </BrowserRouter>

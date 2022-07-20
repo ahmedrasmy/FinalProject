@@ -3,8 +3,9 @@ import re
 from django.shortcuts import render, redirect
 from Home.models import *
 from .forms import ChatMessageForm
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 import json
+
 
 # Create your views here.
 def register_user(request):
@@ -46,6 +47,7 @@ def register_user(request):
     else:
         return render(request, 'index.html')
 
+
 def login(request):
     if request.method == 'POST':
         loguser = Useraccount.objects.filter(email=request.POST['Email'], password=request.POST['password'])
@@ -53,11 +55,13 @@ def login(request):
         if len(loguser) > 0:
             request.session['user_name'] = loguser[0].first_name + " " + loguser[0].last_name
             request.session['user_id'] = loguser[0].id
-            return redirect('Home')
+            return redirect('/chats/Home/' + str(loguser[0].id))
+
         else:
             return render(request, 'index.html', {'error': 'Invalid Credientials'})
     else:
         return render(request, 'index.html')
+
 
 def logout(request):
     if request.session.has_key('user_name'):
@@ -65,6 +69,7 @@ def logout(request):
         del request.session['user_id']
         return redirect('login')
     return redirect('login')
+
 
 def index(request):
     if request.session.has_key('user_name'):
@@ -75,10 +80,11 @@ def index(request):
     else:
         return redirect('login')
 
-def detail(request,pk):
+
+def detail(request, pk):
     if request.session.has_key('user_name'):
         user = Useraccount.objects.filter(id=int(request.session['user_id']))[0]
-        friend = Friends.objects.filter(friend=pk,user=user.id)[0]
+        friend = Friends.objects.filter(friend=pk, user=user.id)[0]
         # profile = Profile.objects.get(id=friend.profile.id)
         chats = ChatMessage.objects.all()
         rec_chats = ChatMessage.objects.filter(msg_sender=friend, msg_receiver=user, seen=False)
@@ -92,21 +98,25 @@ def detail(request,pk):
                 chat_message.msg_receiver = friend
                 chat_message.save()
                 return redirect("detail", pk=friend.id)
-        context = {"friend": friend, "form": form, "user":user, "chats": chats, "num": rec_chats.count()}
+        context = {"friend": friend, "form": form, "user": user, "chats": chats, "num": rec_chats.count()}
         return render(request, "mychatapp/detail.html", context)
     else:
         return redirect('login')
+
+
 def sentMessages(request, pk):
     if request.session.has_key('user_name'):
         user = Useraccount.objects.filter(id=int(request.session['user_id']))[0]
         friend = Friends.objects.filter(friend=pk, user=user.id)[0]
         data = json.loads(request.body)
         new_chat = data["msg"]
-        new_chat_message = ChatMessage.objects.create(body=new_chat, msg_sender=user, msg_receiver=friend, seen=False )
+        new_chat_message = ChatMessage.objects.create(body=new_chat, msg_sender=user, msg_receiver=friend, seen=False)
         print(new_chat)
         return JsonResponse(new_chat_message.body, safe=False)
     else:
         return redirect('login')
+
+
 def receivedMessages(request, pk):
     if request.session.has_key('user_name'):
         user = Useraccount.objects.filter(id=int(request.session['user_id']))[0]
@@ -118,6 +128,7 @@ def receivedMessages(request, pk):
         return JsonResponse(arr, safe=False)
     else:
         return redirect('login')
+
 
 def chatNotification(request):
     if request.session.has_key('user_name'):
@@ -131,11 +142,27 @@ def chatNotification(request):
     else:
         return redirect('login')
 
-def home(request):
-    if request.session.has_key('user_name'):
 
-        return render(request, 'index.html')
+def home(request, pk):
+    if request.session.has_key('user_name'):
+        if request.session['user_id'] == int(pk):
+
+            return render(request, 'index.html')
+        else:
+            return redirect('/chats/Home/' +str( request.session['user_id']))
+
     else:
         return redirect('login')
+
+
 def profile(request):
+        return render(request, 'index.html')
+
+
+
+def updateprofile(request):
+    user = Useraccount.objects.get(id=request.session['user_id'])
+    user.pic=request.FILES['pic']
+    user.pic_cover = request.FILES['cover']
+    user.save()
     return render(request, 'index.html')

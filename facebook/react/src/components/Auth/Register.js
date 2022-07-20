@@ -271,7 +271,7 @@ function Register() {
                                             <div className="form-check form-check-inline">
                                                 <input className="form-check-input" type="radio"
                                                        name="inlineRadioOptions" id="femaleGender"
-                                                       value="Female"/>
+                                                       value="m"/>
                                                 <label className="form-check-label"
                                                        htmlFor="femaleGender">Female</label>
                                             </div>
@@ -279,7 +279,7 @@ function Register() {
                                             <div className="form-check form-check-inline">
                                                 <input className="form-check-input" type="radio"
                                                        name="inlineRadioOptions" id="maleGender"
-                                                       value="Male"/>
+                                                       value="f"/>
                                                 <label className="form-check-label"
                                                        htmlFor="maleGender">Male</label>
                                             </div>

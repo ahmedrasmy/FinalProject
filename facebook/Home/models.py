@@ -22,7 +22,7 @@ class Useraccount(models.Model):
 
 
 class Posts(models.Model):
-    user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
+    user = models.ForeignKey(Useraccount, on_delete=models.CASCADE,related_name='posts')
     postdate = models.DateField()
     postcontent = models.TextField()
 
