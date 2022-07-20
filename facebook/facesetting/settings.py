@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'mychatapp',
     'Home',
     'rest_framework',
+    'API',
 ]
 
 MIDDLEWARE = [
@@ -82,8 +83,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'facebook',
         'HOST':'localhost',
-        'USER':'shawke',
-        'PASSWORD':'',
+        'USER':'postgres',
+        'PASSWORD':'Ahmed_Rasmy4444',
         'PORT':5432,
     }
 }

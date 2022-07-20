@@ -23,10 +23,13 @@ from .serlizer import *
 
 urlpatterns = [
 
-    path('get/',view_trainees),
-    path('get/<id>',view_trainees),
-    path('insert/',create_trainees),
-    path('update/<pk>', update),
-    path('delete/<pk>', delete),
+    path('get/',view_users),
+    path('register_user/', register_user),
+    path('update_user/<pk>', update_user),
+    path('delete_user/<pk>', delete_user),
+    path('getAllPosts/', getAllPosts),
+    path('getProfilePosts/', getProfilePosts),
+    path('getComments/<pk>', getComments),
+    path('getAccount/<id>/<pK>',account_view),
 
 ]

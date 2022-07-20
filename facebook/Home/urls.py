@@ -5,6 +5,7 @@ urlpatterns = [
     # path('', home, name= "home"),
     path('addpost/', addpost, name="addpost"),
     path('addcomment/<int:pk>', addcomment, name = "addcomment"),
-    path('addpage/<str:pk>', addpage, name = "addpage"),
+    path('Account/<str:id>/<str:pk>',Account , name='Account'),
+    path('search/',search , name='search'),
     
 ]

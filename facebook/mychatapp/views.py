@@ -35,7 +35,7 @@ def register_user(request):
                 email=request.POST['Email'], password=request.POST['password'],
                 phone_number=request.POST['phone'],
                 birthdate=request.POST['birthdate'],
-                # address=request.POST['address'],
+                gender=request.POST['inlineRadioOptions']
             )
             newuser.save()
             return redirect('index')
@@ -45,7 +45,6 @@ def register_user(request):
             return render(request, 'index.html', context)
     else:
         return render(request, 'index.html')
-
 def login(request):
     if request.method == 'POST':
         loguser = Useraccount.objects.filter(email=request.POST['Email'], password=request.POST['password'])
@@ -53,11 +52,13 @@ def login(request):
         if len(loguser) > 0:
             request.session['user_name'] = loguser[0].first_name + " " + loguser[0].last_name
             request.session['user_id'] = loguser[0].id
-            return redirect('Home')
+            return redirect('/chats/Home/')
+
         else:
             return render(request, 'index.html', {'error': 'Invalid Credientials'})
     else:
         return render(request, 'index.html')
+
 
 def logout(request):
     if request.session.has_key('user_name'):
@@ -137,5 +138,15 @@ def home(request):
         return render(request, 'index.html')
     else:
         return redirect('login')
+
+
 def profile(request):
+    return render(request, 'index.html')
+
+
+def updateprofile(request):
+    user = Useraccount.objects.get(id=int(request.session['user_id']))
+    user.pic=request.FILES['pic']
+    user.pic_cover = request.FILES['cover']
+    user.save()
     return render(request, 'index.html')

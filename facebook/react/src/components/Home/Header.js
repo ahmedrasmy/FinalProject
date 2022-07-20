@@ -13,7 +13,7 @@ import ForumIcon from '@mui/icons-material/Forum';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-function Header() {
+function Header({name,image}) {
     return (
         <div className="header">
             <div className="header-left">
@@ -42,8 +42,8 @@ function Header() {
             </div>
             <div className="header-right">
                 <div className="header-info">
-                <Avatar  />
-                <h4>som3a</h4>
+                <Avatar src={image} />
+                <h4>{name}</h4>
                 </div>
                 <IconButton>
                     <ForumIcon />

@@ -1,54 +1,41 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import CreatePost from '../Post/CreatePost';
 import Post from '../Post/Post';
 import ProfileHeader from './ProfileHeader';
 import Header from '../Home/Header';
-import axios from 'axios';
-import jQuery from 'jquery'
-import {useContext, useEffect, useState} from "react";
+import 'bootstrap/dist/css/bootstrap.css';
+import {useEffect, useState} from "react";
+import axios from "axios";
 
-
-
-window.django = {
-            csrf: "{{ csrf_token }}",
-
-            user: {
-                username: "{{   request.session['user_id'] }}",
-
-
-            }
-        };
 
 function Profile() {
 
-
-
-    const [users, setUsers] = useState([])
-
+    const [users, setUsers] = useState({})
+    const [posts, setPosts] = useState([])
     useEffect(() => {
-
         axios.get('http://127.0.0.1:8000/api/get/')
-
             .then(res => {
-
-                setUsers(res.data);
-
-
+                setUsers(res.data[0]);
             })
-
             .catch((err) => console.log(err))
-
     }, [])
 
-
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/post/')
+            .then(res => {
+                setPosts(res.data);
+                console.log(res.data)
+            })
+            .catch((err) => console.log(err))
+    }, [])
     return (
         <>
-
-            <Header/>
+            <Header name={users.first_name + ' ' + users.last_name} image={users.pic}/>
             <div className="h-screen">
 
-                <div className="mt-14 shadow bg-white h-screen">
+
+                <div className="mt-1 shadow bg-white h-screen" style={{marginTop: '1rem !important'}}>
                     {/* PROFILE HEADER */}
                     <ProfileHeader/>
                     {/* END PROFILE HEADER */}
@@ -145,11 +132,19 @@ function Profile() {
                                 {/* // POST LIST */}
                                 <div className="w-2/5">
                                     {/* CREATE POST */}
-                                    <CreatePost/>
+
+                                    <CreatePost name={users.first_name + ' ' + users.last_name} picture={users.pic}/>
                                     {/* END CREATE POST */}
 
-                                    {/* POST */}
-                                    <Post/>
+
+                                    {
+                                        posts.map((post) => (
+
+                                            <Post name={users.first_name + ' ' + users.last_name} picture={users.pic} post={post} />
+
+
+                                        ))
+                                    }
                                     {/* END POST */}
                                 </div>
                                 {/* // END POST LIST */}

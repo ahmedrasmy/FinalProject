@@ -2,48 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="df9d4179-8d34-4952-9b07-4f766a38a94a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/Home/AllPosts.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/Home/Contacts.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/Home/Feed.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/Home/Header.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/Home/Home.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/Home/Post.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/Home/Sidebar.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/Home/SidebarRow.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/Home/Story.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/Home/StoryReel.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/css/AllPosts.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/css/Contacts.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/css/Feed.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/css/Header.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/css/Home.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/css/Post.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/css/Sidebar.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/css/SidebarRow.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/css/Story.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/css/StoryReel.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/images/care.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/images/emotion4.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/images/emotion5.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/images/emotion6.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/images/emotion7.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/images/facelogo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/images/love3.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/API/apiurl.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/apiurl.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/API/serlizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/serlizer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/API/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/facesetting/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/facesetting/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/facesetting/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/facesetting/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/mychatapp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/mychatapp/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/mychatapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/mychatapp/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/react/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/public/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/App.test.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/setupTests.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Auth/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Auth/Register.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Post/CreatePost.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Post/CreatePost.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Post/Post.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Post/Post.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Profile/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Profile/Profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Profile/ProfileHeader.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Profile/ProfileHeader.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,15 +40,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "E:/FinalProject/facebook/Home",
-    "nodejs_package_manager_path": "npm"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/FinalProject&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\FinalProject\facebook\Home" />
