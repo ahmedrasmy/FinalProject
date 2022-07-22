@@ -6,16 +6,13 @@
       <change beforePath="$PROJECT_DIR$/facebook/API/apiurl.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/apiurl.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/API/serlizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/serlizer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/API/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/Home/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/Home/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/mychatapp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/mychatapp/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/AllPosts.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/AllPosts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Feed.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Feed.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Post.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Post.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Profile/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Profile/Profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/css/AllPosts.css" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/css/AllPosts.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/css/Post.css" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/css/Post.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Account.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Account.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/SearchResults.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/SearchResults.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +42,9 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\FinalProject\facebook\Home" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\FinalProject\facebook\react\src\components\Home" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

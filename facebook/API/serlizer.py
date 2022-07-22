@@ -23,10 +23,6 @@ class postUserSerial(serializers.ModelSerializer):
         fields = ('first_name', 'last_name', 'pic','id')
 
 
-
-
-
-
 class postSerializer(serializers.ModelSerializer):
     post_photos = serializers.StringRelatedField(many=True)
     class Meta:
@@ -46,3 +42,16 @@ class postSerializer(serializers.ModelSerializer):
 #         fields = '__all__'
 #
 #     post = postSerializer(many=False)
+
+
+class friendRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FriendRequest
+        fields ='__all__'
+    sender = postUserSerial(many=False)
+
+
+class friendsListSerial(serializers.ModelSerializer):
+    class Meta:
+        model = FrienList
+        fields ='__all__'

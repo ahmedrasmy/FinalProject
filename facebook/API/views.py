@@ -95,37 +95,32 @@ def getComments(request,pk):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-
-
 @api_view(['GET'])
-def account_view(request, *args, **kwargs):
-    context = []
-    user_pk = kwargs.get("pK")
+def account_view(request, id):
+    context=[]
+    user_pk = id
+    print(user_pk)
     try:
         account = Useraccount.objects.get(id=user_pk)
     except:
         return HttpResponse("Something went wrong.")
     if account:
-        context.append(account.id)
-        context.append( account.first_name+" "+account.last_name)
-        context.append( account.email)
-        context.append( str(account.pic.url))
         #context.append({'username': account.username})
         #context['hide_email'] = account.hide_email
-
         try:
             friend_list = FrienList.objects.get(user=account)
         except FrienList.DoesNotExist:
             friend_list = FrienList(user=account)
             friend_list.save()
         friends = friend_list.friends.all()
-        context.append( list(friends))
         # Define template variables
         is_self = True
         is_friend = False
+        pending_friend_request_id = ''
         request_sent = FriendRequestStatus.NO_REQUEST_SENT.value  # range: ENUM -> friend/friend_request_status.FriendRequestStatus
-        friend_requests = None
-        user_id = kwargs.get("id")
+        friend_requests = 0
+        user_id = int(request.session['user_id'])
+        print(user_id)
         user = Useraccount.objects.get(id=user_id)
         #user.is_authenticated and
         if user != account:
@@ -136,9 +131,8 @@ def account_view(request, *args, **kwargs):
                 is_friend = False
                 if get_friend_request_or_false(sender=account, receiver=user) != False:
                     request_sent = FriendRequestStatus.THEM_SENT_TO_YOU.value
-                    context.append({
-                        'pending_friend_request_id':get_friend_request_or_false(sender=account, receiver=user).id
-                    })
+                    pending_friend_request_id = get_friend_request_or_false(
+                        sender=account, receiver=user).id
                 elif get_friend_request_or_false(sender=user, receiver=account) != False:
                     request_sent = FriendRequestStatus.YOU_SENT_TO_THEM.value
                 else:
@@ -148,15 +142,51 @@ def account_view(request, *args, **kwargs):
         #    is_self = False
         else:
             try:
-                friend_requests = FriendRequest.objects.filter(receiver=user, is_active=True)
+                friend_requests =FriendRequest.objects.filter(
+                    reciver=user, is_active=True).count()
             except:
                 pass
-        context.append(is_self)
-        context.append( is_friend)
-        context.append( request_sent)
-        context.append( friend_requests)
+
+        #friend_requests = serializers.serialize("json", friend_requests)
+        #friend_requests = friend_requests.values()
+        context.append({
+            'id': account.id,
+            'friends': friends.count(),
+            'email': account.email,
+            'pic': str(account.pic.url),
+            'is_self': is_self,
+            'is_friend': is_friend,
+            'user_name': account.first_name+" "+account.last_name,
+            'request_sent': request_sent,
+            'friend_requests': friend_requests,
+            'pending_friend_request_id': pending_friend_request_id,
+        })
+        print(friend_requests)
+        #context.append({'friend_requests': list(friend_requests)})
         #context['BASE_URL'] = settings.BASE_URL
-        print(context)
         return JsonResponse(data=context,safe=False)
 
 
+@api_view(['GET'])
+def friend_requests(request):
+        if request.session.has_key('user_name'):
+            user_id = int(request.session['user_id'])
+            user = Useraccount.objects.get(id=user_id)
+            friend_requests = FriendRequest.objects.filter(
+                reciver=user, is_active=True)
+            data = friendRequestSerializer(friend_requests, many=True)
+            return Response(data.data)
+        else:
+            redirect("login")
+
+@api_view(['GET'])
+def friends_list(request):
+    if request.session.has_key('user_name'):
+        user_id = int(request.session['user_id'])
+        user = Useraccount.objects.get(id=user_id)
+        friend_list=user.friends.all()
+        #friend_list = FrienList.objects.get(user=user)
+        data = trainSerializer(friend_list, many=True)
+        return Response(data.data)
+    else:
+        redirect("login")

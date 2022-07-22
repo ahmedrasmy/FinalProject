@@ -10,6 +10,8 @@ import Profilee from './components/Profile/Profile'
 import 'bootstrap/dist/css/bootstrap.css';
 import SearchResults from './components/Home/SearchResults';
 import Account from './components/Home/Account'
+import Friends_List from './components/Home/Friends_List';
+import FriendRequests from './components/Home/FriendRequests';
 function App() {
   return (
     <Router>
@@ -25,7 +27,10 @@ function App() {
                     <Route exact path={"/chats/Home/"} component={Home}/>
                     <Route exact path={"/chats/profile/"} component={Profilee}/>
                     <Route exact path={"/home/search"} component={SearchResults}/>
-                    <Route exact path={"/home/account/:id/:pk"} component={Account}/>
+                    <Route exact path={"/home/account/:id/"} component={Account}/>
+                    <Route exact path={"/home/friendRequests/"} component={FriendRequests}/>
+                    <Route exact path={"/home/Friends_list/"} component={Friends_List}/>
+
 
 </Switch>
             </BrowserRouter>

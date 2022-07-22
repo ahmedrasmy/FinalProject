@@ -21,6 +21,7 @@ class Useraccount(models.Model):
     location = models.CharField(max_length=100, null=True)
 
 
+
 class Posts(models.Model):
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
     postdate = models.DateTimeField(auto_now_add=True)
@@ -115,16 +116,6 @@ class FriendRequest(models.Model):
 
     def _str_(self):
         return self.sender.first_name
-
-    def accept(self):
-        receiver_friend_list = FrienList.objects.get(user=self.reciver)
-        if receiver_friend_list:
-            receiver_friend_list.add_friend(self.sender)
-            sender_friend_list = FrienList.objects.get(user=self.sender)
-            if sender_friend_list :
-                sender_friend_list.add_friend(self.reciver)
-                self.is_active = False
-                self.save()
 
     def decline(self):
         self.is_active = False
