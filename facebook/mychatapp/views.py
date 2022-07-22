@@ -4,15 +4,6 @@ from .forms import ChatMessageForm
 from django.http import JsonResponse
 import json
 
-def index(request):
-    if request.session.has_key('user_name'):
-        user = Useraccount.objects.filter(id=int(request.session['user_id']))[0]
-        friends = Friends.objects.filter(user=user.id)
-        context = {"user": user, "friends": friends}
-        return render(request, "mychatapp/index.html", context)
-    else:
-        return redirect('/auth/login/')
-
 def detail(request,pk):
     if request.session.has_key('user_name'):
         user = Useraccount.objects.filter(id=int(request.session['user_id']))[0]
@@ -70,3 +61,12 @@ def chatNotification(request):
         return redirect('/auth/login/')
 
 
+def index(request):
+    if request.session.has_key('user_name'):
+        user = Useraccount.objects.filter(
+            id=int(request.session['user_id']))[0]
+        friends = Friends.objects.filter(user=user.id)
+        context = {"user": user, "friends": friends}
+        return render(request, "mychatapp/index.html", context)
+    else:
+        return redirect('/auth/login/')
