@@ -6,7 +6,19 @@ import CollectionsIcon from '@mui/icons-material/Collections';
 import MoodIcon from '@mui/icons-material/Mood';
 import '../css/Post.css';
 import CSRF from '../Auth/CSRF';
+import React, {useEffect} from "react";
+import axios from "axios";
 function Post() {
+        const [users, setUsers] = useState({})
+
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/get/')
+            .then(res => {
+                setUsers(res.data[0]);
+            })
+            .catch((err) => console.log(err))
+    }, [])
+
     const [input , setInput] =useState("")
     const [showImageInput,setshowImageInput] =useState(false)
     const [showbutton,setshowbutton] =useState(false)
@@ -37,7 +49,7 @@ function Post() {
     return (
         <div className="post ">
             <div className="post_top">
-                <Avatar />
+                  <Avatar src={users.pic} className="Posts_avatar" />
                 <form action="/home/addpost/"  enctype="multipart/form-data"  method= "post" >
                < CSRF />
                     <input className="post_input"

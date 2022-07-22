@@ -29,6 +29,7 @@ function Profile() {
             })
             .catch((err) => console.log(err))
     }, [])
+
     return (
         <>
             <Header name={users.first_name + ' ' + users.last_name} image={users.pic}/>
