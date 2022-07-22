@@ -6,23 +6,16 @@
       <change beforePath="$PROJECT_DIR$/facebook/API/apiurl.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/apiurl.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/API/serlizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/serlizer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/API/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/Home/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/Home/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/facesetting/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/facesetting/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/facesetting/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/facesetting/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/mychatapp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/mychatapp/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/mychatapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/mychatapp/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Auth/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Auth/Register.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Post/CreatePost.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Post/CreatePost.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Post/Post.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Post/Post.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/AllPosts.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/AllPosts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Feed.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Feed.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Post.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Post.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Profile/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Profile/Profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Profile/ProfileHeader.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Profile/ProfileHeader.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/css/AllPosts.css" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/css/AllPosts.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/css/Post.css" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/css/Post.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -3,24 +3,49 @@ import AllPosts from './AllPosts';
 import '../css/Feed.css';
 import Post from './Post';
 import StoryReel from './StoryReel';
+import {useEffect, useState} from "react";
+import axios from "axios";
 function Feed() {
+
+    const [posts, setPosts] = useState([])
+
+
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/getAllPosts/')
+            .then(res => {
+                setPosts(res.data);
+//                console.log(res.data)
+            })
+            .catch((err) => console.log(err))
+    }, [])
+    console.log(posts)
     return (
+
         <div className="feed">
             <StoryReel/>
             <Post/>
-            <AllPosts profilePic="https://images.deliveryhero.io/image/talabat/restaurants/Logo_637462257288960565.jpg?width=180"
-            message="hellooo this me"
-            timestamp="this atime stamp"
-            username="som3a"
-            image="https://images.pexels.com/photos/12025241/pexels-photo-12025241.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+
+     {
+         posts.map((post) => {
+         return <>
+          <AllPosts profilePic={post.user.pic}
+
+            message={post.postcontent}
+            timestamp={post.postdate}
+            username={post.user.first_name + ' ' + post.user.last_name}
+            image = {post.post_photos}
+
             />
-            <AllPosts profilePic="https://images.deliveryhero.io/image/talabat/restaurants/Logo_637462257288960565.jpg?width=180"
-            message="hellooo this me"
-            timestamp="this atime stamp"
-            username="som3a"
-            />
-        </div>
-    )
+
+</>
+}
+)
+}
+
+     </div>
+
+      )
+
 }
 
 export default Feed

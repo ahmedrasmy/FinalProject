@@ -22,7 +22,7 @@ function Profile() {
     }, [])
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/post/')
+        axios.get('http://127.0.0.1:8000/api/getProfilePosts/')
             .then(res => {
                 setPosts(res.data);
                 console.log(res.data)

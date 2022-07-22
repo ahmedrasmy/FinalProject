@@ -28,6 +28,7 @@ urlpatterns = [
     path('update_user/<pk>', update_user),
     path('delete_user/<pk>', delete_user),
     path('getAllPosts/', getAllPosts),
+    # path('getAllPostsImgs/', getAllPostsImgs),
     path('getProfilePosts/', getProfilePosts),
     path('getComments/<pk>', getComments),
     path('getAccount/<id>/<pK>',account_view),

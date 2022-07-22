@@ -13,6 +13,7 @@ def addpost(request):
             user=user,postcontent=request.POST['postcontent']
         )
         images = request.FILES.getlist('imagecontent')
+        print(images)
         if newPost:
             if len(images) > 0:
                 for imagecontent in images:
@@ -20,6 +21,7 @@ def addpost(request):
                         post=newPost,
                         imagecontent=imagecontent
                     )
+                    photo.save()
         return redirect('home')
     else:
         return redirect('login')

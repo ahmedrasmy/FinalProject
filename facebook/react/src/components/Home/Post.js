@@ -5,7 +5,7 @@ import VideocamIcon from '@mui/icons-material/Videocam';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import MoodIcon from '@mui/icons-material/Mood';
 import '../css/Post.css';
-
+import CSRF from '../Auth/CSRF';
 function Post() {
     const [input , setInput] =useState("")
     const [showImageInput,setshowImageInput] =useState(false)
@@ -38,21 +38,22 @@ function Post() {
         <div className="post ">
             <div className="post_top">
                 <Avatar />
-                <form>
+                <form action="/home/addpost/"  enctype="multipart/form-data"  method= "post" >
+               < CSRF />
                     <input className="post_input"
                         placeholder="what's on your mind?"
                         value={input}
+                        name="postcontent"
                         onChange={(e) => setInput(e.target.value)}
                         onClick={(e) => handlebutton(e)}
                     />
                     { showImageInput ? <input type="file" accept="image/*" multiple
                         className="post_input"
                         placeholder="Enter your image here"
-                        value={imageUrl}
-                        style={{}}
+                        name ="imagecontent"
                         onChange={(e) => setImageUrl(e.target.value)}
                     /> : null }
-                    {showbutton ? <button onClick={handelSubmit} type="submit" class="add">Post</button> : null }
+                    {showbutton ? <button  type="submit" class="add">Post</button> : null }
                 </form>
             </div>
             <div className="post_bottom">

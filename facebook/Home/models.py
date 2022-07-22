@@ -23,13 +23,17 @@ class Useraccount(models.Model):
 
 class Posts(models.Model):
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
-    postdate = models.DateField()
+    postdate = models.DateTimeField(auto_now_add=True)
     postcontent = models.TextField()
 
 
+
 class Photos(models.Model):
-    post = models.ForeignKey(Posts, on_delete=models.CASCADE)
+    post = models.ForeignKey(Posts, on_delete=models.CASCADE , related_name='post_photos')
     imagecontent = models.ImageField(upload_to="img", blank=True, null=True)
+
+    def __str__(self):
+        return (str(self.imagecontent.url))
 
 
 class Shares(models.Model):

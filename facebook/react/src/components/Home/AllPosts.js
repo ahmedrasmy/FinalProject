@@ -23,8 +23,16 @@ function AllPosts({profilePic , image , username,timestamp,message}) {
             <div className="bottom_section">
                 <p>{message}</p>
             </div>
-            <div className="bottom_section_image">
-                <img src={image} alt="" /> 
+            <div className="bottom_section_image row">
+
+                {
+                    image.map((img) => {
+                        return <>
+                                <img src={img} className="col" alt="" />
+
+                        </>
+                    })
+                }
             </div>
                 <div class="like-comment-share">
                     <div class="icon like">

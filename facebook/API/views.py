@@ -69,6 +69,8 @@ def getAllPosts(request):
     else:
         return redirect('login')
 
+
+
 @api_view(['GET'])
 def getProfilePosts(request):
     if request.session.has_key('user_name'):
