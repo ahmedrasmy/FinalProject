@@ -53,11 +53,13 @@ def login(request):
         if len(loguser) > 0:
             request.session['user_name'] = loguser[0].first_name + " " + loguser[0].last_name
             request.session['user_id'] = loguser[0].id
-            return redirect('index')
+            return redirect('/home/Home/')
+
         else:
             return render(request, 'index.html', {'error': 'Invalid Credientials'})
     else:
         return render(request, 'index.html')
+
 
 def logout(request):
     if request.session.has_key('user_name'):
@@ -131,5 +133,3 @@ def chatNotification(request):
     else:
         return redirect('login')
 
-def home(request):
-    return render(request, 'index.html')

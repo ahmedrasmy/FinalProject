@@ -4,6 +4,108 @@
 .App {
  background-color: #F0F2F5;
 }
+body{
+    background-color:#F0F2F5 !important;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+        .login-form {
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+            background-color: #fff;
+            padding: 25px;
+        }
+
+        h3 {
+            padding-left: 30px;
+            padding-right: 20px;
+        }
+
+        .btn-custom {
+            background-color: #1877f2;
+            border: none;
+            border-radius: 6px;
+            font-size: 20px;
+            line-height: 28px;
+            color: #fff;
+            font-weight: 700;
+            height: 48px;
+        }
+
+        .btn-custom {
+            color: #fff !important;
+        }
+
+        input {
+            height: 52px;
+            font-size: 18px !important;
+            color: #f2f2f2;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 0 rgba(13, 110, 253, .25);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        @media(max-width: 768px) {
+            input {
+                font-size: 16px !important;
+            }
+            .login-form {
+                box-shadow: none;
+            }
+        }
+#root {
+ background-color: #F0F2F5;
+}
+.App {
+ background-color: #F0F2F5;
+}
+body{
+    background-color:#F0F2F5 !important;
+}
 
 .App-logo {
   height: 40vmin;
