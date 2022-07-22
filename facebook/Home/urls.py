@@ -9,9 +9,9 @@ urlpatterns = [
     path('search/', search, name='search'),
     path('friendRequests/', friendRequests, name='friendRequests'),
     path('frined_request_delete/', frined_request_delete, name='frined_request_delete'),
-    path('frined_request_accept/', frined_request_accept,name='frined_request_accept'),
+    path('frined_request_accept/', frined_request_accept, name='frined_request_accept'),
     path('unfriend/', unfriend, name='unfriend'),
-    path('cancel_friend_request/', cancel_friend_request,name='cancel_friend_request'),
+    path('cancel_friend_request/', cancel_friend_request, name='cancel_friend_request'),
     path('Friends_list/', Friends_list, name='Friends_list'),
-
+    path('friend_request/<str:id>', send_friend_request, name='friend-request'),
 ]
