@@ -14,4 +14,8 @@ urlpatterns = [
     path('cancel_friend_request/', cancel_friend_request, name='cancel_friend_request'),
     path('Friends_list/', Friends_list, name='Friends_list'),
     path('friend_request/<str:id>', send_friend_request, name='friend-request'),
+    path('Home/', home, name='home'),
+    path('profile/', profile, name='Profile'),
+    path('updateprofile/', updateprofile, name='updateprofile')
+
 ]

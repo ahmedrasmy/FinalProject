@@ -67,7 +67,7 @@ def getAllPosts(request):
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
     else:
-        return redirect('login')
+        return redirect('/auth/login/')
 
 
 
@@ -81,7 +81,7 @@ def getProfilePosts(request):
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
     else:
-        return redirect('login')
+        return redirect('/auth/login/')
 
 @api_view(['GET'])
 def getComments(request,pk):
@@ -177,7 +177,7 @@ def friend_requests(request):
             data = friendRequestSerializer(friend_requests, many=True)
             return Response(data.data)
         else:
-            redirect("login")
+            redirect("/auth/login/")
 
 @api_view(['GET'])
 def friends_list(request):
@@ -189,4 +189,4 @@ def friends_list(request):
         data = trainSerializer(friend_list, many=True)
         return Response(data.data)
     else:
-        redirect("login")
+        redirect("/auth/login/")

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'Home',
     'rest_framework',
     'API',
+    'Auth',
 ]
 
 MIDDLEWARE = [
@@ -83,8 +84,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'facebook',
         'HOST':'localhost',
-        'USER':'postgres',
-        'PASSWORD':'Ahmed_Rasmy4444',
+        'USER': 'postgres',
+        'PASSWORD': '123',
         'PORT':5432,
     }
 }
@@ -131,7 +132,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'react/build/static'),
     os.path.join(BASE_DIR, 'static'),
-                      ]
+                    ]
 
 MEDIA_URL = 'media/'
 
