@@ -68,24 +68,23 @@ function ProfileHeader() {
 
                             <div className="modal-body">
 
-                                <form action="/chats/updateprofile/" method="post" encType="multipart/form-data">
+                                <form action="/home/updateprofile/" method="post" encType="multipart/form-data">
 
                                 <CSRF/>
-                                      <img src={users.pic}
-                                     className="rounded-full md:absolute top-48 inset-x-96 border-4 border-white w-40 h-40"
-                                     style={{width: '168px', height: '168px'}}/>
+                                    {/* <img src={users.pic}
+                                    className="rounded-full md:absolute top-48 inset-x-96 border-4 border-white w-40 h-40"
+                                    style={{width: '168px', height: '168px'}}/> */}
                                     <div className="mb-3">
-
                                         <label htmlFor="exampleInputPassword1" className="form-label">Profile
                                             Picture</label>
                                         <input type="file" name="pic" className="form-control"
-                                               id="exampleInputPassword1"/>
+                                            id="exampleInputPassword1"/>
                                     </div>
-                                     <div className="mb-3">
+                                    <div className="mb-3">
                                         <label htmlFor="exampleInputPassword1" className="form-label">Cover
                                             Picture</label>
                                         <input type="file" name="cover" className="form-control"
-                                               id="exampleInputPassword1"/>
+                                            id="exampleInputPassword1"/>
                                     </div>
                                     <DialogActions>
                                         <Button onClick={handleClose}>Close</Button>

@@ -24,6 +24,7 @@ urlpatterns = [
     path('chats/', include("mychatapp.urls")),
     path('home/', include("Home.urls")),
     path('api/', include("API.apiurl")),
+    path('auth/', include("Auth.urls")),
 ]
 
 

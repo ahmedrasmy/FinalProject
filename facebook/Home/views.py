@@ -4,6 +4,25 @@ from django.http import JsonResponse
 import json
 
 
+def home(request):
+    if request.session.has_key('user_name'):
+
+        return render(request, 'index.html')
+    else:
+        return redirect('/auth/login/')
+
+
+def profile(request):
+    return render(request, 'index.html')
+
+
+def updateprofile(request):
+    user = Useraccount.objects.get(id=int(request.session['user_id']))
+    user.pic = request.FILES['pic']
+    user.pic_cover = request.FILES['cover']
+    user.save()
+    return redirect('/home/profile/')
+
 def addpost(request):
     if request.session.has_key('user_name'):
         user = Useraccount.objects.filter(id=int(request.session['user_id']))[0]
@@ -22,7 +41,7 @@ def addpost(request):
                     photo.save()
         return redirect('home')
     else:
-        return redirect('login')
+        return redirect('/auth/login/')
 
 
 def addcomment(request, pk):
@@ -34,7 +53,7 @@ def addcomment(request, pk):
         )
         return redirect('home')
     else:
-        return redirect('login')
+        return redirect('/auth/login/')
 
 
 def Account(request, id):
@@ -78,12 +97,12 @@ def send_friend_request(request, id):
 
             if payload['response'] == None:
                 # this return  need to change return some thimg to say some thing went try again leterrr
-                return redirect('login')
+                return redirect('/auth/login/')
         else:
             # this return need to change to
-            return redirect('login')
+            return redirect('/auth/login/')
     else:
-        return redirect('login')
+        return redirect('/auth/login/')
 
     return redirect('/home/Account/' + id)
     # return HttpResponse(json.dumps(payload), content_type="application/json")
@@ -99,7 +118,7 @@ def frined_request_delete(request):
         friend_request.delete()
         return redirect('friendRequests')
     else:
-        return redirect('login')
+        return redirect('/auth/login/')
 
 
 def frined_request_accept(request):
@@ -116,7 +135,7 @@ def frined_request_accept(request):
         friend_request.delete()
         return redirect('friendRequests')
     else:
-        return redirect('login')
+        return redirect('/auth/login/')
 
 
 def unfriend(request, method='POST'):
@@ -128,7 +147,7 @@ def unfriend(request, method='POST'):
         friend_list.unfriend(removee)
         return redirect('/home/Account/' + request.POST['unfriend'])
     else:
-        return redirect('login')
+        return redirect('/auth/login/')
 
 
 def cancel_friend_request(request, method='POST'):
@@ -144,7 +163,7 @@ def cancel_friend_request(request, method='POST'):
         friend_requests.delete()
         return redirect('/home/Account/' + request.POST['cancel_request'])
     else:
-        return redirect('login')
+        return redirect('/auth/login/')
 
 
 def Friends_list(request):

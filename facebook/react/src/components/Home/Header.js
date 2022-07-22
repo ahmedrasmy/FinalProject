@@ -25,7 +25,8 @@ function Header({name,image}) {
             </div>
             <div className="header-center">
                 <div className="header-option header-option--active">
-                <HomeIcon fontSize="large" />
+                    <Link to={`/home/Home/`}>
+                    <HomeIcon fontSize="large" /></Link>
                 </div>
                 <div className="header-option">
                 <FlagIcon fontSize="large" />
@@ -43,7 +44,8 @@ function Header({name,image}) {
             <div className="header-right">
                 <div className="header-info">
                 <Avatar src={image} />
-                <h4>{name}</h4>
+                <Link to={`/home/profile/`}>
+                <h4>{name}</h4></Link>
                 </div>
                 <IconButton>
                     <ForumIcon />

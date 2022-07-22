@@ -17,11 +17,11 @@ function Login() {
                         life.</h3>
                 </div>
                 <div className="col-md-5">
-                    <form className="login-form" action="/chats/login/" method="post">
+                    <form className="login-form" action="/auth/login/" method="post">
                         <CSRF/>
                         <div className="mb-3">
                             <input type="text" className="form-control" name="Email" placeholder="Email address or phone number"
-                                   required/>
+                                required/>
                         </div>
                         <div className="mb-3">
                             <input type="password" className="form-control" name="password" placeholder="Password" required/>

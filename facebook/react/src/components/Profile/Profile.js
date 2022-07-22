@@ -53,7 +53,6 @@ function Profile() {
                                         </div>
                                     </div>
                                     {/* // END INTRO */}
-
                                     {/* // PHOTOS */}
                                     <div className="mr-12 mt-4">
                                         <div className="p-4 shadow rounded-lg bg-white w-80" id="intro">
@@ -72,7 +71,7 @@ function Profile() {
                                             <div className="flex justify-between">
                                                 <h1 className="font-bold text-xl">Friends</h1>
                                                 <Link to="/friends/myId"
-                                                      className="text-lg text-blue-700 hover:bg-blue-200">See All
+                                                    className="text-lg text-blue-700 hover:bg-blue-200">See All
                                                     Friends</Link>
                                             </div>
                                             {/* List */}
@@ -81,45 +80,45 @@ function Profile() {
                                                 <div className="grid grid-cols-3 gap-1">
                                                     <div className="bg-white p-0.5">
                                                         <img src="./images/profile_photo_cat.jpg"
-                                                             className="w-24 h-24 rounded-md mt-2 cursor-pointer"
+                                                            className="w-24 h-24 rounded-md mt-2 cursor-pointer"
                                                         />
                                                         <Link to={`/profile/friendId`}
-                                                              className="font-semibold text-sm">Friend FullName</Link>
+                                                            className="font-semibold text-sm">Friend FullName</Link>
                                                     </div>
                                                     <div className="bg-white p-0.5">
                                                         <img src="./images/profile_photo_cat.jpg"
-                                                             className="w-24 h-24 rounded-md mt-2 cursor-pointer"
+                                                            className="w-24 h-24 rounded-md mt-2 cursor-pointer"
                                                         />
                                                         <Link to={`/profile/friendId`}
-                                                              className="font-semibold text-sm">Friend FullName</Link>
+                                                            className="font-semibold text-sm">Friend FullName</Link>
                                                     </div>
                                                     <div className="bg-white p-0.5">
                                                         <img src="./images/profile_photo_cat.jpg"
-                                                             className="w-24 h-24 rounded-md mt-2 cursor-pointer"
+                                                            className="w-24 h-24 rounded-md mt-2 cursor-pointer"
                                                         />
                                                         <Link to={`/profile/friendId`}
-                                                              className="font-semibold text-sm">Friend FullName</Link>
+                                                            className="font-semibold text-sm">Friend FullName</Link>
                                                     </div>
                                                     <div className="bg-white p-0.5">
                                                         <img src="./images/profile_photo_cat.jpg"
-                                                             className="w-24 h-24 rounded-md mt-2 cursor-pointer"
+                                                            className="w-24 h-24 rounded-md mt-2 cursor-pointer"
                                                         />
                                                         <Link to={`/profile/friendId`}
-                                                              className="font-semibold text-sm">Friend FullName</Link>
+                                                            className="font-semibold text-sm">Friend FullName</Link>
                                                     </div>
                                                     <div className="bg-white p-0.5">
                                                         <img src="./images/profile_photo_cat.jpg"
-                                                             className="w-24 h-24 rounded-md mt-2 cursor-pointer"
+                                                            className="w-24 h-24 rounded-md mt-2 cursor-pointer"
                                                         />
                                                         <Link to={`/profile/friendId`}
-                                                              className="font-semibold text-sm">Friend FullName</Link>
+                                                            className="font-semibold text-sm">Friend FullName</Link>
                                                     </div>
                                                     <div className="bg-white p-0.5">
                                                         <img src="./images/profile_photo_cat.jpg"
-                                                             className="w-24 h-24 rounded-md mt-2 cursor-pointer"
+                                                            className="w-24 h-24 rounded-md mt-2 cursor-pointer"
                                                         />
                                                         <Link to={`/profile/friendId`}
-                                                              className="font-semibold text-sm">Friend FullName</Link>
+                                                            className="font-semibold text-sm">Friend FullName</Link>
                                                     </div>
                                                 </div>
                                             </div>
