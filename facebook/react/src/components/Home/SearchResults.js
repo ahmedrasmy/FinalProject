@@ -6,7 +6,6 @@ import axios from 'axios';
 import { useContext, useEffect, useState } from "react";
 
 function SearchResults() {
-    const [aacounts,setacounts]=useState(null)
     const [freind,setfreind] = useState(true)
     const [users, setUsers] = useState([])
     useEffect( () => {
@@ -17,19 +16,6 @@ function SearchResults() {
         })
         .catch((err)=> console.log(err))
     }, [])
-    const acounts=[
-        {
-            id: 1, first_name: 'mohamed', last_name: 'ismial', email: 'mmnqwlh@gmail.com',password: '123',pic:i1
-        },
-        {
-            id: 2, first_name: 'ahmed', last_name: 'rasmy', email: 'nvvcvc@gmasds.com', password: '123',pic:i1
-        },
-        {
-            id: 2, first_name: 'ahmed', last_name: 'rasmy', email: 'nvvcvc@gmasds.com', password: '123',pic:i1
-        },
-        
-        
-    ]
     const createOrReturnPrivateChat=(e)=>{}
     return (
         <>

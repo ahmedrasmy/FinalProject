@@ -3,45 +3,26 @@ import '../css/Account.css';
 import {Link, useLocation} from 'react-router-dom';
 import {useEffect, useState} from "react";
 import axios from "axios";
+import GroupIcon from '@mui/icons-material/Group';
+import ChatIcon from '@mui/icons-material/Chat';
+import CSRF from '../Auth/CSRF';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import Cancel from '@mui/icons-material/Cancel';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 function Account() {
-    const [email,setemail]= useState("email");
-    const [username,setusername]= useState("username");
-    const [pic,setpic]= useState("pic");
-    const [request_sent,setrequest_sent]= useState(1);
-    const [is_friend,setis_friend]= useState(true);
-    const [friends,setfriends]= useState(true);
-    const [friend_requests,setfriend_requests]= useState(true);
-    const [is_self,setis_self]= useState(false);
-    const onFriendRequestSent=(e)=>{
-        window.location.reload()
-    }
-    const onFriendRequestCancelled=(e)=>{
-        window.location.reload()
-    }
-    const onFriendRemoved=(e)=>{
-        window.location.reload()
-    }
-    const onFriendRequestAccepted=(e)=>{
-        window.location.reload()
-    }
-    const onFriendRequestDeclined=(e)=>{
-        window.location.reload()
-    }
-    let arr=[]
     let location = useLocation();
-        let id = location.pathname.split('/')[3]
-        let pk = location.pathname.split('/')[4]
-        let [user, setUser] = useState({})
-        useEffect(() => {
-            axios.get('http://127.0.0.1:8000/api/getAccount/'+id+'/'+pk)
-                .then(res => {
-                    setUser(res.data);
-                    console.log(res.data)
-            })
-                .catch((err) => console.log(err))
+    let id = location.pathname.split('/')[3]
+    let [user, setUser] = useState({})
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/getAccount/'+id)
+            .then(res => {
+                setUser(res.data[0]);
+                console.log(res.data[0])
+        })
+            .catch((err) => console.log(err))
     }, [])
-
     return (
         <>
             <div className="container-fluid">
@@ -50,13 +31,12 @@ function Account() {
                     <div className="card-body">
                         <div className="d-flex flex-column justify-content-center p-4">
                             <div className="image-container mx-auto mb-4">
-                                <img className="d-block border border-dark rounded-circle img-fluid mx-auto profile-image" alt="codingwithmitch logo" id="id_profile_image" src={user[3]}/>
+                                <img className="d-block border border-dark rounded-circle img-fluid mx-auto profile-image" alt="codingwithmitch logo" id="id_profile_image" src={user['pic']}/>
                                 {/*pic*/}
                             </div>
                             <p className="mt-4 mb-1 field-heading">Email</p>
-                            <h5>{user[2]}</h5>
+                            <h5>{user['email']}</h5>
                             {/*{is_self ?
-                                
                             :
                                 % if hide_email %}
                                     <h5>**********</h5>
@@ -65,138 +45,130 @@ function Account() {
                                 {% endif %
                             }*/}
                             <p className="mt-4 mb-1 field-heading">Username</p>
-                            <h5>{user[1]}</h5>
+                            <h5>{user['user_name']}</h5>
                             {/*<!-- If Auth user is viewing their own profile -->*/}
-                            {/*% if is_self %}
-                            <a  class="mt-4 btn btn-primary" href="{% url 'account:edit' user_id=id %}">Update</a>
-                            <div class="d-flex flex-column mt-4">
-                                <a class="m-auto" href="{% url 'password_change' %}">Change password</a>
-                            </div>
-                            {% endif %*/}
+                            { user['is_self'] ?
+                            <>
+                                <a  class="mt-4 btn btn-primary" href="{% url 'account:edit' user_id=id %}">Update</a>
+                                <div class="d-flex flex-column mt-4">
+                                    <a class="m-auto" href="{% url 'password_change' %}">Change password</a>
+                                </div>
+                            </>
+                            : null }
                         </div>
                     </div>
                     </div>
-                    {/*% if request.user.is_authenticated %*/}
                     <div className="d-flex flex-column mb-4">
-                        {user[7] ?
+                        {user['request_sent'] === 0 ?
                         <div className="card m-2 p-4">
                             <div className="d-flex flex-row align-items-center">
                                 <span className="friend-text align-items-center mr-2">Accept Friend Request</span>
-                                <span id={'id_cancel_'} className="decline-friend-request material-icons p-1" >cancel</span>
-                                <span id="id_confirm_{{id}}" className="confirm-friend-request material-icons p-1" >check</span>
+                                <form action={'/home/frined_request_delete/'} method="post">
+                                    <CSRF/>
+                                    <input type="hidden" name="request_id" value={user['friend_request_id']}/>
+                                    <input type="hidden" name="sender_id" value={user['id']}/>
+                                    <input type="submit" className="btn btn-primary" id="sendFriendRequestBtn" value={CancelIcon}/>
+                                    {/* <Button type="submit" ><CancelIcon/></Button> */}
+                                </form>
+                                <form action={'/home/frined_request_accept/'} method="post">
+                                    <CSRF/>
+                                    <input type="hidden" name="request_id" value={user['friend_request_id']}/>
+                                    <input type="hidden" name="sender_id" value={user['id']}/>
+                                    <input type="submit" className="btn btn-primary" id="sendFriendRequestBtn" value={CheckCircleIcon}/>
+                                    {/* <Button type="submit" ><CheckCircleIcon/></Button>   */}
+                                </form>
                             </div>
                         </div>
                         : null }
-
                         <div className="card m-2 px-4 pb-4">
                             {/*<!-- Cancel Friend Request / Send Friend Request / Remove Friend -->*/}
-                            { user[6] === false && user[5] === false ?
+                            { user['is_friend'] === false && user['is_self'] === false ?
                                 <>
                                     {/*<!-- You sent them a request -->*/}
-                                    { user[7] === 1 ?
+                                    { user['request_sent'] === 1 ?
                                     <div className="d-flex flex-column align-items-center pt-4">
-                                        <button className="btn btn-danger" id="id_cancel_friend_request_btn">
-                                            Cancel Friend Request
-                                        </button>
+                                        <form action={'/home/cancel_friend_request/'} method="post">
+                                            <CSRF/>
+                                            <input type="hidden" name="cancel_request" value={user['id']}/>
+                                            <button type="submit" className="btn btn-danger">
+                                                Cancel Friend Request
+                                            </button>
+                                        </form>
                                     </div>
                                     :null }
                                     {/*<!-- No requests have been sent -->*/}
-                                    { user[7] === -1 ?
+                                    { user['request_sent'] === -1 ?
                                         <div className="d-flex flex-column align-items-center pt-4">
-                                            <button className="btn btn-primary" id="id_send_friend_request_btn">
-                                                Send Friend Request
-                                            </button>
+                                            <form action={'/home/friend_request/'+user['id']} method="post">
+                                                <CSRF/>
+                                                <input type="submit" className="btn btn-primary" id="sendFriendRequestBtn" value="Send Friend Request"/>
+                                            </form>
                                         </div>
                                     :null }
                                 </>
                             : null }
-                                
-                                
-                            { user[6] ?
+                            {user['is_friend'] ?
+                            <>
                                 <div className="dropdown pt-4 m-auto">
-                                    <button className="btn btn-secondary dropdown-toggle friends-btn" type="button" id="id_friends_toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Friends
-                                    </button>
-                                    <div className="dropdown-menu" aria-labelledby="id_friends_toggle">
-                                        <a className="dropdown-item" href="#" >Unfriend</a>
-                                    </div>
+                                    <form action={'/home/unfriend/'} method="post">
+                                        <CSRF/>
+                                        <input type="hidden" name="unfriend" value={user['id']}/>
+                                        <input type="submit" className="btn btn-primary" id="sendFriendRequestBtn" value="unfriend"/>
+                                    </form>
                                 </div>
+                            </>
                             : null }
                             {/*<!-- Friend list link -->*/}
+                            { user['is_self'] ?
+                            <>
+                                <div className="d-flex flex-column pt-4">
+                                <form action={'/home/Friends_list/'} method="post">
+                                    <CSRF/>
+                                    <button type="submit " >
+                                        <span><GroupIcon/></span><span className="friend-text">Friends 
+                                            { (user['friends']) === 0 ? <> </>
+                                            :<>{user['friends']}</>   
+                                            }
+                                        </span>
+                                    </button>
+                                </form>
+                            </div>
+                            </>
+                            : 
                             <div className="d-flex flex-column pt-4">
                                 <a href="#">
-                                    <div className="d-flex flex-row align-items-center justify-content-center icon-container">
-                                        <span className="material-icons mr-2 friends-icon">contact_page</span><span className="friend-text">Friends </span>
+                                    <div class="d-flex flex-row align-items-center justify-content-center icon-container">
+                                        <span><GroupIcon/></span><span className="friend-text">Friends 
+                                                { (user['friends']) === 0 ? <> </>
+                                                :<>{user['friends']}</>   
+                                                }
+                                            </span> 
                                     </div>
                                 </a>
-                            </div>
-
+                            </div> }
                         </div>
-
-                        { user[8] ?
+                        { user['friend_requests'] !== 0  && user['is_self'] === true ?
                             <div className="card m-2 px-4 pb-4">
                                 {/*<!-- Friend requests -->*/}
                                 <div className="d-flex flex-column pt-4">
-                                    <a href="#">
+                                    <a href="/home/friendRequests/">
                                         <div className="d-flex flex-row align-items-center justify-content-center icon-container">
-                                            <span className="material-icons mr-2 person-add-icon">person_add</span><span className="friend-text">Friend Requests </span>
+                                            <span><PersonAddAltIcon/></span><span className="friend-text">Friend Requests </span>
                                         </div>
                                     </a>
                                 </div>
                             </div>
                         : null }
-
-                        {user[6] ?
+                        {user['is_friend'] ?
                             <div className="d-flex flex-row align-items-center btn btn-primary m-2 px-4" onclick="createOrReturnPrivateChat('{{id}}')">
-                                <span className="material-icons m-auto">
-                                message
-                                </span>
+                                <ChatIcon/>
                                 <span className="message-btn-text m-auto pl-2">Message</span>
                             </div>
                         : null }
 
                     </div>
-                    {/*% endif %*/}
-
-                    
                 </div>
             </div>
-            {/*
-            <script type="text/javascript">
-
-                // called from base_js.html
-                //preloadImage("{{profile_image|safe}}", 'id_profile_image')
-                
-                const sendFriendRequestBtn = document.getElementById("id_send_friend_request_btn")
-                if (sendFriendRequestBtn != null){
-                    sendFriendRequestBtn.addEventListener("click", function(){
-                        //sendFriendRequest("{{id}}", onFriendRequestSent)
-                    })
-                }
-
-                const cancelFriendRequestBtn = document.getElementById("id_cancel_friend_request_btn")
-                if(cancelFriendRequestBtn != null){
-                    cancelFriendRequestBtn.addEventListener("click", function(){
-                        //cancelFriendRequest("{{id}}", onFriendRequestCancelled)
-                    })
-                }
-
-                const removeFriendBtn = document.getElementById("id_unfriend_btn")
-                if (removeFriendBtn != null){
-                    removeFriendBtn.addEventListener("click", function(){
-                        //removeFriend("{{id}}", onFriendRemoved)
-                    })
-                }
-
-                function triggerAcceptFriendRequest(friend_request_id){
-                    //acceptFriendRequest(friend_request_id, onFriendRequestAccepted)
-                }
-
-                function triggerDeclineFriendRequest(friend_request_id){
-                    //declineFriendRequest(friend_request_id, onFriendRequestDeclined)
-                }
-                
-            </script>*/}
         </>
     )
 }
