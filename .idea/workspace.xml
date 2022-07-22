@@ -3,16 +3,16 @@
   <component name="ChangeListManager">
     <list default="true" id="df9d4179-8d34-4952-9b07-4f766a38a94a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/API/apiurl.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/apiurl.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/API/serlizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/serlizer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/API/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Account.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Account.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/SearchResults.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/SearchResults.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0002_friendrequest_frienlist.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0003_alter_posts_postdate.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0004_alter_photos_post.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/facesetting/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/facesetting/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Post.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Post.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Profile/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Profile/Profile.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,15 +30,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/FinalProject&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "E:/FinalProject",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\PyCharm 2022.1.2\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\FinalProject\facebook\Home" />
@@ -56,6 +59,7 @@
       <option name="presentableId" value="Default" />
       <updated>1658149975480</updated>
       <workItem from="1658149978235" duration="10000" />
+      <workItem from="1658495845975" duration="3092000" />
     </task>
     <servers />
   </component>
