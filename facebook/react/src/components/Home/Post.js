@@ -5,18 +5,10 @@ import CollectionsIcon from '@mui/icons-material/Collections';
 import MoodIcon from '@mui/icons-material/Mood';
 import '../css/Post.css';
 import CSRF from '../Auth/CSRF';
-<<<<<<< HEAD
 import axios from "axios";
 
 function Post() {
     const [users, setUsers] = useState({})
-=======
-import React, {useEffect} from "react";
-import axios from "axios";
-function Post() {
-        const [users, setUsers] = useState({})
->>>>>>> 2d59b965b0fd192e61e49ac6f072036d1a41c2d0
-
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/get/')
             .then(res => {
@@ -24,10 +16,6 @@ function Post() {
             })
             .catch((err) => console.log(err))
     }, [])
-<<<<<<< HEAD
-=======
-
->>>>>>> 2d59b965b0fd192e61e49ac6f072036d1a41c2d0
     const [input , setInput] =useState("")
     const [showImageInput,setshowImageInput] =useState(false)
     const [showbutton,setshowbutton] =useState(false)
