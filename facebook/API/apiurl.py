@@ -24,11 +24,15 @@ from .serlizer import *
 urlpatterns = [
 
     path('get/',view_users),
-
-
-    path('insert/',create_users),
-    path('update/<pk>', update),
-    path('delete/<pk>', delete),
-    path('post/',user_posts),
+    path('register_user/', register_user),
+    path('update_user/<pk>', update_user),
+    path('delete_user/<pk>', delete_user),
+    path('getAllPosts/', getAllPosts),
+    # path('getAllPostsImgs/', getAllPostsImgs),
+    path('getProfilePosts/', getProfilePosts),
+    path('getComments/<pk>', getComments),
+    path('getAccount/<id>',account_view),
+    path('friend_requests/', friend_requests),
+    path('friends_list/',friends_list,name='friends_list'),
 
 ]
