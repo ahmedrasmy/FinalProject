@@ -8,6 +8,7 @@ import {useLocation} from 'react-router-dom';
 import {useEffect, useState} from "react";
 import axios from "axios";
 
+
 function Home() {
     let location = useLocation();
     let id = location.pathname.split('/')[3]
@@ -32,6 +33,7 @@ function Home() {
     return (
 
         <div className="home">
+
             <Header name={users.first_name+' '+users.last_name} image={users.pic}/>
             <div className="home_body">
                 <Sidebar/>

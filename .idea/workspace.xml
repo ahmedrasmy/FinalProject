@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="df9d4179-8d34-4952-9b07-4f766a38a94a" name="Changes" comment="urls">
+      <change beforePath="$PROJECT_DIR$/facebook/facesetting/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/facesetting/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Home.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="TaskManager">
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="urls" />
+    <option name="LAST_COMMIT_MESSAGE" value="urls" />
+  </component>
+</project>
