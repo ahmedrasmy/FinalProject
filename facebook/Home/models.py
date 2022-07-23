@@ -48,11 +48,12 @@ class Postlike(models.Model):
 
 
 class Comments(models.Model):
-    post = models.ForeignKey(Posts, on_delete=models.CASCADE)
+    post = models.ForeignKey(Posts, on_delete=models.CASCADE,related_name = 'post_comments')
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
-    commentdate = models.DateField()
+    commentdate = models.DateTimeField(auto_now_add=True)
     commentcontent = models.TextField()
-
+    def __str__(self):
+        return (str(self.user.first_name + " " + self.user.last_name+ " , " + self.user.pic.url+ " , " +self.commentcontent))
 
 class Commentlikes(models.Model):
     comment = models.ForeignKey(Comments, on_delete=models.CASCADE)

@@ -7,8 +7,9 @@ import emotion4 from '../images/emotion4.webp';
 import emotion5 from '../images/emotion5.webp';
 import emotion6 from '../images/emotion6.webp';
 import emotion7 from '../images/emotion7.webp';
+import CSRF from '../Auth/CSRF';
 
-function AllPosts({profilePic , image , username,timestamp,message}) {
+function AllPosts({post_id,profilePic , image , username,timestamp,message ,comments}) {
     return (
         <div className="all_posts">
             <div className="Top_section">
@@ -34,6 +35,16 @@ function AllPosts({profilePic , image , username,timestamp,message}) {
                     })
                 }
             </div>
+
+              <div className="nums-comments-iteractions">
+                <div className="interaction">
+                  <i className="fa-solid fa-thumbs-up icon1"></i>
+                  <i className="fa-solid fa-heart icon2"></i>
+                  <i className="fa-regular fa-face-grin-beam icon3"></i>
+                  <a href="#">Ahmed Rasmy,Ali and 50 others</a>
+                </div>
+                <a href="#" class="nums-comments">100 Coments 20 Shares</a>
+              </div>
                 <div class="like-comment-share">
                     <div class="icon like">
                     <i class="fa-regular fa-thumbs-up"></i> Like
@@ -52,16 +63,39 @@ function AllPosts({profilePic , image , username,timestamp,message}) {
                     </div>
                     <div class="icon"><i class="fa-solid fa-share"></i> Share</div>
                 </div>
+                <div class="comments">
+                {
+                    comments.map((comment) => {
+                        return <>
+                                <div className="comment">
+                                <img src={comment.split(',')[1]}  alt="" />
+                                <div className="comment-body">
+                                <p className="name">{comment.split(',')[0]}</p>
+                                <p > {comment.split(',')[2]} </p>
+                                </div>
+                                </div>
+
+                        </>
+                    })
+                }
+
+
+                </div>
                 {/*
              Start Create Comment  */}
                 <div className="create-comment">
                 <Avatar src={profilePic} className="Posts_avatar" />
+            <form action="/home/addcomment/"   method= "post" >
+                    < CSRF />
+                 <input type="hidden" name="post_id" value={post_id} /> <br/>
                 <input
                     type="text"
                     placeholder="Write A comment"
                     className="commentInput"
+                    name="commentcontent"
                 />
-                <input type="submit" value="Add Comment" class="add" />
+                <input type="submit"  value="Add Comment" class="add" />
+                </form>
                 </div>
               {/* End Create Comment  */}
         </div>

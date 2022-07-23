@@ -4,7 +4,7 @@ from .views import *
 urlpatterns = [
     # path('', home, name= "home"),
     path('addpost/', addpost, name="addpost"),
-    path('addcomment/<int:pk>', addcomment, name="addcomment"),
+    path('addcomment/', addcomment, name="addcomment"),
     path('Account/<str:id>/', Account, name='Account'),
     path('search/', search, name='search'),
     path('friendRequests/', friendRequests, name='friendRequests'),
