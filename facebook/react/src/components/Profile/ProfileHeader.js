@@ -62,14 +62,9 @@ function ProfileHeader() {
                             <div style={{width: "1900px"}}>
                             </div>
                         </Typography>
-
-
                         <div className="modal-content">
-
                             <div className="modal-body">
-
                                 <form action="/home/updateprofile/" method="post" encType="multipart/form-data">
-
                                 <CSRF/>
                                     {/* <img src={users.pic}
                                     className="rounded-full md:absolute top-48 inset-x-96 border-4 border-white w-40 h-40"

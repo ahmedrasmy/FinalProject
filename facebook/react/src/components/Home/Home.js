@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import '../css/Home.css';
 import Feed from './Feed';
 import Header from './Header';
@@ -10,25 +10,14 @@ import axios from "axios";
 
 
 function Home() {
-    let location = useLocation();
-    let id = location.pathname.split('/')[3]
     const [users, setUsers] = useState({})
-
     useEffect(() => {
-
-        axios.get('http://127.0.0.1:8000/api/get/' + id)
-
+        axios.get('http://127.0.0.1:8000/api/get/')
             .then(res => {
-
                 setUsers(res.data[0]);
-
-
             })
-
             .catch((err) => console.log(err))
-
     }, [])
-
     // console.log(users[0].first_name)
     return (
 
