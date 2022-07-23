@@ -31,8 +31,9 @@ urlpatterns = [
     # path('getAllPostsImgs/', getAllPostsImgs),
     path('getProfilePosts/', getProfilePosts),
     path('getComments/<pk>', getComments),
-    path('getAccount/<id>',account_view),
     path('friend_requests/', friend_requests),
-    path('friends_list/',friends_list,name='friends_list'),
-
+    path('friends_list/<id>',friends_list,name='friends_list'),
+    path('get_one_user/<id>', get_one_user, name='get_one_user'),
+    path('get_one_user_Posts/<id>', get_one_user_Posts, name='get_one_user_Posts'),
+    path('get_all/', get_all, name='get_all'),
 ]

@@ -1,3 +1,4 @@
+from pyexpat import model
 from rest_framework import routers, serializers, viewsets
 
 from Home.models import *
@@ -7,7 +8,10 @@ class userSerializer(serializers.ModelSerializer):
         model = Useraccount
         fields ='__all__'
 
-
+class friend_listse(serializers.ModelSerializer):
+    class Meta:
+        model = FrienList
+        fields='__all__'
 
 class commentSerializer(serializers.ModelSerializer):
     class Meta:

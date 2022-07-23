@@ -20,6 +20,15 @@ function CreatePost() {
             })
             .catch((err) => console.log(err))
     }, [])
+    const [ShowImageInput, setShowImageInput] = React.useState(false);
+    const handleshowinput = () => {
+        if (ShowImageInput === false){
+            setShowImageInput(true)
+        }
+        else {
+            setShowImageInput(false)
+        }
+    };
     return (
         <>
             <div className="container">
@@ -40,11 +49,17 @@ function CreatePost() {
                         </div>
                         </div>
                         <textarea
-                        placeholder={"What's on your mind, ?"}
+                        placeholder={"What's on your mind, ?"+user.first_name}
                         spellcheck="false"
                         required
                         name="postcontent"
                         ></textarea> 
+                        <div>{ ShowImageInput ? <input type="file" accept="image/*" multiple
+                            className="post_input"
+                            placeholder="Enter your image here"
+                            name ="imagecontent"/>
+                            :null }
+                        </div>
                         <div className="theme-emoji">
                         <img src={theme} alt="theme" />
                         <img src={smile} alt="smile" />
@@ -52,7 +67,7 @@ function CreatePost() {
                         <div className="options">
                         <p>Add to Your Post</p>
                         <ul className="list">
-                            <li><img src={gallery} alt="gallery" /></li>
+                            <li><img src={gallery} alt="gallery" onClick={handleshowinput} /></li>
                             <li><img src={tag} alt="gallery" /></li>
                             <li><img src={emoji} alt="gallery" /></li>
                             <li><img src={mic} alt="gallery" /></li>
@@ -128,7 +143,7 @@ function CreatePost() {
                     </ul>
                     </section>
                 </div>
-                </div>
+            </div>
 
                 {/* <script>
                 const container = document.querySelector(".container"),

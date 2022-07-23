@@ -6,7 +6,8 @@ import CollectionsIcon from '@mui/icons-material/Collections';
 import MoodIcon from '@mui/icons-material/Mood';
 import '../css/Post.css';
 import CSRF from '../Auth/CSRF';
-import axios from "axios";import Button from '@mui/material/Button';
+import axios from "axios";
+import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import CreatePost from './CreatePost';
@@ -36,25 +37,16 @@ function Post() {
             <div className="post ">
                 <div className="post_top">
                     <Avatar src={users.pic} className="Posts_avatar" />
-                    {/* <form action="/home/addpost/"  enctype="multipart/form-data"  method= "post" >
-                    < CSRF /> */}
                         <input 
+                            readonly 
                             variant="contained"
                             className="post_input"
-                            placeholder="what's on your mind?"
+                            placeholder={"what's on your mind?"+users.first_name}
                             value={input}
                             name="postcontent"
                             onChange={(e) => setInput(e.target.value)}
                             onClick={handleClickOpen}
                         />
-                        {/* { showImageInput ? <input type="file" accept="image/*" multiple
-                            className="post_input"
-                            placeholder="Enter your image here"
-                            name ="imagecontent"
-                            onChange={(e) => setImageUrl(e.target.value)}
-                        /> : null } */}
-                        {/* {showbutton ? <button  type="submit" class="add">Post</button> : null } */}
-                    {/* </form> */}
                 </div>
                 <div className="post_bottom">
                     <div className="post_OPTION">
@@ -81,7 +73,7 @@ function Post() {
                         {/* <CreatePost username={users.first_name + ' ' + users.last_name} pic={users.pic}/> */}
                         <CreatePost/>
                     </DialogContent>
-                </Dialog>
+            </Dialog>
         </>
     )
 }

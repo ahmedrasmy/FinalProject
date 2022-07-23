@@ -5,6 +5,7 @@ import Post from './Post';
 import StoryReel from './StoryReel';
 import {useEffect, useState} from "react";
 import axios from "axios";
+
 function Feed() {
     const [posts, setPosts] = useState([])
     useEffect(() => {

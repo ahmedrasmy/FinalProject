@@ -4,9 +4,12 @@ from django.http import JsonResponse
 import json
 
 
+def pro(request,id):
+    return render(request, 'index.html')
+
+
 def home(request):
     if request.session.has_key('user_name'):
-
         return render(request, 'index.html')
     else:
         return redirect('/auth/login/')
@@ -18,9 +21,38 @@ def profile(request):
 
 def updateprofile(request):
     user = Useraccount.objects.get(id=int(request.session['user_id']))
-    user.pic = request.FILES['pic']
-    user.pic_cover = request.FILES['cover']
-    user.save()
+    if request.FILES['pic'] :
+        user.pic = request.FILES['pic']
+        user.save()
+        newPost = Posts.objects.create(
+            user=user, postcontent="update his profile picture"
+        )
+        images = request.FILES.getlist('imagecontent')
+        print(images)
+        if newPost:
+            if len(images) > 0:
+                for imagecontent in images:
+                    photo = Photos.objects.create(
+                        post=newPost,
+                        imagecontent=user.pic
+                    )
+                    photo.save()
+    if request.FILES['cover']:
+        user.pic_cover = request.FILES['cover']
+        user.save()
+        newPost = Posts.objects.create(
+            user=user, postcontent="update his cover picture"
+        )
+        images = request.FILES.getlist('imagecontent')
+        print(images)
+        if newPost:
+            if len(images) > 0:
+                for imagecontent in images:
+                    photo = Photos.objects.create(
+                        post=newPost,
+                        imagecontent=user.pic_cover
+                    )
+                    photo.save()
     return redirect('/home/profile/')
 
 def addpost(request):
@@ -55,21 +87,16 @@ def addcomment(request, pk):
     else:
         return redirect('/auth/login/')
 
-
-def Account(request, id):
-    return render(request, 'index.html')
-
-
 def search(request):
     return render(request, 'index.html')
 
 
-def send_friend_request(request, id):
+def send_friend_request(request):
     pk = int(request.session['user_id'])
     user = Useraccount.objects.get(id=pk)
     payload = {}
     if request.session.has_key('user_name'):
-        user_id = id
+        user_id = request.POST['send_friend_request']
         if user_id:
             receiver = Useraccount.objects.get(pk=user_id)
             try:
@@ -104,7 +131,7 @@ def send_friend_request(request, id):
     else:
         return redirect('/auth/login/')
 
-    return redirect('/home/Account/' + id)
+    return redirect('/home/pro/'+request.POST['send_friend_request'])
     # return HttpResponse(json.dumps(payload), content_type="application/json")
 
 
@@ -114,7 +141,8 @@ def friendRequests(request):
 
 def frined_request_delete(request):
     if request.session.has_key('user_name'):
-        friend_request = FriendRequest.objects.get(id=request.POST['request_id'])
+        friend_request = FriendRequest.objects.get(
+            id=int(request.POST['request_id']))
         friend_request.delete()
         return redirect('friendRequests')
     else:
@@ -145,7 +173,7 @@ def unfriend(request, method='POST'):
         removee = Useraccount.objects.get(id=request.POST['unfriend'])
         friend_list = FrienList.objects.get(user=user)
         friend_list.unfriend(removee)
-        return redirect('/home/Account/' + request.POST['unfriend'])
+        return redirect('/home/pro/' + request.POST['unfriend'])
     else:
         return redirect('/auth/login/')
 
@@ -161,10 +189,17 @@ def cancel_friend_request(request, method='POST'):
             for request in friend_requests:
                 request.cancel()
         friend_requests.delete()
-        return redirect('/home/Account/' + request.POST['cancel_request'])
+        return redirect('/home/pro/' + request.POST['cancel_request'])
     else:
         return redirect('/auth/login/')
 
 
 def Friends_list(request):
     return render(request, 'index.html')
+
+
+def Bio(request,method='POST'):
+    user = Useraccount.objects.get(id=int(request.session['user_id']))
+    user.Bio = request.POST['BioInput']
+    user.save()
+    return redirect('/home/profile/')

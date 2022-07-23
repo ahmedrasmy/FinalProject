@@ -29,7 +29,6 @@ function AllPosts({profilePic , image , username,timestamp,message}) {
                     image.map((img) => {
                         return <>
                                 <img src={img} className="col" alt="" />
-
                         </>
                     })
                 }

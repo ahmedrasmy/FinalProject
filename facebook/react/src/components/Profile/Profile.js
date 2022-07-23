@@ -1,41 +1,45 @@
 import React from 'react';
 import {Link, useLocation} from 'react-router-dom';
-import CreatePost from '../Post/CreatePost';
-import Post from '../Post/Post';
+// import CreatePost from '../Post/CreatePost';
+import AllPosts from '../Home/AllPosts';
 import ProfileHeader from './ProfileHeader';
-import Header from '../Home/Header';
+import Header from '../Header/Header';
 import 'bootstrap/dist/css/bootstrap.css';
 import {useEffect, useState} from "react";
 import axios from "axios";
+import Post from "../Home/Post";
 
-
-function Profile() {
-
+function Profile1() {
+    let location = useLocation();
+    let id = location.pathname.split('/')[3]
     const [users, setUsers] = useState({})
-    const [posts, setPosts] = useState([])
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/get/')
+        axios.get('http://127.0.0.1:8000/api/get_one_user/'+id)
             .then(res => {
                 setUsers(res.data[0]);
-            })
+        })
             .catch((err) => console.log(err))
     }, [])
-
+    const [posts, setPosts] = useState([])
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/getProfilePosts/')
+        axios.get('http://127.0.0.1:8000/api/get_one_user_Posts/'+id)
             .then(res => {
                 setPosts(res.data);
-                console.log(res.data)
             })
             .catch((err) => console.log(err))
     }, [])
-
+    // const [friends, setfriends] = useState([])
+    // useEffect(() => {
+    //     axios.get('http://127.0.0.1:8000/api/friends_list/'+id)
+    //         .then(res => {
+    //             setfriends(res.data);
+    //         })
+    //         .catch((err) => console.log(err))
+    // }, [])
     return (
         <>
-            <Header name={users.first_name + ' ' + users.last_name} image={users.pic}/>
+            <Header />
             <div className="h-screen">
-
-
                 <div className="mt-1 shadow bg-white h-screen" style={{marginTop: '1rem !important'}}>
                     {/* PROFILE HEADER */}
                     <ProfileHeader/>
@@ -76,51 +80,22 @@ function Profile() {
                                                     Friends</Link>
                                             </div>
                                             {/* List */}
-                                            <div className="">
-                                                <p className="text-base text-gray-400">1000 friends</p>
+                                            <div className="" style={{maxHeight:'500px'}}>
+                                                {/* <p className="text-base text-gray-400">{ (users['friends']) === 0 ? <> </>
+                                                    :<>{users['friends']}</>   
+                                                    }</p> */}
                                                 <div className="grid grid-cols-3 gap-1">
-                                                    <div className="bg-white p-0.5">
-                                                        <img src="./images/profile_photo_cat.jpg"
-                                                            className="w-24 h-24 rounded-md mt-2 cursor-pointer"
-                                                        />
-                                                        <Link to={`/profile/friendId`}
-                                                            className="font-semibold text-sm">Friend FullName</Link>
-                                                    </div>
-                                                    <div className="bg-white p-0.5">
-                                                        <img src="./images/profile_photo_cat.jpg"
-                                                            className="w-24 h-24 rounded-md mt-2 cursor-pointer"
-                                                        />
-                                                        <Link to={`/profile/friendId`}
-                                                            className="font-semibold text-sm">Friend FullName</Link>
-                                                    </div>
-                                                    <div className="bg-white p-0.5">
-                                                        <img src="./images/profile_photo_cat.jpg"
-                                                            className="w-24 h-24 rounded-md mt-2 cursor-pointer"
-                                                        />
-                                                        <Link to={`/profile/friendId`}
-                                                            className="font-semibold text-sm">Friend FullName</Link>
-                                                    </div>
-                                                    <div className="bg-white p-0.5">
-                                                        <img src="./images/profile_photo_cat.jpg"
-                                                            className="w-24 h-24 rounded-md mt-2 cursor-pointer"
-                                                        />
-                                                        <Link to={`/profile/friendId`}
-                                                            className="font-semibold text-sm">Friend FullName</Link>
-                                                    </div>
-                                                    <div className="bg-white p-0.5">
-                                                        <img src="./images/profile_photo_cat.jpg"
-                                                            className="w-24 h-24 rounded-md mt-2 cursor-pointer"
-                                                        />
-                                                        <Link to={`/profile/friendId`}
-                                                            className="font-semibold text-sm">Friend FullName</Link>
-                                                    </div>
-                                                    <div className="bg-white p-0.5">
-                                                        <img src="./images/profile_photo_cat.jpg"
-                                                            className="w-24 h-24 rounded-md mt-2 cursor-pointer"
-                                                        />
-                                                        <Link to={`/profile/friendId`}
-                                                            className="font-semibold text-sm">Friend FullName</Link>
-                                                    </div>
+                                                    {/* {
+                                                        friends.map((friend,index)=> {
+                                                            <div className="bg-white p-0.5">
+                                                                <img src={friend.pic.url}
+                                                                    className="w-24 h-24 rounded-md mt-2 cursor-pointer"
+                                                                />
+                                                                <Link to={`/profile/friendId`}
+                                                                    className="font-semibold text-sm">{friend.first_name+" "+friend.last_name}</Link>
+                                                            </div>
+                                                        })
+                                                    } */}
                                                 </div>
                                             </div>
                                         </div>
@@ -132,19 +107,31 @@ function Profile() {
                                 {/* // POST LIST */}
                                 <div className="w-2/5">
                                     {/* CREATE POST */}
-
-                                    <CreatePost name={users.first_name + ' ' + users.last_name} picture={users.pic}/>
+                                    { users['is_self'] ? 
+                                        <Post/>
+                                    : null }
                                     {/* END CREATE POST */}
-
-
                                     {
+                                        posts.map((post) => {
+                                        return <>
+                                            <AllPosts profilePic={post.user.pic}
+                                                message={post.postcontent}
+                                                timestamp={post.postdate}
+                                                username={post.user.first_name + ' ' + post.user.last_name}
+                                                image = {post.post_photos}
+                                                />
+                                            </>
+                                        })
+                                    }   
+
+                                    {/* {
                                         posts.map((post) => (
 
                                             <Post name={users.first_name + ' ' + users.last_name} picture={users.pic} post={post} />
 
 
                                         ))
-                                    }
+                                    } */}
                                     {/* END POST */}
                                 </div>
                                 {/* // END POST LIST */}
@@ -158,4 +145,4 @@ function Profile() {
     )
 }
 
-export default Profile
+export default Profile1

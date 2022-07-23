@@ -1,11 +1,11 @@
 import React from 'react';
 import '../css/FriendRequests.css';
-import CancelIcon from '@mui/icons-material/Cancel';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {useEffect, useState} from "react";
 import axios from "axios";
 import CSRF from '../Auth/CSRF';
 import Button from '@mui/material/Button';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 function FriendRequests() {
     const [users, setUsers] = useState([])
@@ -41,14 +41,12 @@ function FriendRequests() {
                                             <CSRF/>
                                             <input type="hidden" name="request_id" value={account.id}/>
                                             <input type="hidden" name="sender_id" value={account.sender.id}/>
-                                              {/*<input type="submit" className="btn btn-primary" id="sendFriendRequestBtn" value={CancelIcon}/> */}
-                                             <Button type="submit" ><CancelIcon/></Button>
+                                            <Button type="submit" ><CancelIcon/></Button>
                                         </form>
                                         <form action={'/home/frined_request_accept/'} method="post">
                                             <CSRF/>
                                             <input type="hidden" name="request_id" value={account.id}/>
                                             <input type="hidden" name="sender_id" value={account.sender.id}/>
-                                          {/*  <input type="submit" className="btn btn-primary" id="sendFriendRequestBtn" value={CheckCircleIcon}/> */}
                                             <Button type="submit" ><CheckCircleIcon/></Button>
                                         </form>
                                     </div>

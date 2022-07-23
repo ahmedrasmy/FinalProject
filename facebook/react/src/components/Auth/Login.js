@@ -1,10 +1,7 @@
 import React from "react";
-
 import CSRF from "./CSRF";
 
 function Login() {
-
-
     return < >
         <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300i,400,700&display=swap" rel="stylesheet"/>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"/>
@@ -17,7 +14,7 @@ function Login() {
                         life.</h3>
                 </div>
                 <div className="col-md-5">
-                    <form className="login-form" action="/auth/login/" method="post">
+                    <form className="login-form" action="/auth/login/" method="post" >
                         <CSRF/>
                         <div className="mb-3">
                             <input type="text" className="form-control" name="Email" placeholder="Email address or phone number"
@@ -27,6 +24,7 @@ function Login() {
                             <input type="password" className="form-control" name="password" placeholder="Password" required/>
                         </div>
                         <button type="submit" className="btn btn-primary btn-lg btn-block mt-3">Login</button>
+                        
                         <div className="text-center pt-3 pb-3">
                             <a href="#" className="">Forgotten password?</a>
                             <hr/>

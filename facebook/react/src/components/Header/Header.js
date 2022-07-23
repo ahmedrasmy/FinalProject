@@ -8,13 +8,22 @@ import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
 import StoreIcon from '@mui/icons-material/Store';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import {IconButton, Avatar} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import ForumIcon from '@mui/icons-material/Forum';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {Link} from 'react-router-dom';
+import {useEffect, useState} from "react";
+import axios from "axios";
 
-function Header({name, image}) {
+function Header() {
+    const [users, setUsers] = useState({})
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/get/')
+            .then(res => {
+                setUsers(res.data[0]);
+            })
+            .catch((err) => console.log(err))
+    }, [])
     return (
         <div className="header">
             <div className="header-left">
@@ -47,9 +56,9 @@ function Header({name, image}) {
             <div className="header-right">
 
                 <div className="header-info">
-                <Avatar src={image} />
+                <Avatar src={users.pic} />
                 <Link to={`/home/profile/`}>
-                <h4>{name}</h4></Link>
+                <h4>{users.first_name + ' ' + users.last_name}</h4></Link>
                 </div>
                 <IconButton>
                     <ForumIcon/>
