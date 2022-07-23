@@ -5,6 +5,7 @@ import Header from '../Header/Header';
 import Sidebar from './Sidebar';
 import Contacts from './Contacts';
 
+
 function Home() {
     return (
         <div className="home">

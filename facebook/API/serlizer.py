@@ -29,6 +29,7 @@ class postUserSerial(serializers.ModelSerializer):
 
 class postSerializer(serializers.ModelSerializer):
     post_photos = serializers.StringRelatedField(many=True)
+    post_comments = serializers.StringRelatedField(many=True)
     class Meta:
         model = Posts
 
