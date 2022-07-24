@@ -64,13 +64,14 @@ def addpost(request):
         return redirect('/auth/login/')
 
 
-def addcomment(request, pk):
+def addcomment(request):
     if request.session.has_key('user_name'):
         user = Useraccount.objects.filter(id=int(request.session['user_id']))[0]
-        post = Posts.objects.get(id=pk)
+        post = Posts.objects.get(id=request.POST['post_id'])
         newComment = Comments.objects.create(
             user=user, post=post, commentcontent=request.POST['commentcontent']
         )
+        newComment.save()
         return redirect('home')
     else:
         return redirect('/auth/login/')
