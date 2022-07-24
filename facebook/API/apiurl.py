@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
 from .views import *
 from rest_framework.response import Response
 from rest_framework import status
