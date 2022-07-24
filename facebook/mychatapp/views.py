@@ -8,7 +8,6 @@ def detail(request,pk):
     if request.session.has_key('user_name'):
         user = Useraccount.objects.filter(id=int(request.session['user_id']))[0]
         friend = Friends.objects.filter(friend=pk,user=user.id)[0]
-        # profile = Profile.objects.get(id=friend.profile.id)
         chats = ChatMessage.objects.all()
         rec_chats = ChatMessage.objects.filter(msg_sender=friend, msg_receiver=user, seen=False)
         rec_chats.update(seen=True)
