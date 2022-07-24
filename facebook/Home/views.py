@@ -66,8 +66,7 @@ def addpost(request):
 
 def addcomment(request):
     if request.session.has_key('user_name'):
-        user = Useraccount.objects.filter(
-            id=int(request.session['user_id']))[0]
+        user = Useraccount.objects.filter(id=int(request.session['user_id']))[0]
         post = Posts.objects.get(id=request.POST['post_id'])
         newComment = Comments.objects.create(
             user=user, post=post, commentcontent=request.POST['commentcontent']
