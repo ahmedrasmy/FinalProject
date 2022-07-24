@@ -5,8 +5,8 @@ urlpatterns = [
     # path('', home, name= "home"),
     path('addpost/', addpost, name="addpost"),
     path('addcomment/', addcomment, name="addcomment"),
-    path('Account/<str:id>/', Account, name='Account'),
     path('search/', search, name='search'),
+    path('send_friend_request/', send_friend_request, name='send_friend_request'),
     path('friendRequests/', friendRequests, name='friendRequests'),
     path('frined_request_delete/', frined_request_delete, name='frined_request_delete'),
     path('frined_request_accept/', frined_request_accept, name='frined_request_accept'),
@@ -15,7 +15,8 @@ urlpatterns = [
     path('Friends_list/', Friends_list, name='Friends_list'),
     path('friend_request/<str:id>', send_friend_request, name='friend-request'),
     path('Home/', home, name='home'),
-    path('profile/', profile, name='Profile'),
-    path('updateprofile/', updateprofile, name='updateprofile')
-
+    path('updateprofile/', updateprofile, name='updateprofile'),
+    #path('pro/', pro, name='pro'),
+    path('pro/<str:id>', pro, name='pro'),
+    path('Bio/',Bio, name='Bio'),
 ]

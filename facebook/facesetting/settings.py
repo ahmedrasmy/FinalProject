@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'facebook',
         'HOST':'localhost',
         'USER': 'postgres',
-        'PASSWORD': 'Ahmed_Rasmy4444',
+        'PASSWORD': '123',
         'PORT':5432,
     }
 }

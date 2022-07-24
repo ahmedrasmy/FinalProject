@@ -1,6 +1,6 @@
 import React from 'react'
 import { Avatar } from '@mui/material';
-import '../css/AllPosts.css';
+import './AllPosts.css';
 import love3 from '../images/love3.svg';
 import care from '../images/care.png';
 import emotion4 from '../images/emotion4.webp';
@@ -30,21 +30,20 @@ function AllPosts({post_id,profilePic , image , username,timestamp,message ,comm
                     image.map((img) => {
                         return <>
                                 <img src={img} className="col" alt="" />
-
                         </>
                     })
                 }
             </div>
 
-              <div className="nums-comments-iteractions">
+            <div className="nums-comments-iteractions">
                 <div className="interaction">
-                  <i className="fa-solid fa-thumbs-up icon1"></i>
-                  <i className="fa-solid fa-heart icon2"></i>
-                  <i className="fa-regular fa-face-grin-beam icon3"></i>
-                  <a href="#">Ahmed Rasmy,Ali and 50 others</a>
+                    <i className="fa-solid fa-thumbs-up icon1"></i>
+                    <i className="fa-solid fa-heart icon2"></i>
+                    <i className="fa-regular fa-face-grin-beam icon3"></i>
+                    <a href="#">Ahmed Rasmy,Ali and 50 others</a>
                 </div>
                 <a href="#" class="nums-comments">100 Coments 20 Shares</a>
-              </div>
+            </div>
                 <div class="like-comment-share">
                     <div class="icon like">
                     <i class="fa-regular fa-thumbs-up"></i> Like
@@ -87,7 +86,7 @@ function AllPosts({post_id,profilePic , image , username,timestamp,message ,comm
                 <Avatar src={profilePic} className="Posts_avatar" />
             <form action="/home/addcomment/"   method= "post" >
                     < CSRF />
-                 <input type="hidden" name="post_id" value={post_id} /> <br/>
+                <input type="hidden" name="post_id" value={post_id} /> <br/>
                 <input
                     type="text"
                     placeholder="Write A comment"

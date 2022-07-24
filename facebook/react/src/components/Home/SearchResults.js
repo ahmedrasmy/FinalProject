@@ -1,15 +1,16 @@
 import '../css/SearchResults.css';
-import i1 from '../images/i1.jpg';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios';
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import CSRF from "../Auth/CSRF";
+import Button from '@mui/material/Button';
 
 function SearchResults() {
     const [freind,setfreind] = useState(true)
     const [users, setUsers] = useState([])
     useEffect( () => {
-        axios.get('http://127.0.0.1:8000/api/get/')
+        axios.get('http://127.0.0.1:8000/api/get_all/')
         .then(res =>{
             setUsers(res.data);
             console.log(res.data);
@@ -22,16 +23,24 @@ function SearchResults() {
             <div className="container">
                 <div className="card p-2">
                     { users ? 
-                        <div className="d-flex flex-row flex-wrap">
+                        <div className="d-flex flex-row flex-wrap row">
                         {
                             users.map ((account,index) => {
                                 return <>
                                     <div className="card flex-row flex-grow-1 p-2 mx-2 my-2 align-items-center col-4">
-                                        <a className="profile-link" href="#">
-                                            <div className="card-image m-2">
-                                                <img className="img-fluid profile-image" src={account.pic} alt=""/>
+                                        <div className="card-image m-2">
+                                                <a href={"/home/pro/"+account.id}>
+                                                    <img className="img-fluid profile-image" src={account.pic} alt=""/>
+                                                </a>
                                             </div>
-                                        </a>
+                                            {/* <form className="profile-link" method="post" href="/home/pro/">
+                                                <CSRF/>
+                                                <input type="hidden" name="user_id" value={users['id']}/>
+                                                <Button type="submit" autoFocus>
+                                                    Submit
+                                                </Button>
+                                            </form> */}
+                                            <br></br>
                                         {/*% url 'account:view' user_id=account.0.id %*/}
                                         <a className="profile-link" href="#">
                                             <div className="card-center px-2">

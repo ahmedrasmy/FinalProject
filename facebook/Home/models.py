@@ -19,8 +19,7 @@ class Useraccount(models.Model):
     pic_cover = models.ImageField(upload_to="img", blank=True, null=True)
     address = models.CharField(max_length=100, null=True)
     location = models.CharField(max_length=100, null=True)
-
-
+    Bio= models.CharField(max_length=300,null=True)
 
 class Posts(models.Model):
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
