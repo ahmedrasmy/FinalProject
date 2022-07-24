@@ -5,7 +5,7 @@ function Login() {
     return < >
         <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300i,400,700&display=swap" rel="stylesheet"/>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"/>
-        <div className="container">
+        <div className="container-fluid">
             <div className="row align-items-center justify-content-center vh-100">
                 <div className="col-md-7">
                     <div className="row-md-3 "><img src="https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg"
