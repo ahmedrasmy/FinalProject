@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route,BrowserRouter,Switch } from 'react-route
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import Home from './components/Home/Home';
-import 'bootstrap/dist/css/bootstrap.css';
 import SearchResults from './components/Home/SearchResults';
 import Friends_List from './components/Home/Friends_List';
 import FriendRequests from './components/Home/FriendRequests';

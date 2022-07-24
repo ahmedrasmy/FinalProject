@@ -7,7 +7,7 @@ function Register() {
     const [Register, setRegister] = useState({
         firstname: "",
         lastname: "",
-        phone:"",
+        phone: "",
         email: "",
         password: "",
         confirm: ""
@@ -15,7 +15,7 @@ function Register() {
     const [errors, setErrors] = useState({
         firstname: "",
         lastname: "",
-        phone:"",
+        phone: "",
         email: "",
         password: "",
         confirm: ""
@@ -51,7 +51,7 @@ function Register() {
                             "Invalid Email Enter Valid "
                             : null
             })
-        }  else if (e.target.name === "password") {
+        } else if (e.target.name === "password") {
             setRegister({
                 ...Register,
                 password: e.target.value
@@ -100,8 +100,7 @@ function Register() {
                             null
             })
 
-        }
-        else if (e.target.name === "phone") {
+        } else if (e.target.name === "phone") {
             setRegister({
                 ...Register,
                 phone: e.target.value
@@ -126,10 +125,11 @@ function Register() {
             rel="stylesheet"/>
         <link rel="stylesheet"
             href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"/>
-        <div className="row-cols-md-3 text-center"><img height="100px"
-                                                        src="https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg"/>
-        </div>
-
+        <center>
+            <div className="row-cols-md-3 ">
+                <img height="100px" src="https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg"/>
+            </div>
+        </center>
         <section className="vh-100 gradient-custom">
             <div className="container-fluid">
                 <div className="row justify-content-center align-items-center h-100">
@@ -137,12 +137,12 @@ function Register() {
                         <div className="card shadow-2-strong card-registration" style={{borderRadius: '15px'}}>
                             <div className="card-body p-4 ">
                                 <div className="mb-4 pb-2 pb-md-0  text-center "
-                                    style={{
-                                        fontSize: '25px',
-                                        lineHeight: '32px',
-                                        textAlign: 'center',
-                                        fontWeight: 'bold'
-                                    }}>
+                                     style={{
+                                         fontSize: '25px',
+                                         lineHeight: '32px',
+                                         textAlign: 'center',
+                                         fontWeight: 'bold'
+                                     }}>
                                     Create a new account
                                     <h5 className="mb-4 pb-2 pb-md-0  text-center">It's quick and easy.</h5>
                                 </div>
@@ -154,28 +154,28 @@ function Register() {
                                     color: "rgb(90, 90, 90)",
                                     backgroundColor: "rgb(90, 90, 90)"
                                 }}/>
-                                <form  method='post' action='/auth/register/'>
+                                <form method='post' action='/auth/register/'>
                                     <CSRF/>
                                     <div className="row">
                                         <div className="col-md-6">
 
                                             <div className="form-outline">
                                                 <input type="text" name="firstname"
-                                                    className="form-control form-control-lg"
-                                                    placeholder="Firstname"
-                                                        value={Register.firstname}
-                                                    onChange={(e) => changeData(e)}/>
+                                                       className="form-control form-control-lg"
+                                                       placeholder="Firstname"
+                                                       value={Register.firstname}
+                                                       onChange={(e) => changeData(e)}/>
                                             </div>
-                                        <p className="text-danger">  {errors.firstname}  </p>
+                                            <p className="text-danger">  {errors.firstname}  </p>
                                         </div>
                                         <div className="col-md-6 mb-4">
 
                                             <div className="form-outline">
                                                 <input type="text" name="lastname"
-                                                    className="form-control form-control-lg"
-                                                    placeholder="Lastname"
-                                                    value={Register.lastname}
-                                                    onChange={(e) => changeData(e)}/>
+                                                       className="form-control form-control-lg"
+                                                       placeholder="Lastname"
+                                                       value={Register.lastname}
+                                                       onChange={(e) => changeData(e)}/>
                                             </div>
                                             <p className="text-danger">  {errors.lastname}  </p>
 
@@ -187,10 +187,10 @@ function Register() {
 
                                             <div className="form-outline datepicker w-100">
                                                 <input type="text" className="form-control form-control-lg"
-                                                    name="Email"
-                                                    placeholder=" Email address"
-                                                    value={Register.email}
-                                                    onChange={(e) => changeData(e)}/>
+                                                       name="Email"
+                                                       placeholder=" Email address"
+                                                       value={Register.email}
+                                                       onChange={(e) => changeData(e)}/>
                                                 <p className="text-danger">  {errors.email}  </p>
 
                                             </div>
@@ -204,9 +204,9 @@ function Register() {
 
                                             <div className="form-outline datepicker w-100">
                                                 <input type="text" className="form-control form-control-lg"
-                                                    name="phone"
-                                                    placeholder="Mobile Phone"  value={Register.phone}
-                                                    onChange={(e) => changeData(e)}/>
+                                                       name="phone"
+                                                       placeholder="Mobile Phone" value={Register.phone}
+                                                       onChange={(e) => changeData(e)}/>
                                                 <p className="text-danger">  {errors.phone}  </p>
 
 
@@ -220,8 +220,8 @@ function Register() {
 
                                             <div className="form-outline datepicker w-100">
                                                 <input type="password" className="form-control form-control-lg"
-                                                    name="password" placeholder="password" value={Register.password}
-                                                    onChange={(e) => changeData(e)}/>
+                                                       name="password" placeholder="password" value={Register.password}
+                                                       onChange={(e) => changeData(e)}/>
                                                 <p className="text-danger">  {errors.password}  </p>
 
                                             </div>
@@ -234,9 +234,9 @@ function Register() {
 
                                             <div className="form-outline datepicker w-100">
                                                 <input type="password" className="form-control form-control-lg"
-                                                    name="confirm" placeholder="Confirm password"
-                                                    value={Register.confirm}
-                                                    onChange={(e) => changeData(e)}/>
+                                                       name="confirm" placeholder="Confirm password"
+                                                       value={Register.confirm}
+                                                       onChange={(e) => changeData(e)}/>
                                                 <p className="text-danger">  {errors.confirm}  </p>
 
                                             </div>
@@ -253,8 +253,8 @@ function Register() {
                                                 <label className="form-label" htmlFor="emailAddress">Date of
                                                     birth</label>
                                                 <input type="date" id="emailAddress"
-                                                    className="form-control form-control-lg"
-                                                        name="birthdate"/>
+                                                       className="form-control form-control-lg"
+                                                       name="birthdate"/>
 
                                             </div>
 
@@ -270,21 +270,19 @@ function Register() {
 
                                             <div className="form-check form-check-inline">
                                                 <input className="form-check-input" type="radio"
-                                                    name="inlineRadioOptions" id="femaleGender"
-                                                    value="f"/>
+                                                       name="inlineRadioOptions" id="femaleGender"
+                                                       value="f"/>
                                                 <label className="form-check-label"
-                                                    htmlFor="femaleGender">Female</label>
+                                                       htmlFor="femaleGender">Female</label>
                                             </div>
 
                                             <div className="form-check form-check-inline">
                                                 <input className="form-check-input" type="radio"
-                                                    name="inlineRadioOptions" id="maleGender"
-                                                    value="m"/>
+                                                       name="inlineRadioOptions" id="maleGender"
+                                                       value="m"/>
                                                 <label className="form-check-label"
-                                                    htmlFor="maleGender">Male</label>
+                                                       htmlFor="maleGender">Male</label>
                                             </div>
-
-
 
 
                                         </div>
@@ -305,10 +303,10 @@ function Register() {
                                             <p className="_58mv">By clicking Sign Up, you agree to our <a
                                                 href="/legal/terms/update" id="terms-link" target="_blank"
                                                 rel="nofollow">Terms</a>, <a href="/about/privacy/update"
-                                                                            id="privacy-link" target="_blank"
-                                                                            rel="nofollow">Data
+                                                                             id="privacy-link" target="_blank"
+                                                                             rel="nofollow">Data
                                                 Policy</a> and <a href="/policies/cookies/" id="cookie-use-link"
-                                                                target="_blank" rel="nofollow">Cookie
+                                                                  target="_blank" rel="nofollow">Cookie
                                                 Policy</a>. You may receive SMS notifications from us and can
                                                 opt out at any time.</p>
                                         </div>
@@ -319,7 +317,7 @@ function Register() {
                                         </button>
                                     </div>
                                     <div className="text-center p-md-2">
-                                        <a href="#">Already Have Account</a>
+                                        <a href="/auth/login">Already Have Account</a>
                                     </div>
                                 </form>
                             </div>
