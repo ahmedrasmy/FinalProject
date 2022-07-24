@@ -123,15 +123,15 @@ function Register() {
 
     return < >
         <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300i,400,700&display=swap"
-              rel="stylesheet"/>
+            rel="stylesheet"/>
         <link rel="stylesheet"
-              href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"/>
+            href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"/>
         <div className="row-cols-md-3 text-center"><img height="100px"
                                                         src="https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg"/>
         </div>
 
         <section className="vh-100 gradient-custom">
-            <div className="container ">
+            <div className="container-fluid">
                 <div className="row justify-content-center align-items-center h-100">
                     <div className="col-12 col-md-5 col-l-7">
                         <div className="card shadow-2-strong card-registration" style={{borderRadius: '15px'}}>
