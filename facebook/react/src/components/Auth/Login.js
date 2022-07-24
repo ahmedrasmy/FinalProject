@@ -28,8 +28,8 @@ function Login() {
                         <div className="text-center pt-3 pb-3">
                             <a href="#" className="">Forgotten password?</a>
                             <hr/>
-                            <button type="button" className="btn btn-success btn-lg mt-3">Create New Account
-                            </button>
+                            <a href="/auth/register" className="btn btn-success btn-lg mt-3">Create New Account
+                            </a>
                         </div>
                     </form>
                     <p className="pt-3 text-center"><b>Create a Page</b> for a celebrity, band or business.</p>
