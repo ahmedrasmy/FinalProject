@@ -137,12 +137,12 @@ function Register() {
                         <div className="card shadow-2-strong card-registration" style={{borderRadius: '15px'}}>
                             <div className="card-body p-4 ">
                                 <div className="mb-4 pb-2 pb-md-0  text-center "
-                                     style={{
-                                         fontSize: '25px',
-                                         lineHeight: '32px',
-                                         textAlign: 'center',
-                                         fontWeight: 'bold'
-                                     }}>
+                                    style={{
+                                        fontSize: '25px',
+                                        lineHeight: '32px',
+                                        textAlign: 'center',
+                                        fontWeight: 'bold'
+                                    }}>
                                     Create a new account
                                     <h5 className="mb-4 pb-2 pb-md-0  text-center">It's quick and easy.</h5>
                                 </div>
