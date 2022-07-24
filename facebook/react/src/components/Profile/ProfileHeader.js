@@ -67,13 +67,13 @@ function ProfileHeader() {
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputPassword1" className="form-label">Profile
                                             Picture</label>
-                                        <input type="file" name="pic" className="form-control"
+                                        <input type="file" accept="image/*" name="pic" className="form-control"
                                             id="exampleInputPassword1"/>
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputPassword1" className="form-label">Cover
                                             Picture</label>
-                                        <input type="file" name="cover" className="form-control"
+                                        <input type="file" accept="image/*" name="cover" className="form-control"
                                             id="exampleInputPassword1"/>
                                     </div>
                                     <DialogActions>

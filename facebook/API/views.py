@@ -209,14 +209,17 @@ def friend_requests(request):
 @api_view(['GET'])
 def friends_list(request,id):
     if request.session.has_key('user_name'):
+        data = {}
         # user_id = int(request.session['user_id'])
         user = Useraccount.objects.get(id=id)
-        friend_list=user.user.friends.all()
-        for friend in friend_list:
-            print("helooooooooooooooo", friend)
-            # user = Useraccount.objects.get(id=id)
-        #friend_list = FrienList.objects.get(user=user)
-        data = friend_listse(friend_list, many=True)
+        # auth_user_friend_list = FrienList.objects.get(user=user)
+        friend_list = FrienList.objects.filter(user=user)
+        data = postUserSerial(friend_list[0].friends.all(), many=True)
+        # for friend in friend_list:
+        #     for fr in friend.friends.all():
+        #         print(fr.id)
+        #         print (auth_user_friend_list.is_mutual_friend(fr))
+        #         data |= postUserSerial(fr, many=True)
         return Response(data.data)
     else:
         return redirect('/auth/login/')

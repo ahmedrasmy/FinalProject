@@ -15,7 +15,6 @@ urlpatterns = [
     path('Friends_list/', Friends_list, name='Friends_list'),
     path('friend_request/<str:id>', send_friend_request, name='friend-request'),
     path('Home/', home, name='home'),
-    path('profile/', profile, name='Profile'),
     path('updateprofile/', updateprofile, name='updateprofile'),
     #path('pro/', pro, name='pro'),
     path('pro/<str:id>', pro, name='pro'),

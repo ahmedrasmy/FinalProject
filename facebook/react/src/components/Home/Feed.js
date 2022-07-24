@@ -1,7 +1,7 @@
 import React from 'react';
-import AllPosts from './AllPosts';
+import AllPosts from '../Post/AllPosts';
 import '../css/Feed.css';
-import Post from './Post';
+import Post from '../Post/Post';
 import StoryReel from './StoryReel';
 import {useEffect, useState} from "react";
 import axios from "axios";

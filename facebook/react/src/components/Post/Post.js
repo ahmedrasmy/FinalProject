@@ -1,83 +1,77 @@
-import React from 'react'
-import AddComment from './AddComment'
-import Comments from './Comments'
+import { useState,useEffect } from "react";
+import React from 'react';
+import { Avatar } from '@mui/material';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import CollectionsIcon from '@mui/icons-material/Collections';
+import MoodIcon from '@mui/icons-material/Mood';
+import './Post.css';
+import axios from "axios";
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import CreatePost from './CreatePost';
 
-function Post({name, picture, post: {id, postcontent, postdate}}) {
+function Post() {
+    const [users, setUsers] = useState({})
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/get/')
+            .then(res => {
+                setUsers(res.data[0]);
+            })
+            .catch((err) => console.log(err))
+    }, [])
+    const [input , setInput] =useState("")
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
     return (
-        <div>
-            {/* // POST */}
-            <div className="shadow bg-white mt-4 rounded-lg h-max">
-                {/* POST AUTHOR */}
-                <div className="flex items-center justify-between px-4 py-2">
-                    <div className="flex space-x-2 items-center">
-                        <div className="relative">
-                            <img src={picture} alt="Profile picture" className="w-10 h-10 rounded-full"/>
-                            <span
-                                className="bg-green-500 w-3 h-3 rounded-full absolute right-0 top-3/4 border-white border-2"></span>
-                        </div>
-                        <div>
-                            <div className="font-semibold">
-                                {name}
-                            </div>
-                            <span className="text-sm text-gray-500">10h</span>
-                        </div>
-                    </div>
-                    <div
-                        className="w-8 h-8 grid place-items-center text-xl text-gray-500 hover:bg-gray-200 rounded-full cursor-pointer">
-                        <i className='bx bx-dots-horizontal-rounded'></i>
-                    </div>
+        <>
+            <div className="post ">
+                <div className="post_top">
+                    <Avatar src={users.pic} className="Posts_avatar" />
+                        <input 
+                            readonly 
+                            variant="contained"
+                            className="post_input"
+                            placeholder={"what's on your mind?"+users.first_name}
+                            value={input}
+                            name="postcontent"
+                            onChange={(e) => setInput(e.target.value)}
+                            onClick={handleClickOpen}
+                        />
                 </div>
-                {/* END POST AUTHOR */}
-
-                {/* POST CONTENT */}
-                <div className="text-justify px-4 py-2">
-                    <p>
-                        {postcontent}
-                    </p>
-                </div>
-                {/* END POST CONTENT */}
-                {/* POST EVENTS */}
-                <div className="px-4 py-2">
-                    <div className="flex items-center justify-between">
-                        <div className="flex flex-row-reverse items-center">
-                            <span className="ml-2 text-gray-500">
-                                55
-                            </span>
-                        </div>
-                        <div className="text-gray-500">
-                            <span onClick="" style={{cursor: 'pointer'}}>10 comments</span>
-                        </div>
+                <div className="post_bottom">
+                    <div className="post_OPTION">
+                        <VideocamIcon style={{color : "red"}}/>
+                        <h3>Live Video</h3>
+                    </div>
+                    <div variant="contained" className="post_OPTION" onClick={handleClickOpen}>
+                        <CollectionsIcon style={{color : "green"}} />
+                        <h3>Photo/Video</h3>
+                    </div>
+                    <div className="post_OPTION">
+                        <MoodIcon style={{color : "yellow"}}/>
+                        <h3>Felling/Activity</h3>
                     </div>
                 </div>
-                {/* END POST EVENTS */}
-
-                {/* POST ACTION */}
-                <div className="py-2 px-4">
-                    <div className="border border-gray-200 border-l-0 border-r-0 py-1">
-                        <div className="flex space-x-2">
-                            <div
-                                className="w-1/3 flex space-x-2 justify-center items-center hover:bg-gray-100 text-xl py-2 rounded-lg cursor-pointer text-gray-500">
-                                <i className='bx bx-like'></i>
-                                <span className="text-sm font-semibold">Like</span>
-
-                            </div>
-                            <div
-                                className="w-1/3 flex space-x-2 justify-center items-center hover:bg-gray-100 text-xl py-2 rounded-lg cursor-pointer text-gray-500">
-                                <i className='bx bx-comment'></i>
-                                <span className="text-sm font-semibold">Comment</span>
-                            </div>
-                            <div
-                                className="w-1/3 flex space-x-2 justify-center items-center hover:bg-gray-100 text-xl py-2 rounded-lg cursor-pointer text-gray-500">
-                                <i className='bx bx-share bx-flip-horizontal'></i>
-                                <span className="text-sm font-semibold">Share</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* END POST ACTION */}
             </div>
-            {/* // END POST */}
-        </div>
+            <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogContent dividers>
+                        {/* <CreatePost username={users.first_name + ' ' + users.last_name} pic={users.pic}/> */}
+                        <CreatePost/>
+                    </DialogContent>
+            </Dialog>
+        </>
     )
 }
 

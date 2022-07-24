@@ -15,10 +15,6 @@ def home(request):
         return redirect('/auth/login/')
 
 
-def profile(request):
-    return render(request, 'index.html')
-
-
 def updateprofile(request):
     user = Useraccount.objects.get(id=int(request.session['user_id']))
     if request.FILES['pic'] :
@@ -27,33 +23,25 @@ def updateprofile(request):
         newPost = Posts.objects.create(
             user=user, postcontent="update his profile picture"
         )
-        images = request.FILES.getlist('imagecontent')
-        print(images)
-        if newPost:
-            if len(images) > 0:
-                for imagecontent in images:
-                    photo = Photos.objects.create(
-                        post=newPost,
-                        imagecontent=user.pic
-                    )
-                    photo.save()
-    if request.FILES['cover']:
+        images = request.FILES['pic']
+        photo = Photos.objects.create(
+            post=newPost,
+            imagecontent=user.pic
+        )
+        photo.save()
+
+    if request.FILES['cover'] :
         user.pic_cover = request.FILES['cover']
         user.save()
         newPost = Posts.objects.create(
             user=user, postcontent="update his cover picture"
         )
-        images = request.FILES.getlist('imagecontent')
-        print(images)
-        if newPost:
-            if len(images) > 0:
-                for imagecontent in images:
-                    photo = Photos.objects.create(
-                        post=newPost,
-                        imagecontent=user.pic_cover
-                    )
-                    photo.save()
-    return redirect('/home/profile/')
+        photo = Photos.objects.create(
+            post=newPost,
+            imagecontent=user.pic_cover
+        )
+        photo.save()
+    return redirect('/home/pro/'+str(request.session['user_id']))
 
 def addpost(request):
     if request.session.has_key('user_name'):
@@ -76,14 +64,13 @@ def addpost(request):
         return redirect('/auth/login/')
 
 
-def addcomment(request):
+def addcomment(request, pk):
     if request.session.has_key('user_name'):
         user = Useraccount.objects.filter(id=int(request.session['user_id']))[0]
-        post = Posts.objects.get(id=request.POST['post_id'])
+        post = Posts.objects.get(id=pk)
         newComment = Comments.objects.create(
             user=user, post=post, commentcontent=request.POST['commentcontent']
         )
-        newComment.save()
         return redirect('home')
     else:
         return redirect('/auth/login/')
@@ -194,7 +181,6 @@ def cancel_friend_request(request, method='POST'):
     else:
         return redirect('/auth/login/')
 
-
 def Friends_list(request):
     return render(request, 'index.html')
 
@@ -203,4 +189,4 @@ def Bio(request,method='POST'):
     user = Useraccount.objects.get(id=int(request.session['user_id']))
     user.Bio = request.POST['BioInput']
     user.save()
-    return redirect('/home/profile/')
+    return redirect('/home/pro/'+str(request.session['user_id']))

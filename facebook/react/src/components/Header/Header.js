@@ -1,6 +1,5 @@
 import React from 'react';
-import "../css/Header.css";
-import facelogo from '../images/facelogo.png';
+import "./Header.css";
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
 import FlagIcon from '@mui/icons-material/Flag';
@@ -57,7 +56,7 @@ function Header() {
 
                 <div className="header-info">
                 <Avatar src={users.pic} />
-                <Link to={`/home/profile/`}>
+                <Link to={`/home/pro/`+users.id}>
                 <h4>{users.first_name + ' ' + users.last_name}</h4></Link>
                 </div>
                 <IconButton>

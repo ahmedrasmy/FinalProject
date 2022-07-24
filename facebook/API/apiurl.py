@@ -22,7 +22,6 @@ from rest_framework import status
 from .serlizer import *
 
 urlpatterns = [
-
     path('get/',view_users),
     path('register_user/', register_user),
     path('update_user/<pk>', update_user),
