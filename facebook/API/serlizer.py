@@ -1,4 +1,5 @@
 from pyexpat import model
+from attr import field
 from rest_framework import routers, serializers, viewsets
 
 from Home.models import *
@@ -45,3 +46,8 @@ class friendsListSerial(serializers.ModelSerializer):
     class Meta:
         model = FrienList
         fields ='__all__'
+
+class create_userSerial(serializers.ModelSerializer):
+    class Meta:
+        model = Useraccount
+        fields = ()
