@@ -38,10 +38,10 @@
             </a>
         </div>
 
-        <h3>{{friend.profile.name}}</h3>
+        <h3>{{friend.first_name}}</h3>
 
         <div class="pro-pic">
-            <img src="{{friend.profile.pic.url}}" alt="profile-picture">
+            <img src="{{friend.pic.url}}" alt="profile-picture">
         </div>
 
 
@@ -54,13 +54,13 @@
 
 
             {% for chat in chats %}
-            {% if chat.msg_sender == user and chat.msg_receiver == profile %}
+            {% if chat.msg_sender == user and chat.msg_receiver == friend %}
 
             <div class="chat-box-sent">
                 {{chat}}
             </div>
 
-            {% elif chat.msg_sender == profile and chat.msg_receiver == user %}
+            {% elif chat.msg_sender == friend and chat.msg_receiver == user %}
 
             <div class="chat-box-received">
                 {{chat}}
@@ -123,7 +123,7 @@
 
         const data = { msg: chatMessage };
         
-        let url = "{% url 'sent_msg' friend.profile.id %}"
+        let url = "{% url 'sent_msg' friend.id %}"
 
 fetch(url, {
   method: 'POST', // or 'PUT'
@@ -156,7 +156,7 @@ let counter = {{num}}
 
 function receiveMessages(){
 
-    let url = "{% url 'rec_msg' friend.profile.id %}"
+    let url = "{% url 'rec_msg' friend.id %}"
         fetch(url)
         .then(response => response.json())
         .then(data => {
