@@ -74,7 +74,46 @@ def register_user(request):
         return Response(user.data, status=status.HTTP_201_CREATED)
     return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
 
+#####################   Add New Post   ################
+@api_view(['POST'])
+def addpost(request):
+    if request.session.has_key('user_name'):
+        user = Useraccount.objects.filter(id=int(request.session['user_id']))[0]
+        # print(request.data)
+        # post = createPostSerializer(data=request.data)
+        # if post.is_valid():
+        #     post.save()
+        #     return Response(post.data, status=status.HTTP_201_CREATED)
+        # return Response(post.errors, status=status.HTTP_400_BAD_REQUEST)
 
+<<<<<<< HEAD
+=======
+        print(request.data['postcontent'],request.data.getlist('imagecontent'))
+        newPost = Posts.objects.create(
+            user=user, postcontent=request.data['postcontent']
+        )
+        if newPost:
+            photo = Photos.objects.create(
+                post=newPost,
+                imagecontent=request.data['imagecontent']
+            )
+            photo.save()
+        return Response('successsfully')
+    else:
+        return redirect('/auth/login/')
+
+#####################   Add New Comment   ################
+@api_view(['POST'])
+def addcomment(request):
+    if request.session.has_key('user_name'):
+        comment = commentSerializer(data=request.data)
+        if comment.is_valid():
+            comment.save()
+            return Response(comment.data, status=status.HTTP_201_CREATED)
+        return Response(comment.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return redirect('/auth/login/')
+>>>>>>> 2e13bbe725c8311b41cae46c01961bd85da5a788
 @api_view(['PUT'])
 def update_user(request, pk):
     users = Useraccount.objects.get(id=pk)
@@ -119,7 +158,6 @@ def getProfilePosts(request):
             return Response(status=status.HTTP_404_NOT_FOUND)
     else:
         return redirect('/auth/login/')
-
 
 @api_view(['GET'])
 def getComments(request, pk):
@@ -185,6 +223,7 @@ def get_one_user(request, id):
                 except:
                     pass
 
+<<<<<<< HEAD
             # friend_requests = serializers.serialize("json", friend_requests)
             # friend_requests = friend_requests.values()
             context.append({
@@ -201,6 +240,40 @@ def get_one_user(request, id):
                 'pending_friend_request_id': pending_friend_request_id,
                 'Bio': account.Bio,
             })
+=======
+            #friend_requests = serializers.serialize("json", friend_requests)
+            #friend_requests = friend_requests.values()
+            if account.pic and account.pic_cover :
+                context.append({
+                    'id': account.id,
+                    'friends': friends.count(),
+                    'email': account.email,
+                    'pic': str(account.pic.url),
+                    'pic_cover': str(account.pic_cover.url),
+                    'is_self': is_self,
+                    'is_friend': is_friend,
+                    'user_name': account.first_name+" "+account.last_name,
+                    'request_sent': request_sent,
+                    'friend_requests': friend_requests,
+                    'pending_friend_request_id': pending_friend_request_id,
+                    'Bio':account.Bio,
+                })
+            else:
+                context.append({
+                    'id': account.id,
+                    'friends': friends.count(),
+                    'email': account.email,
+                    'pic': "",
+                    'pic_cover': "",
+                    'is_self': is_self,
+                    'is_friend': is_friend,
+                    'user_name': account.first_name + " " + account.last_name,
+                    'request_sent': request_sent,
+                    'friend_requests': friend_requests,
+                    'pending_friend_request_id': pending_friend_request_id,
+                    'Bio': account.Bio,
+                })
+>>>>>>> 2e13bbe725c8311b41cae46c01961bd85da5a788
             print(friend_requests)
             # context.append({'friend_requests': list(friend_requests)})
             # context['BASE_URL'] = settings.BASE_URL
@@ -253,6 +326,7 @@ def friends_list(request, id):
     else:
         return redirect('/auth/login/')
 
+<<<<<<< HEAD
 
 @api_view(['GET'])
 def get_all_users(request,name):
@@ -326,4 +400,24 @@ def get_all_users(request,name):
                 })
         return JsonResponse(data=context, safe=False)
     else:
+=======
+@api_view(['GET'])
+
+def friends_list_contacts(request):
+
+    if request.session.has_key('user_name'):
+
+        user_id = int(request.session['user_id'])
+
+        user = Useraccount.objects.get(id=user_id)
+
+        friend_list = FrienList.objects.filter(user=user)
+
+        data = postUserSerial(friend_list[0].friends.all(), many=True)
+
+        return Response(data.data)
+
+    else:
+
+>>>>>>> 2e13bbe725c8311b41cae46c01961bd85da5a788
         return redirect('/auth/login/')

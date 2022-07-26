@@ -2,7 +2,6 @@
 .contacts {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     overflow-y: hidden;
     position: sticky;
     bottom: 20px;
@@ -23,7 +22,6 @@
     color: #050505;
     font-weight: bold;
     display: flex;
-    align-items: center;
     padding: 5px;
     position: relative;
 }

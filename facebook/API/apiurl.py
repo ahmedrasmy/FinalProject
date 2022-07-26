@@ -34,8 +34,15 @@ urlpatterns = [
     path('get_one_user/<id>', get_one_user, name='get_one_user'),
     path('get_one_user_Posts/<id>', get_one_user_Posts, name='get_one_user_Posts'),
     path('get_all/', get_all, name='get_all'),
+<<<<<<< HEAD
     path('get_all_users/<name>', get_all_users, name='get_all'),
     path('get_like/', get_Like, name='get_like'),
     path('get_likee/', get_Likee, name='get_like'),
     path('delete_like/<pk>', delete_like, name='del_like'),
+=======
+    path('addpost/', addpost, name='addpost'),
+    path('addcomment/', addcomment, name='addcomment'),
+    path('friends_list_contacts/', friends_list_contacts, name='friends_list_contacts'),
+
+>>>>>>> 2e13bbe725c8311b41cae46c01961bd85da5a788
 ]
