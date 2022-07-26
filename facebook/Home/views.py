@@ -191,3 +191,6 @@ def Bio(request,method='POST'):
     user.Bio = request.POST['BioInput']
     user.save()
     return redirect('/home/pro/'+str(request.session['user_id']))
+
+
+

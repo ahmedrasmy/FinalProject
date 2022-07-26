@@ -51,3 +51,9 @@ class create_userSerial(serializers.ModelSerializer):
     class Meta:
         model = Useraccount
         fields = ()
+
+class LIKE(serializers.ModelSerializer):
+
+    class Meta:
+        model = Postlike
+        fields = '__all__'
