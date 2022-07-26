@@ -1,41 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <list default="true" id="df9d4179-8d34-4952-9b07-4f766a38a94a" name="Changes" comment="Auth Changes">
-=======
-    <list default="true" id="92c29cac-eb8b-4020-9621-6108588696e6" name="Changes" comment="">
->>>>>>> 2e13bbe725c8311b41cae46c01961bd85da5a788
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/API/apiurl.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/apiurl.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/API/serlizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/serlizer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/API/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/views.py" afterDir="false" />
-<<<<<<< HEAD
-      <change beforePath="$PROJECT_DIR$/facebook/Home/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Header/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Header/Header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Feed.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Feed.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/SearchResults.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/SearchResults.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Sidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Sidebar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Post/AllPosts.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Post/AllPosts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Post/Post.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Post/Post.js" afterDir="false" />
-=======
+
     <list default="true" id="92c29cac-eb8b-4020-9621-6108588696e6" name="Changes" comment="urls">
       <change beforePath="$PROJECT_DIR$/facebook/mychatapp/templates/mychatapp/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/mychatapp/templates/mychatapp/detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/mychatapp/templates/mychatapp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/mychatapp/templates/mychatapp/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/mychatapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/mychatapp/views.py" afterDir="false" />
->>>>>>> 16da842e2ebb52e16ecb02a0a193d628c95729c8
-=======
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Auth/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Auth/Register.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Contacts.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Contacts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Feed.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Feed.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Post/AllPosts.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Post/AllPosts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Post/CreatePost.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Post/CreatePost.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Post/Post.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Post/Post.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/css/Contacts.css" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/css/Contacts.css" afterDir="false" />
->>>>>>> 2e13bbe725c8311b41cae46c01961bd85da5a788
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,24 +23,8 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="ProjectId" id="2CQyBfksTzzkiq0nvxleCnnXlN7" />
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
-  }
-}</component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     <task active="true" id="Default" summary="Default task">
       <changelist id="df9d4179-8d34-4952-9b07-4f766a38a94a" name="Changes" comment="urls" />
       <created>1658594805768</created>
@@ -102,15 +57,6 @@
       <updated>1658678171100</updated>
     </task>
     <option name="localTasksCounter" value="4" />
-=======
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="92c29cac-eb8b-4020-9621-6108588696e6" name="Changes" comment="" />
-      <created>1658748990647</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1658748990647</updated>
-    </task>
->>>>>>> 2e13bbe725c8311b41cae46c01961bd85da5a788
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -133,8 +79,7 @@
     <MESSAGE value="Auth Changes" />
     <option name="LAST_COMMIT_MESSAGE" value="Auth Changes" />
   </component>
-=======
+
     <servers />
   </component>
->>>>>>> 16da842e2ebb52e16ecb02a0a193d628c95729c8
 </project>

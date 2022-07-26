@@ -1,5 +1,5 @@
-import {useEffect, useState, React} from "react";
-import {Avatar} from '@mui/material';
+import { useEffect, useState, React } from "react";
+import { Avatar } from '@mui/material';
 import './AllPosts.css';
 import love3 from '../images/love3.svg';
 import care from '../images/care.png';
@@ -7,17 +7,12 @@ import emotion4 from '../images/emotion4.webp';
 import emotion5 from '../images/emotion5.webp';
 import emotion6 from '../images/emotion6.webp';
 import emotion7 from '../images/emotion7.webp';
-<<<<<<< HEAD
+
 import CSRF from '../Auth/CSRF'
 import axios from "axios";
 import jQuery from "jquery";
 
-=======
-import CSRF from '../Auth/CSRF';
-import axios from "axios";
-import jQuery from "jquery";
-import { useState,useEffect } from "react";
->>>>>>> 2e13bbe725c8311b41cae46c01961bd85da5a788
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -32,10 +27,10 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-<<<<<<< HEAD
 
 
-function AllPosts({post_id, profilePic, image, username, timestamp, message, comments}) {
+
+function AllPosts({ post_id, profilePic, image, username, timestamp, message, comments }) {
     var like;
     var likeid;
 
@@ -74,11 +69,10 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
             }
 
         }
-        if (like==='available') {
+        if (like === 'available') {
 
             axios.delete("http://127.0.0.1:8000/api/delete_like/" +
-                likeid,
-                {
+                likeid, {
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': getCookie('csrftoken')
@@ -95,8 +89,7 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
 
 
             axios.post("http://127.0.0.1:8000/api/get_like/",
-                sentmessage,
-                {
+                sentmessage, {
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': getCookie('csrftoken')
@@ -122,25 +115,25 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
 
     }, [])
 
-  useEffect(() => {
-         for (let i = 0; i <= posts.length - 1; i++) {
+    useEffect(() => {
+        for (let i = 0; i <= posts.length - 1; i++) {
             let obj = posts[i]
             if (obj.post === post_id && obj.user === users.id) {
 
-                  setColor('blue')
+                setColor('blue')
             }
         }
 
-  },[post_id,users.id,posts]);
+    }, [post_id, users.id, posts]);
 
-       const [colors, setColor] = useState('')
+    const [colors, setColor] = useState('')
 
 
     const handleClose = () => {
-        if(colors){
-             setColor('')
-        }else {
-             setColor('blue')
+        if (colors) {
+            setColor('')
+        } else {
+            setColor('blue')
         }
 
 
@@ -149,160 +142,166 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
 
 
 
-=======
 
-function AllPosts({post_id,user_id,profilePic , image , username,timestamp,message ,comments}) {
 
-    const [users, setUsers] = useState({})
-    useEffect(() => {
 
-        axios.get('http://127.0.0.1:8000/api/get/')
-
-            .then(res => {
-
-                setUsers(res.data[0]);
-
-            })
-
-            .catch((err) => console.log(err))
-
-    }, [])
 
     const [comment, setComment] = useState(null)
 
-     const sendCommentData = {
-        post:parseInt(post_id),
-        user:parseInt(users.id),
-        commentcontent:comment
-     }
+    const sendCommentData = {
+        post: parseInt(post_id),
+        user: parseInt(users.id),
+        commentcontent: comment
+    }
 
-     const addNewComment =  ()=>{
+    const addNewComment = () => {
 
-     axios.post("http://127.0.0.1:8000/api/addcomment/",
-                sendCommentData,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
+        axios.post("http://127.0.0.1:8000/api/addcomment/",
+            sendCommentData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
 
-                    }
-                },
-            ).then(res => {
-                console.log(res)
+                }
+            },
+        ).then(res => {
+            console.log(res)
 
-            }).catch((err) => console.log(err))
-}
+        }).catch((err) => console.log(err))
+    }
 
     const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
+        if (e.key === 'Enter') {
 
-        addNewComment()
-        e.target.value=""
+            addNewComment()
+            e.target.value = ""
+        }
     }
-}
->>>>>>> 2e13bbe725c8311b41cae46c01961bd85da5a788
-    return (
-        <>
-            <div className="all_posts">
-                <div className="Top_section">
-                    <Avatar src={profilePic} className="Posts_avatar"/>
-                    <div className="Top_section_info">
-                        <h3>{username}</h3>
-                        <p>{timestamp}
 
-                        </p>
-                    </div>
-                </div>
-                <div className="bottom_section">
-                    <p>{message}</p>
-                </div>
-                <div className="bottom_section_image row">
+    return ( <
+        >
+        <
+        div className = "all_posts" >
+        <
+        div className = "Top_section" >
+        <
+        Avatar src = { profilePic }
+        className = "Posts_avatar" / >
+        <
+        div className = "Top_section_info" >
+        <
+        h3 > { username } < /h3> <
+        p > { timestamp }
 
-                    {
-                        image.map((img) => {
-                            return <>
-                                <img src={img} className="col" alt=""/>
-                            </>
-                        })
-                    }
-                </div>
+        <
+        /p> <
+        /div> <
+        /div> <
+        div className = "bottom_section" >
+        <
+        p > { message } < /p> <
+        /div> <
+        div className = "bottom_section_image row" >
 
-                <div className="nums-comments-iteractions">
-                    <div className="interaction">
-                        <i className="fa-solid fa-thumbs-up icon1"></i>
-                        <i className="fa-solid fa-heart icon2"></i>
-                        <i className="fa-regular fa-face-grin-beam icon3"></i>
-                        <a href="#"></a>
-                    </div>
-                    <a href="#" class="nums-comments">100 Coments 20 Shares</a>
-                </div>
+        {
+            image.map((img) => {
+                return < >
+                    <
+                    img src = { img }
+                className = "col"
+                alt = "" / >
+                    <
+                    />
+            })
+        } <
+        /div>
 
-
-                <div className="like-comment-share">
-                    <div className="icon like">
-                        <button onClick={addlike}><i onClick={handleClose} className="fa-regular fa-thumbs-up"
-                                                     style={{color: colors}}></i> Like
-                        </button>
-
-                    </div>
-                    <div className="icon icon-comment">
-                        <i className="fa-regular fa-comment"></i> Comment
-                    </div>
-                    <div className="icon"><i className="fa-solid fa-share"></i> Share</div>
-                </div>
-
-
-                <div class="comments">
-                    {
-                        comments.map((comment) => {
-                            return <>
-                                <div className="comment">
-                                    <img src={comment.split(',')[1]} alt=""/>
-                                    <div className="comment-body">
-                                        <p className="name">{comment.split(',')[0]}</p>
-                                        <p> {comment.split(',')[2]} </p>
-                                    </div>
-                                </div>
-
-                            </>
-                        })
-                    }
+        <
+        div className = "nums-comments-iteractions" >
+        <
+        div className = "interaction" >
+        <
+        i className = "fa-solid fa-thumbs-up icon1" > < /i> <
+        i className = "fa-solid fa-heart icon2" > < /i> <
+        i className = "fa-regular fa-face-grin-beam icon3" > < /i> <
+        a href = "#" > < /a> <
+        /div> <
+        a href = "#"
+        class = "nums-comments" > 100 Coments 20 Shares < /a> <
+        /div>
 
 
-                </div>
-                {/*
-             Start Create Comment  */}
-                <div className="create-comment">
-<<<<<<< HEAD
-                    <Avatar src={profilePic} className="Posts_avatar"/>
-                    <form action="/home/addcomment/" method="post">
-                        <CSRF/>
-                        <input type="hidden" name="post_id" value={post_id}/> <br/>
-                        <input
-                            type="text"
-                            placeholder="Write A comment"
-                            className="commentInput"
-                            name="commentcontent"
-                        />
-                        <input type="submit" value="Add Comment" class="add"/>
-                    </form>
-=======
-                <Avatar src={users.pic} className="Posts_avatar" />
+        <
+        div className = "like-comment-share" >
+        <
+        div className = "icon like" >
+        <
+        button onClick = { addlike } > < i onClick = { handleClose }
+        className = "fa-regular fa-thumbs-up"
+        style = {
+            { color: colors } } > < /i> Like <
+        /button>
 
-                <input
-                    type="text"
-                    placeholder="Write A comment"
-                    className="commentInput"
-                    name="commentcontent"
-                    onChange={(e) => setComment(e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(e)}
+        <
+        /div> <
+        div className = "icon icon-comment" >
+        <
+        i className = "fa-regular fa-comment" > < /i> Comment <
+        /div> <
+        div className = "icon" > < i className = "fa-solid fa-share" > < /i> Share</div >
+        <
+        /div>
+
+
+        <
+        div class = "comments" > {
+            comments.map((comment) => {
+                return < >
+                    <
+                    div className = "comment" >
+                    <
+                    img src = { comment.split(',')[1] }
+                alt = "" / >
+                    <
+                    div className = "comment-body" >
+                    <
+                    p className = "name" > { comment.split(',')[0] } < /p> <
+                    p > { comment.split(',')[2] } < /p> <
+                    /div> <
+                    /div>
+
+                <
                 />
+            })
+        }
 
->>>>>>> 2e13bbe725c8311b41cae46c01961bd85da5a788
-                </div>
-                {/* End Create Comment  */}
-            </div>
-        </>
+
+        <
+        /div> {
+            /*
+                         Start Create Comment  */
+        } <
+        div className = "create-comment" >
+
+        <
+        Avatar src = { users.pic }
+        className = "Posts_avatar" / >
+
+        <
+        input type = "text"
+        placeholder = "Write A comment"
+        className = "commentInput"
+        name = "commentcontent"
+        onChange = {
+            (e) => setComment(e.target.value) }
+        onKeyDown = {
+            (e) => handleKeyDown(e) }
+        />
+
+        <
+        /div> { /* End Create Comment  */ } <
+        /div> <
+        />
     )
 
 }

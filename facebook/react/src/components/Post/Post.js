@@ -125,10 +125,7 @@ const [ShowImageInput, setShowImageInput] = React.useState(false);
                     aria-describedby="alert-dialog-description"
                 >
                     <DialogContent dividers>
-<<<<<<< HEAD
 
-                        <CreatePost/>
-=======
                         <div className="container">
                 <div className="wrapper">
                     <section className="post">
@@ -243,7 +240,7 @@ const [ShowImageInput, setShowImageInput] = React.useState(false);
                     </section>
                 </div>
             </div>
->>>>>>> 2e13bbe725c8311b41cae46c01961bd85da5a788
+
                     </DialogContent>
             </Dialog>
         </>
