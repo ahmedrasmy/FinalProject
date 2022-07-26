@@ -27,3 +27,4 @@ admin.site.register(FriendRequest)
 admin.site.register(Photos)
 
 admin.site.register(Posts)
+admin.site.register(Story)

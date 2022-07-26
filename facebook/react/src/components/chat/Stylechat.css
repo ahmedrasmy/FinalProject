@@ -1,20 +1,6 @@
-*{
-    padding: 0px;
-    margin: 0px;
-    box-sizing: border-box;
-    font-family: Poppins;
-}
 
-body{
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: slateblue;
-    font-family: Poppins;
-}
-.logo{
+
+.logochat{
     width: 100px;
     /* border: 2px solid black; */
     height: 100px;
@@ -26,8 +12,7 @@ body{
     color: slateblue;
     line-height: 20px;
 }
-
-.main{
+.mainChat{
     width: 100%;
     height: auto;
     /* border: 2px solid black; */
@@ -37,7 +22,7 @@ body{
 
 }
 
-img{
+chat-container > img{
     object-fit: cover;
     height: 100%;
     width: 100%;
@@ -71,7 +56,7 @@ img{
     border-radius: 50%;
 }
 
-.header{
+chat-container > .header{
     width: 100%;
     height: auto;
     /* border: 2px solid red; */
@@ -149,7 +134,7 @@ img{
     
 }
 
-.footer{
+.chatfooter{
     width: 100%;
     height: 40px;
     /* border: 1px solid black; */
@@ -158,7 +143,7 @@ img{
     justify-content: space-around;
 }
 
-svg{
+chatfooter > svg{
     cursor: pointer;
 }
 
@@ -256,5 +241,4 @@ button{
     background-color: rebeccapurple;
     color: white;
     float: left;
-   
 }

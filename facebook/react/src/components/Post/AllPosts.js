@@ -77,8 +77,6 @@ function AllPosts({post_id,profilePic , image , username,timestamp,message ,comm
                         </>
                     })
                 }
-
-
                 </div>
                 {/*
              Start Create Comment  */}

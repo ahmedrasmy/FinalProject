@@ -7,7 +7,8 @@ import SearchResults from './components/Home/SearchResults';
 import Friends_List from './components/Home/Friends_List';
 import FriendRequests from './components/Home/FriendRequests';
 import Profile from './components/Profile/Profile';
-
+import HomeChat from './components/chat/Index';
+import Detail from './components/chat/Detail';
 function App() {
   return (
     <Router>
@@ -22,6 +23,8 @@ function App() {
                 <Route exact path={"/home/friendRequests/"} component={FriendRequests}/>
                 <Route exact path={"/home/Friends_list/"} component={Friends_List}/>
                 <Route exact path={"/home/pro/:id/"} component={Profile}/>
+                <Route exact path={"/chats/"} component={HomeChat}/>
+                <Route exact path={"/chats/detail/:id/"} component={Detail}/>
               </Switch>
             </BrowserRouter>
       </div>

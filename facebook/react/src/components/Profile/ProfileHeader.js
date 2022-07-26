@@ -9,7 +9,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {useState,useEffect} from "react";
 import CSRF from "../Auth/CSRF";
 import axios from "axios";
-import GroupIcon from '@mui/icons-material/Group';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ChatIcon from '@mui/icons-material/Chat';
@@ -158,20 +157,22 @@ function ProfileHeader() {
                             <li className="px-3 font-semibold text-gray-600"><a href="#">More</a></li>
                         </ul>
                         <ul className="flex mb:pl-14">
-                            <li className="px-2 font-semibold">
-                                <button className="bg-blue-600 px-5 py-1 rounded-lg text-white font-semibold">
-                                    <i className="bx bx-plus-circle text-xl mr-2"></i>
-                                    Add to Story
-                                </button>
-                            </li>
                             {
                                 users['is_self'] ? 
+                                <> 
+                                    <li className="px-2 font-semibold">
+                                        <button className="bg-blue-600 px-5 py-1 rounded-lg text-white font-semibold">
+                                            <i className="bx bx-plus-circle text-xl mr-2"></i>
+                                            Add to Story
+                                        </button>
+                                    </li>
                                     <li className="px-2 font-semibold">
                                         <Button variant="contained" className="  bg-blue-600 px-5 py-1 rounded-lg text-white font-semibold "onClick={handleClickOpen}>
                                             <i className="bx bx-plus-circle text-xl mr-2"></i>
                                             Edit profile
                                         </Button>
                                     </li>
+                                </>  
                                 :
                                     <>
                                         {users['request_sent'] === 0 ?
