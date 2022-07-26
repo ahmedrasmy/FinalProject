@@ -1,98 +1,120 @@
 import '../css/SearchResults.css';
-import CancelIcon from '@mui/icons-material/Cancel';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios';
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import CSRF from "../Auth/CSRF";
-import Button from '@mui/material/Button';
+import Header from "../Header/Header";
+import Sidebar from "./Sidebar";
+import {Avatar, IconButton} from "@mui/material";
+import ForumIcon from "@mui/icons-material/Forum";
+import {useLocation} from "react-router-dom";
+
+
 
 function SearchResults() {
-    const [freind,setfreind] = useState(true)
+
+    let location = useLocation();
+    let id = location.pathname.split('/')[3]
     const [users, setUsers] = useState([])
-    useEffect( () => {
-        axios.get('http://127.0.0.1:8000/api/get_all/')
-        .then(res =>{
-            setUsers(res.data);
-            console.log(res.data);
-        })
-        .catch((err)=> console.log(err))
-    }, [])
-    const createOrReturnPrivateChat=(e)=>{}
+
+    useEffect(() => {
+
+        axios.get('http://127.0.0.1:8000/api/get_all_users/' + id)
+            .then(res => {
+                setUsers(res.data);
+                console.log(res.data)
+            })
+            .catch((err) => console.log(err))
+    }, [id])
+
+
     return (
         <>
-            <div className="container">
-                <div className="card p-2">
-                    { users ? 
-                        <div className="d-flex flex-row flex-wrap row">
+            <Header/>
+            <div className="home_body">
+                <Sidebar/>
+
+                {users ?
+                    <div className="all_posts"
+                         style={{width: "1000px", height: "auto", marginRight: "250px"}}>
+                        <header style={{fontWeight: "bold", marginLeft: "20px", marginTop: "20px"}}> People</header>
+
                         {
-                            users.map ((account,index) => {
+
+                            users.map((account, index) => {
                                 return <>
-                                    <div className="card flex-row flex-grow-1 p-2 mx-2 my-2 align-items-center col-4">
-                                        <div className="card-image m-2">
-                                                <a href={"/home/pro/"+account.id}>
-                                                    <img className="img-fluid profile-image" src={account.pic} alt=""/>
-                                                </a>
-                                            </div>
-                                            {/* <form className="profile-link" method="post" href="/home/pro/">
-                                                <CSRF/>
-                                                <input type="hidden" name="user_id" value={users['id']}/>
-                                                <Button type="submit" autoFocus>
-                                                    Submit
-                                                </Button>
-                                            </form> */}
-                                            <br></br>
-                                        {/*% url 'account:view' user_id=account.0.id %*/}
-                                        <a className="profile-link" href="#">
-                                            <div className="card-center px-2">
-                                                <h4 className="card-title">{account.first_name}</h4>
-                                                {/* if account.1  Here we check if this one is afrirnd 
-                                                onclick="createOrReturnPrivateChat('{{account.0.id}}')*/}
+
+                                    <div className="Top_section">
+                                        <Avatar src={account['pic']} className="Posts_avatar"/>
+                                        {account['user_name']}
+                                        <br/>
+
+                                        {account['email']}
+                                        <div style={{marginLeft: "500px"}}></div>
+                                        {
+                                            account['is_self'] ? <div>Ana</div> : <div>
                                                 {
-                                                    freind ? <p className="card-text"><a href="#" onClick={(e) => createOrReturnPrivateChat(account.id)}> Send a Message</a></p>
-                                                    : null
-                                                }    
+                                                    account['is_friend'] === true ? <button><IconButton>
+                                                            <ForumIcon/>
+                                                        </IconButton>
+                                                        </button> :
+                                                        <>
+
+                                                            {account['request_sent'] === 1 ?
+                                                                <div className="d-flex flex-column align-items-center">
+                                                                    <form action={'/home/cancel_friend_request/'}
+                                                                          method="post">
+                                                                        <CSRF/>
+                                                                        <input type="hidden" name="cancel_request"
+                                                                               value={account['id']}/>
+                                                                        <button type="submit"
+                                                                                className="btn btn-danger">
+                                                                            Cancel Friend Request
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                                : null}
+
+                                                            {account['request_sent'] === -1 ?
+                                                                <div className="d-flex flex-column align-items-center">
+                                                                    <form action={'/home/send_friend_request/'}
+                                                                          method="post">
+                                                                        <CSRF/>
+                                                                        <input type="hidden" name="send_friend_request"
+                                                                               value={account['id']}/>
+                                                                        <button type="submit"
+                                                                                className="btn btn-primary">
+                                                                            Send Friend Request
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                                : null}
+                                                        </>
+
+
+                                                }
+
                                             </div>
-                                        </a>
-                                        <div className="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
-                                            { freind ? 
-                                                <div className="d-flex flex-row friends-text-container p-3">
-                                                    <p className="friends-text m-auto">
-                                                        Friends 
-                                                    </p>
-                                                    <span className="material-icons checkmark-icon m-auto pl-2">
-                                                    <CheckCircleIcon/>
-                                                    </span>
-                                                    {/*this after the next :  && request.user here we check it's it's Not me who log in  {% if account.0 !=  request.user %} */}
-                                                </div>
-                                            : !freind  ?  
-                                                    <div className="d-flex flex-row friends-text-container p-3">
-                                                        <p className="friends-text m-auto">
-                                                            Not Friends 
-                                                        </p>
-                                                        <span className="material-icons cancel-icon m-auto pl-2"><CancelIcon /></span>
-                                                    </div>
-                                            :
-                                                <div className="d-flex flex-row friends-text-container p-3">
-                                                    <p className="friends-text m-auto">
-                                                        This is you 
-                                                    </p>
-                                                    <span className="material-icons m-auto pl-2">
-                                                    person_pin
-                                                    </span>
-                                                </div>
-                                            }
-                                        </div>
-                                        </div>
-                                    </>
-                                })
+
+                                        }
+
+                                    </div>
+
+                                    <hr style={{color: "gray"}}/>
+
+                                </>
+                            })
                         }
-                        </div>
-                            :  <div className="d-flex flex-row flex-grow-1 justify-content-center align-items-center p-4">
-                                <p>No results</p>
-                            </div>
-                    }
                     </div>
-                </div>
+
+                    : <div className="d-flex flex-row flex-grow-1 justify-content-center align-items-center p-4">
+                        <p>No results</p>
+                    </div>
+                }
+
+
+            </div>
+
+
         </>
     )
 }

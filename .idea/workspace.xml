@@ -1,20 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+
     <list default="true" id="92c29cac-eb8b-4020-9621-6108588696e6" name="Changes" comment="urls">
       <change beforePath="$PROJECT_DIR$/facebook/mychatapp/templates/mychatapp/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/mychatapp/templates/mychatapp/detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/mychatapp/templates/mychatapp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/mychatapp/templates/mychatapp/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/mychatapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/mychatapp/views.py" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="TaskManager">
+
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="df9d4179-8d34-4952-9b07-4f766a38a94a" name="Changes" comment="urls" />
+      <created>1658594805768</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1658594805768</updated>
+      <workItem from="1658674771390" duration="8460000" />
+      <workItem from="1658763982124" duration="4669000" />
+      <workItem from="1658783535109" duration="17522000" />
+    </task>
+    <task id="LOCAL-00001" summary="ؤاشىلثي">
+      <created>1658676884287</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1658676884287</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Auth Changes">
+      <created>1658677874735</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1658677874735</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Auth Changes">
+      <created>1658678171100</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1658678171100</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="urls" />
+    <MESSAGE value="ؤاشىلثي" />
+    <MESSAGE value="Auth Changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Auth Changes" />
+  </component>
+
     <servers />
   </component>
 </project>

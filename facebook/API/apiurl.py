@@ -21,12 +21,11 @@ from rest_framework import status
 from .serlizer import *
 
 urlpatterns = [
-    path('get/',view_users),
+    path('get/', view_users),
     path('register_user/', register_user),
     path('update_user/<pk>', update_user),
     path('delete_user/<pk>', delete_user),
     path('getAllPosts/', getAllPosts),
-    # path('getAllPostsImgs/', getAllPostsImgs),
     path('getProfilePosts/', getProfilePosts),
     path('getComments/<pk>', getComments),
     path('friend_requests/', friend_requests),
@@ -44,4 +43,12 @@ urlpatterns = [
     path('story/', story, name="story"),
     path('get_all_users/', get_all_users, name="get_all_users"),
     path('addStory/', addStory, name="addStory"),
+    path('get_like/', get_Like, name='get_like'),
+    path('get_likee/', get_Likee, name='get_like'),
+    path('delete_like/<pk>', delete_like, name='del_like'),
+    path('addpost/', addpost, name='addpost'),
+    path('addcomment/', addcomment, name='addcomment'),
+    path('friends_list_contacts/', friends_list_contacts, name='friends_list_contacts'),
+
+
 ]

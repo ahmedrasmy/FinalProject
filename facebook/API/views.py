@@ -6,12 +6,10 @@ from rest_framework.decorators import api_view
 from Home.models import *
 from .serlizer import *
 from django.http import JsonResponse
-import json
 from .utils import get_friend_request_or_false
 from Home.FriendRequestStatus import FriendRequestStatus
 from django.http import HttpResponse
-import re
-import requests
+from django.db.models import Q
 
 # Create your views here.
 @api_view(['GET'])
@@ -29,6 +27,7 @@ def view_users(request):
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
+
 @api_view(['GET'])
 def get_all(request):
     if request.session.has_key('user_name'):
@@ -38,8 +37,32 @@ def get_all(request):
     else:
         return redirect('/auth/login/')
         
+@api_view(['GET'])
+def get_Likee(request):
+    users = Postlike.objects.all()
+    data = LIKE(users, many=True)
+
+    return Response(data.data)
 
 #####################   Add New User   ################
+@api_view(['delete'])
+def delete_like(request, pk):
+    trainee = Postlike.objects.get(pk=pk)
+    trainee.delete()
+
+    return Response(status=status.HTTP_202_ACCEPTED)
+
+
+@api_view(['Post'])
+def get_Like(request):
+    user = LIKE(data=request.data)
+
+    if user.is_valid():
+        user.save()
+        return Response(user.data, status=status.HTTP_201_CREATED)
+    return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['POST'])
 def register_user(request):
     if request.session.has_key('user_name'):
@@ -51,6 +74,31 @@ def register_user(request):
     else:
         return redirect('/auth/login/')
 
+
+@api_view(['POST'])
+def addpost(request):
+    if request.session.has_key('user_name'):
+        user = Useraccount.objects.filter(
+            id=int(request.session['user_id']))[0]
+
+        newPost = Posts.objects.create(
+            user=user, postcontent=request.data['postcontent'])
+        if newPost:
+            photo = Photos.objects.create(
+                post=newPost, imagecontent=request.data['imagecontent'])
+            photo.save()
+            return Response('successsfully')
+
+@api_view(['POST'])
+def addcomment(request):
+    if request.session.has_key('user_name'):
+        comment = commentSerializer(data=request.data)
+        if comment.is_valid():
+            comment.save()
+            return Response(comment.data, status=status.HTTP_201_CREATED)
+        return Response(comment.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return redirect('/auth/login/')
 
 @api_view(['PUT'])
 def update_user(request, pk):
@@ -65,6 +113,7 @@ def update_user(request, pk):
             return Response(status=status.HTTP_404_NOT_FOUND)
     else:
         return redirect('/auth/login/')
+
 
 @api_view(['delete'])
 def delete_user(request, pk):
@@ -87,6 +136,7 @@ def getAllPosts(request):
     else:
         return redirect('/auth/login/')
 
+
 @api_view(['GET'])
 def getProfilePosts(request):
     if request.session.has_key('user_name'):
@@ -100,12 +150,12 @@ def getProfilePosts(request):
     else:
         return redirect('/auth/login/')
 
-
 @api_view(['GET'])
 def getComments(request,pk):
     if request.session.has_key('user_name'):
         post = Posts.objects.filter(id=pk)[0]
         comments = Comments.objects.filter(post = post)
+
 
         if comments:
             data = commentSerializer(comments, many=True)
@@ -115,11 +165,10 @@ def getComments(request,pk):
     else:
         return redirect('/auth/login/')
 
-
 @api_view(['GET'])
-def get_one_user(request,id):
+def get_one_user(request, id):
     if request.session.has_key('user_name'):
-        context=[]
+        context = []
         user_pk = id
         try:
             account = Useraccount.objects.get(id=user_pk)
@@ -155,25 +204,43 @@ def get_one_user(request,id):
                         request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
             else:
                 try:
-                    friend_requests =FriendRequest.objects.filter(
+                    friend_requests = FriendRequest.objects.filter(
                         reciver=user, is_active=True).count()
                 except:
                     pass
-            context.append({
-                'id': account.id,
-                'friends': friends.count(),
-                'email': account.email,
-                'pic': str(account.pic.url),
-                'pic_cover': str(account.pic_cover.url),
-                'is_self': is_self,
-                'is_friend': is_friend,
-                'user_name': account.first_name+" "+account.last_name,
-                'request_sent': request_sent,
-                'friend_requests': friend_requests,
-                'pending_friend_request_id': pending_friend_request_id,
-                'Bio':account.Bio,
-            })
-            return JsonResponse(data=context,safe=False)
+            if account.pic and account.pic_cover :
+                context.append({
+                    'id': account.id,
+                    'friends': friends.count(),
+                    'email': account.email,
+                    'pic': str(account.pic.url),
+                    'pic_cover': str(account.pic_cover.url),
+                    'is_self': is_self,
+                    'is_friend': is_friend,
+                    'user_name': account.first_name+" "+account.last_name,
+                    'request_sent': request_sent,
+                    'friend_requests': friend_requests,
+                    'pending_friend_request_id': pending_friend_request_id,
+                    'Bio':account.Bio,
+                })
+            else:
+                context.append({
+                    'id': account.id,
+                    'friends': friends.count(),
+                    'email': account.email,
+                    'pic': "",
+                    'pic_cover': "",
+                    'is_self': is_self,
+                    'is_friend': is_friend,
+                    'user_name': account.first_name + " " + account.last_name,
+                    'request_sent': request_sent,
+                    'friend_requests': friend_requests,
+                    'pending_friend_request_id': pending_friend_request_id,
+                    'Bio': account.Bio,
+                })
+
+            print(friend_requests)
+            return JsonResponse(data=context, safe=False)
     else:
         return redirect('/auth/login/')
 
@@ -181,7 +248,7 @@ def get_one_user(request,id):
 @api_view(['GET'])
 def get_one_user_Posts(request, id):
     if request.session.has_key('user_name'):
-        posts = reversed (Posts.objects.filter(user=int(id)).reverse())
+        posts = reversed(Posts.objects.filter(user=int(id)).reverse())
         if posts:
             data = postSerializer(posts, many=True)
             return Response(data.data)
@@ -189,7 +256,6 @@ def get_one_user_Posts(request, id):
             return Response(status=status.HTTP_404_NOT_FOUND)
     else:
         return redirect('/auth/login/')
-
 
 
 @api_view(['GET'])
@@ -205,7 +271,7 @@ def friend_requests(request):
         return redirect('/auth/login/')
 
 @api_view(['GET'])
-def friends_list(request,id):
+def friends_list(request, id):
     if request.session.has_key('user_name'):
         user = Useraccount.objects.get(id=id)
         friend_list = FrienList.objects.filter(user=user)
@@ -213,7 +279,6 @@ def friends_list(request,id):
         return Response(data.data)
     else:
         return redirect('/auth/login/')
-
 
 @api_view(['GET'])
 def friends_list_chat(request):
@@ -359,12 +424,14 @@ def story(request):
 
 
 @api_view(['GET'])
-def get_all_users(request):
+def get_all_users(request,name):
     if request.session.has_key('user_name'):
         context = []
         user_pk = id
         myuser = Useraccount.objects.get(id=int(request.session['user_id']))
-        users = Useraccount.objects.all()
+        # users = Useraccount.objects.all()
+        users = Useraccount.objects.filter(
+            Q(first_name__icontains=name) | Q(last_name__icontains=name))
         if myuser:
             try:
                 friend_list = FrienList.objects.get(user=myuser)
@@ -372,7 +439,7 @@ def get_all_users(request):
                 friend_list = FrienList(user=myuser)
                 friend_list.save()
         friends = friend_list.friends.all()
-        for user in users : 
+        for user in users:
             is_self = True
             is_friend = False
             pending_friend_request_id = ''
@@ -428,3 +495,16 @@ def get_all_users(request):
         return JsonResponse(data=context, safe=False)
     else:
         return redirect('/auth/login/')
+
+@api_view(['GET'])
+
+def friends_list_contacts(request):
+    if request.session.has_key('user_name'):
+        user_id = int(request.session['user_id'])
+        user = Useraccount.objects.get(id=user_id)
+        friend_list = FrienList.objects.filter(user=user)
+        data = postUserSerial(friend_list[0].friends.all(), many=True)
+        return Response(data.data)
+    else:
+        return redirect('/auth/login/')
+

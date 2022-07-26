@@ -14,6 +14,8 @@ class commentSerializer(serializers.ModelSerializer):
         model = Comments
         fields ='__all__'
 
+
+
 class postUserSerial(serializers.ModelSerializer):
     class Meta:
         model = Useraccount
@@ -28,6 +30,16 @@ class postSerializer(serializers.ModelSerializer):
         fields = '__all__'
     user = postUserSerial(many=False)
 
+class createPostSerializer(serializers.ModelSerializer):
+    post_photos = serializers.StringRelatedField(many=True)
+    class Meta:
+        model = Posts
+        fields = '__all__'
+
+class createPhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Photos
+        fields = '__all__'
 
 class friend_listse(serializers.ModelSerializer):
     class Meta:
@@ -63,3 +75,10 @@ class Storyserializer(serializers.ModelSerializer):
     class Meta:
         model = Story
         fields = '__all__'
+
+class LIKE(serializers.ModelSerializer):
+
+    class Meta:
+        model = Postlike
+        fields = '__all__'
+

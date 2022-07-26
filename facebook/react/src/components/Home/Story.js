@@ -8,17 +8,6 @@ function Story({image,profilSrc,title}) {
             <Avatar className="story_avatar" src={profilSrc}/>
             <h4>{title}</h4>
         </div>
-         <script>
-            $(document).ready(function(){
-            $('.story').owlCarousel({
-                center: false,
-                items:3,
-                loop:true,
-                margin:5,
-                stagePadding: 15,
-            })
-            })
-            </script>
         </>
     )   
 }
