@@ -8,8 +8,73 @@ import emotion5 from '../images/emotion5.webp';
 import emotion6 from '../images/emotion6.webp';
 import emotion7 from '../images/emotion7.webp';
 import CSRF from '../Auth/CSRF';
+import axios from "axios";
+import jQuery from "jquery";
+import { useState,useEffect } from "react";
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 
-function AllPosts({post_id,profilePic , image , username,timestamp,message ,comments}) {
+function AllPosts({post_id,user_id,profilePic , image , username,timestamp,message ,comments}) {
+
+    const [users, setUsers] = useState({})
+    useEffect(() => {
+
+        axios.get('http://127.0.0.1:8000/api/get/')
+
+            .then(res => {
+
+                setUsers(res.data[0]);
+
+            })
+
+            .catch((err) => console.log(err))
+
+    }, [])
+
+    const [comment, setComment] = useState(null)
+
+     const sendCommentData = {
+        post:parseInt(post_id),
+        user:parseInt(users.id),
+        commentcontent:comment
+     }
+
+     const addNewComment =  ()=>{
+
+     axios.post("http://127.0.0.1:8000/api/addcomment/",
+                sendCommentData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+
+                    }
+                },
+            ).then(res => {
+                console.log(res)
+
+            }).catch((err) => console.log(err))
+}
+
+    const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+
+        addNewComment()
+        e.target.value=""
+    }
+}
     return (
         <div className="all_posts">
             <div className="Top_section">
@@ -83,18 +148,17 @@ function AllPosts({post_id,profilePic , image , username,timestamp,message ,comm
                 {/*
              Start Create Comment  */}
                 <div className="create-comment">
-                <Avatar src={profilePic} className="Posts_avatar" />
-            <form action="/home/addcomment/"   method= "post" >
-                    < CSRF />
-                <input type="hidden" name="post_id" value={post_id} /> <br/>
+                <Avatar src={users.pic} className="Posts_avatar" />
+
                 <input
                     type="text"
                     placeholder="Write A comment"
                     className="commentInput"
                     name="commentcontent"
+                    onChange={(e) => setComment(e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(e)}
                 />
-                <input type="submit"  value="Add Comment" class="add" />
-                </form>
+
                 </div>
               {/* End Create Comment  */}
         </div>

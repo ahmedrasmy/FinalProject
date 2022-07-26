@@ -34,4 +34,8 @@ urlpatterns = [
     path('get_one_user/<id>', get_one_user, name='get_one_user'),
     path('get_one_user_Posts/<id>', get_one_user_Posts, name='get_one_user_Posts'),
     path('get_all/', get_all, name='get_all'),
+    path('addpost/', addpost, name='addpost'),
+    path('addcomment/', addcomment, name='addcomment'),
+    path('friends_list_contacts/', friends_list_contacts, name='friends_list_contacts'),
+
 ]

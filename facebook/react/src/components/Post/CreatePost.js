@@ -10,7 +10,21 @@ import more from './icons/more.svg';
 import axios from "axios";
 import CSRF from '../Auth/CSRF';
 import { useState,useEffect } from "react";
-
+import jQuery from "jquery";
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 function CreatePost() {
     const [user, setUser] = useState({})
     useEffect(() => {
@@ -29,14 +43,40 @@ function CreatePost() {
             setShowImageInput(false)
         }
     };
+    const [image, setImage] = useState([])
+    const [post, setPost] = useState(null)
+
+     function submit(e){
+        e.preventDefault();
+     }
+     const sendPostData = {
+        postcontent:post,
+        imagecontent:image,
+        user:user
+     }
+     console.log(image)
+     const addNewPost =  ()=>{axios.post("http://127.0.0.1:8000/api/addpost/",
+                sendPostData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        'X-CSRFToken': getCookie('csrftoken')
+
+                    }
+                },
+            ).then(res => {
+                console.log(res)
+
+            }).catch((err) => console.log(err))
+}
     return (
         <>
             <div className="container">
                 <div className="wrapper">
                     <section className="post">
                     <header>Create Post</header>
-                    <form action="/home/addpost/"  enctype="multipart/form-data"  method= "post" >
-                        < CSRF />
+                    <form onSubmit={(e) => submit(e) }   enctype="multipart/form-data"   >
+
                         <div className="content">
                         <img src={user.pic} alt="logo" />
                         <div className="details">
@@ -53,11 +93,12 @@ function CreatePost() {
                         spellcheck="false"
                         required
                         name="postcontent"
+                        onChange={(e) => setPost(e.target.value)}
                         ></textarea> 
                         <div>{ ShowImageInput ? <input type="file" accept="image/*" multiple
                             className="post_input"
                             placeholder="Enter your image here"
-                            name ="imagecontent"/>
+                            name ="imagecontent" onChange={(e)=>setImage(e.target.files[0])}/>
                             :null }
                         </div>
                         <div className="theme-emoji">
@@ -74,7 +115,7 @@ function CreatePost() {
                             <li><img src={more} alt="gallery" /></li>
                         </ul>
                         </div>
-                        <button type='submit' >Post</button>
+                        <button type='submit' onClick={addNewPost} >Post</button>
                     </form>
                     </section>
                     <section className="audience">
