@@ -42,7 +42,6 @@ function Post() {
     }, [])
     const [input , setInput] =useState("")
     const [open, setOpen] = React.useState(false);
-
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -125,6 +124,7 @@ const [ShowImageInput, setShowImageInput] = React.useState(false);
                     aria-describedby="alert-dialog-description"
                 >
                     <DialogContent dividers>
+
                         <div className="container">
                 <div className="wrapper">
                     <section className="post">
@@ -239,6 +239,7 @@ const [ShowImageInput, setShowImageInput] = React.useState(false);
                     </section>
                 </div>
             </div>
+
                     </DialogContent>
             </Dialog>
         </>

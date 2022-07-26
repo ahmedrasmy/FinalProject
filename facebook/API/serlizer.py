@@ -1,5 +1,5 @@
 from pyexpat import model
-from attr import field
+from attr import field, fields
 from rest_framework import routers, serializers, viewsets
 
 from Home.models import *
@@ -63,3 +63,22 @@ class create_userSerial(serializers.ModelSerializer):
     class Meta:
         model = Useraccount
         fields = ()
+
+
+class ChatMessagesel(serializers.ModelSerializer):
+    class Meta:
+        model = ChatMessage
+        fields = '__all__'
+
+
+class Storyserializer(serializers.ModelSerializer):
+    class Meta:
+        model = Story
+        fields = '__all__'
+
+class LIKE(serializers.ModelSerializer):
+
+    class Meta:
+        model = Postlike
+        fields = '__all__'
+

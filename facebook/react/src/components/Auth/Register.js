@@ -189,13 +189,12 @@ function Register() {
 
     return < >
         <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300i,400,700&display=swap"
-              rel="stylesheet"/>
+            rel="stylesheet"/>
         <link rel="stylesheet"
-              href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"/>
+            href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"/>
         <center>
             <div className="row-cols-md-3 ">
                 <img height="100px" src="https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg"/>
-
             </div>
         </center>
         <section className="vh-100 gradient-custom">
@@ -205,12 +204,12 @@ function Register() {
                         <div className="card shadow-2-strong card-registration" style={{borderRadius: '15px'}}>
                             <div className="card-body p-4 ">
                                 <div className="mb-4 pb-2 pb-md-0  text-center "
-                                     style={{
-                                         fontSize: '25px',
-                                         lineHeight: '32px',
-                                         textAlign: 'center',
-                                         fontWeight: 'bold'
-                                     }}>
+                                    style={{
+                                        fontSize: '25px',
+                                        lineHeight: '32px',
+                                        textAlign: 'center',
+                                        fontWeight: 'bold'
+                                    }}>
                                     Create a new account
                                     <h5 className="mb-4 pb-2 pb-md-0  text-center">It's quick and easy.</h5>
                                 </div>
