@@ -67,7 +67,7 @@ function Post() {
                     aria-describedby="alert-dialog-description"
                 >
                     <DialogContent dividers>
-                        {/* <CreatePost username={users.first_name + ' ' + users.last_name} pic={users.pic}/> */}
+
                         <CreatePost/>
                     </DialogContent>
             </Dialog>

@@ -15,6 +15,8 @@ function Feed() {
             })
             .catch((err) => console.log(err))
     }, [])
+
+
     console.log(posts)
     return (
         <div className="feed">
