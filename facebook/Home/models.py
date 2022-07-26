@@ -131,3 +131,11 @@ class FriendRequest(models.Model):
     def cancel(self):
         self.is_active = False
         self.save()
+
+
+
+class Story (models.Model):
+    user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
+    pic = models.ImageField(upload_to="img", blank=True, null=True)
+    body = models.TextField(blank=True, null=True)
+    timesstamp = models.DateTimeField(auto_now_add=True)
