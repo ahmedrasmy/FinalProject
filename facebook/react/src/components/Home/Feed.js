@@ -31,30 +31,29 @@ function Feed() {
             })
             .catch((err) => console.log(err))
 
-    }, [])
+    }, [posts])
 
     console.log(posts)
 
 
-    return (<
-        div className="feed">
-        <
-            StoryReel/>
+    return (
+    <div className="feed">
+        <StoryReel/>
             <
                 Post/> {
                 posts.map((post) => {
                     return < >
                         <
                             AllPosts profilePic={post.user.pic}
-                                     post_id={post.id}
-                                     message={post.postcontent}
-                                     timestamp={post.postdate}
-                                     username={post.user.first_name + ' ' + post.user.last_name}
-                                     image={post.post_photos}
-                                     comments={post.post_comments}
-                                     user_id={post.user.id}
-                        /> < /
-                >
+                                    post_id={post.id}
+                                    message={post.postcontent}
+                                    timestamp={post.postdate}
+                                    username={post.user.first_name + ' ' + post.user.last_name}
+                                    image={post.post_photos}
+                                    comments={post.post_comments}
+                                    user_id={post.user.id}
+                        /> 
+                        </>
                 })
             }</div>
 )

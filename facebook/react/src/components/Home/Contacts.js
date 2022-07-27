@@ -20,18 +20,18 @@ function Contacts() {
                         <a href="#"> <i class="fa-solid fa-ellipsis"></i></a>
                     </div>
                     </div>
-                   {
-                    contacts.map((contact) => {
-                    return <>
-                    <a href="#">
-                    <span className="more-hover image">
-                    <img src={contact.pic} />
-                    <span >{contact.first_name + " " + contact.last_name} </span>
-                    </span>
-                    </a>
-                    </>
-                    }
-                    )
+                    {
+                        contacts.map((contact) => {
+                            return <>
+                                    <a href="#">
+                                        <span className="more-hover image">
+                                            <img src={contact.pic} />
+                                            <span >{contact.first_name + " " + contact.last_name} </span>
+                                        </span>
+                                    </a>
+                                </>
+                        }
+                        )
                     }
             </div>
     )

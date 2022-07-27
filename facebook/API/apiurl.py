@@ -41,7 +41,7 @@ urlpatterns = [
     path('sent_msg/<str:pk>', sentMessages, name="sent_msg"),
     path('rec_msg/<str:pk>', receivedMessages, name="rec_msg"),
     path('story/', story, name="story"),
-    path('get_all_users/', get_all_users, name="get_all_users"),
+    path('get_all_users/<name>', get_all_users, name="get_all_users"),
     path('addStory/', addStory, name="addStory"),
     path('get_like/', get_Like, name='get_like'),
     path('get_likee/', get_Likee, name='get_like'),
@@ -49,6 +49,6 @@ urlpatterns = [
     path('addpost/', addpost, name='addpost'),
     path('addcomment/', addcomment, name='addcomment'),
     path('friends_list_contacts/', friends_list_contacts, name='friends_list_contacts'),
-
+    path('deleteStory/<pk>', deleteStory, name='deleteStory'),
 
 ]

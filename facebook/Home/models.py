@@ -1,3 +1,5 @@
+from django.db.models.functions import Now
+from datetime import timedelta
 from django.db import models
 
 # Create your models here.
@@ -5,7 +7,6 @@ GENDER_CHOICES = (
     ("m", "Male"),
     ("f", "Female"),
 )
-
 
 class Useraccount(models.Model):
     first_name = models.CharField(max_length=30)
@@ -133,9 +134,8 @@ class FriendRequest(models.Model):
         self.save()
 
 
-
-class Story (models.Model):
+class Story(models.Model):
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
     pic = models.ImageField(upload_to="img", blank=True, null=True)
     body = models.TextField(blank=True, null=True)
-    timesstamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True)

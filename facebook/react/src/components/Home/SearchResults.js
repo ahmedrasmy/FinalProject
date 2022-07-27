@@ -35,7 +35,7 @@ function SearchResults() {
 
                 {users ?
                     <div className="all_posts"
-                         style={{width: "1000px", height: "auto", marginRight: "250px"}}>
+                        style={{width: "1000px", height: "auto", marginRight: "250px"}}>
                         <header style={{fontWeight: "bold", marginLeft: "20px", marginTop: "20px"}}> People</header>
 
                         {
