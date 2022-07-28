@@ -54,7 +54,7 @@ function Register() {
             })
 
 
-        } else if (e.target.name === "Email") {
+        } else if (e.target.name === "email") {
             setRegister({
                 ...Register,
                 email: e.target.value

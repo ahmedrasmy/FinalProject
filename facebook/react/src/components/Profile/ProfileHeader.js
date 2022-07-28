@@ -14,7 +14,21 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ChatIcon from '@mui/icons-material/Chat';
 import {useLocation} from 'react-router-dom';
 import './Profile.css';
-
+import jQuery from "jquery";
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 function ProfileHeader() {
     let location = useLocation();
     let id = location.pathname.split('/')[3]
@@ -42,6 +56,32 @@ function ProfileHeader() {
     const handleCloseBio = () => {
         setOpenBio(false);
     };
+
+    const [pic, setPic] = useState(null)
+    const [picCover, setPicCover] = useState(null)
+     function submit(e){
+        e.preventDefault();
+     }
+     const sendpicsData = {
+        pic:pic,
+        pic_cover:picCover,
+     }
+     const updateProfilePics =  ()=>{axios.post("http://127.0.0.1:8000/api/updateprofile/",
+                sendpicsData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        'X-CSRFToken': getCookie('csrftoken')
+
+                    }
+                },
+            ).then(res => {
+                setOpen(false);
+                console.log(res)
+
+            }).catch((err) => console.log(err))
+}
+
     return (
         <>
             <div>
@@ -61,23 +101,22 @@ function ProfileHeader() {
                         </Typography>
                         <div className="modal-content">
                             <div className="modal-body">
-                                <form action="/home/updateprofile/" method="post" encType="multipart/form-data">
-                                <CSRF/>
+                                <form onSubmit={(e) => submit(e) }   enctype="multipart/form-data" >
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputPassword1" className="form-label">Profile
                                             Picture</label>
                                         <input type="file" accept="image/*" name="pic" className="form-control"
-                                            id="exampleInputPassword1"/>
+                                            id="exampleInputPassword1" onChange={(e)=>setPic(e.target.files[0])}/>
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputPassword1" className="form-label">Cover
                                             Picture</label>
                                         <input type="file" accept="image/*" name="cover" className="form-control"
-                                            id="exampleInputPassword1"/>
+                                            id="exampleInputPassword1" onChange={(e)=>setPicCover(e.target.files[0])}/>
                                     </div>
                                     <DialogActions>
                                         <Button onClick={handleClose}>Close</Button>
-                                    <Button type="submit" autoFocus>
+                                    <Button type="submit" onClick={updateProfilePics} autoFocus>
                                         Submit
                                     </Button>
                                     </DialogActions>
@@ -167,7 +206,7 @@ function ProfileHeader() {
                                         </button>
                                     </li>
                                     <li className="px-2 font-semibold">
-                                        <Button variant="contained" className="  bg-blue-600 px-5 py-1 rounded-lg text-white font-semibold "onClick={handleClickOpen}>
+                                        <Button variant="contained" className="  bg-blue-600 p-5  rounded-lg text-white font-semibold "onClick={handleClickOpen}>
                                             <i className="bx bx-plus-circle text-xl mr-2"></i>
                                             Edit profile
                                         </Button>

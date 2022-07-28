@@ -49,6 +49,7 @@ urlpatterns = [
     path('addpost/', addpost, name='addpost'),
     path('addcomment/', addcomment, name='addcomment'),
     path('friends_list_contacts/', friends_list_contacts, name='friends_list_contacts'),
+    path('updateprofile/', updateprofile, name='updateprofile'),
 
 
 ]

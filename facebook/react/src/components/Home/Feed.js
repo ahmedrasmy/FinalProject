@@ -33,7 +33,6 @@ function Feed() {
 
     }, [])
 
-    console.log(posts)
 
 
     return (<

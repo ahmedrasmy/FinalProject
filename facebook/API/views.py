@@ -65,14 +65,11 @@ def get_Like(request):
 
 @api_view(['POST'])
 def register_user(request):
-    if request.session.has_key('user_name'):
         user = userSerializer(data=request.data)
         if user.is_valid():
             user.save()
             return Response(user.data, status=status.HTTP_201_CREATED)
         return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return redirect('/auth/login/')
 
 
 @api_view(['POST'])
@@ -88,6 +85,33 @@ def addpost(request):
                 post=newPost, imagecontent=request.data['imagecontent'])
             photo.save()
             return Response('successsfully')
+@api_view(['POST'])
+def updateprofile(request):
+    user = Useraccount.objects.get(id=int(request.session['user_id']))
+    if request.data['pic'] :
+        user.pic = request.data['pic']
+        user.save()
+        newPost = Posts.objects.create(
+            user=user, postcontent="update his profile picture"
+        )
+        photo = Photos.objects.create(
+            post=newPost,
+            imagecontent=user.pic
+        )
+        photo.save()
+
+    if request.data['pic_cover'] :
+        user.pic_cover = request.data['pic_cover']
+        user.save()
+        newPost = Posts.objects.create(
+            user=user, postcontent="update his cover picture"
+        )
+        photo = Photos.objects.create(
+            post=newPost,
+            imagecontent=user.pic_cover
+        )
+        photo.save()
+    return redirect('/home/pro/'+str(request.session['user_id']))
 
 @api_view(['POST'])
 def addcomment(request):
