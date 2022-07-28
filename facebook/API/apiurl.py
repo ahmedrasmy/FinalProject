@@ -50,5 +50,5 @@ urlpatterns = [
     path('addcomment/', addcomment, name='addcomment'),
     path('friends_list_contacts/', friends_list_contacts, name='friends_list_contacts'),
     path('deleteStory/<pk>', deleteStory, name='deleteStory'),
-
+    path('sugistions_list/', sugistions_list, name='sugistions_list'),
 ]

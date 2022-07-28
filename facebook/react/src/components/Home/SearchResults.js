@@ -11,13 +11,10 @@ import {useLocation} from "react-router-dom";
 
 
 function SearchResults() {
-
     let location = useLocation();
     let id = location.pathname.split('/')[3]
     const [users, setUsers] = useState([])
-
     useEffect(() => {
-
         axios.get('http://127.0.0.1:8000/api/get_all_users/' + id)
             .then(res => {
                 setUsers(res.data);
@@ -25,8 +22,6 @@ function SearchResults() {
             })
             .catch((err) => console.log(err))
     }, [id])
-
-
     return (
         <>
             <Header/>
@@ -53,19 +48,20 @@ function SearchResults() {
                                         {
                                             account['is_self'] ? <div>Ana</div> : <div>
                                                 {
-                                                    account['is_friend'] === true ? <button><IconButton>
-                                                            <ForumIcon/>
-                                                        </IconButton>
+                                                    account['is_friend'] === true ? 
+                                                        <button>
+                                                            <IconButton>
+                                                                <ForumIcon/>
+                                                            </IconButton>
                                                         </button> :
                                                         <>
-
                                                             {account['request_sent'] === 1 ?
                                                                 <div className="d-flex flex-column align-items-center">
                                                                     <form action={'/home/cancel_friend_request/'}
-                                                                          method="post">
+                                                                        method="post">
                                                                         <CSRF/>
                                                                         <input type="hidden" name="cancel_request"
-                                                                               value={account['id']}/>
+                                                                            value={account['id']}/>
                                                                         <button type="submit"
                                                                                 className="btn btn-danger">
                                                                             Cancel Friend Request
@@ -77,10 +73,10 @@ function SearchResults() {
                                                             {account['request_sent'] === -1 ?
                                                                 <div className="d-flex flex-column align-items-center">
                                                                     <form action={'/home/send_friend_request/'}
-                                                                          method="post">
+                                                                        method="post">
                                                                         <CSRF/>
                                                                         <input type="hidden" name="send_friend_request"
-                                                                               value={account['id']}/>
+                                                                            value={account['id']}/>
                                                                         <button type="submit"
                                                                                 className="btn btn-primary">
                                                                             Send Friend Request

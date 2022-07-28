@@ -1,4 +1,5 @@
 from audioop import reverse
+from lib2to3.pgen2.token import NOTEQUAL
 from django.shortcuts import render, redirect
 from rest_framework.response import Response
 from rest_framework import status
@@ -226,8 +227,8 @@ def get_one_user(request, id):
                     'is_self': is_self,
                     'is_friend': is_friend,
                     'user_name': account.first_name + " " + account.last_name,
-                    'request_sent': request_sent,
                     'friend_requests': friend_requests,
+                    'request_sent': request_sent,
                     'pending_friend_request_id': pending_friend_request_id,
                     'Bio': account.Bio,
                 })
@@ -531,3 +532,63 @@ def friends_list_contacts(request):
     else:
         return redirect('/auth/login/')
 
+
+@api_view(['GET'])
+def sugistions_list(request):
+    user = Useraccount.objects.get(id=request.session['user_id'])
+    arr=[]
+    try:
+        friend_list = FrienList.objects.filter(user=user)
+        print("iam heree")
+        friends = friend_list[0].friends.all()
+        users = Useraccount.objects.filter(~Q(id=user.id))
+        for use in users:
+            if friends.filter(id=use.id).exists():
+                pass 
+            else :
+                pending_friend_request_id = ''
+                request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
+                if get_friend_request_or_false(sender=use, receiver=user) != False:
+                    request_sent = FriendRequestStatus.THEM_SENT_TO_YOU.value
+                    pending_friend_request_id = get_friend_request_or_false(
+                        sender=use, receiver=user).id
+                elif get_friend_request_or_false(sender=user, receiver=use) != False:
+                    request_sent = FriendRequestStatus.YOU_SENT_TO_THEM.value
+                else:
+                    request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
+                arr.append(
+                    {
+                        'user_name': use.first_name+" "+use.last_name,
+                        'user_id': use.id,
+                        'user_pic': str(use.pic.url),
+                        'user_email': use.email,
+                        'request_sent': request_sent,
+                        'pending_friend_request_id': pending_friend_request_id,
+                    }
+                )
+    except FrienList.DoesNotExist:
+        friend_list = FrienList(user=user)
+        friend_list.save()
+        friends = Useraccount.objects.filter(~Q(id=user.id))
+        for friend in friends:
+            pending_friend_request_id = ''
+            request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
+            if get_friend_request_or_false(sender=friend, receiver=user) != False:
+                request_sent = FriendRequestStatus.THEM_SENT_TO_YOU.value
+                pending_friend_request_id = get_friend_request_or_false(
+                    sender=friend, receiver=user).id
+            elif get_friend_request_or_false(sender=user, receiver=friend) != False:
+                request_sent = FriendRequestStatus.YOU_SENT_TO_THEM.value
+            else:
+                request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
+            arr.append(
+                {
+                    'user_name': friend.first_name+" "+friend.last_name,
+                    'user_id': friend.id,
+                    'user_pic': str(friend.pic.url),
+                    'user_email': friend.email,
+                    'request_sent': request_sent,
+                    'pending_friend_request_id': pending_friend_request_id,
+                }
+            )
+    return JsonResponse(arr, safe=False)
