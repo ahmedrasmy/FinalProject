@@ -61,15 +61,18 @@ const [ShowImageInput, setShowImageInput] = React.useState(false);
     const [image, setImage] = useState([])
     const [post, setPost] = useState(null)
 
-     function submit(e){
+    function submit(e){
         e.preventDefault();
-     }
-     const sendPostData = {
+    }
+    const sendPostData = {
         postcontent:post,
         imagecontent:image,
         user:users
+
      }
-     const addNewPost =  ()=>{axios.post("http://127.0.0.1:8000/api/addpost/",
+   
+    const addNewPost =  ()=>{axios.post("http://127.0.0.1:8000/api/addpost/",
+
                 sendPostData,
                 {
                     headers: {

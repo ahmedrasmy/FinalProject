@@ -53,7 +53,6 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
             }
         }
         if (like === 'available') {
-
             axios.delete("http://127.0.0.1:8000/api/delete_like/" +
                 likeid, {
                     headers: {

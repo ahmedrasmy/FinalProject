@@ -2,27 +2,50 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="92c29cac-eb8b-4020-9621-6108588696e6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Sugustions_List.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/1_TU6OYet.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/2_Gv7Lno4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/2_XVxdqo7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/food4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/food4_RqNrCjl.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/food4_cMWI6Mt.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/food5_sl734Yq.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/food_3_bNyT8Ri.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/food_3_lL7XyT9.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/foood_1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/foood_1_f160NC7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/man_M_food_CNmLqCJ.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/man_M_food_RS6B6xL.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/man_M_food_l57TrBe.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/man_M_food_zILjEIY.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/ragnar_J3wEGVH.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/ragnar_d6YITEH.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/ragnar_lmVFGjZ.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/ragnar_mEfQgiv.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/facebook/static/img/tokyo_BzFnL4T.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/API/apiurl.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/apiurl.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/API/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0002_alter_comments_commentdate.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0002_useraccount_bio.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0003_alter_comments_post.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0004_merge_0002_useraccount_bio_0003_alter_comments_post.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0005_posts_like.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0005_story.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0006_alter_story_body.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0006_remove_posts_like_postlike_islike.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0007_remove_postlike_islike_posts_islike.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0007_story_timesstamp.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0008_merge_20220726_2022.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/migrations/0001_initial.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/Home/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Auth/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Auth/Register.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/facesetting/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/facesetting/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/App.test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Header/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Header/Header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Header/search.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Contacts.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Contacts.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Feed.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Feed.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/SearchResults.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/SearchResults.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Story.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/StoryReel.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/StoryReel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Post/AllPosts.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Post/AllPosts.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Post/Post.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Post/Post.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Profile/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Profile/Profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Profile/ProfileHeader.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Profile/ProfileHeader.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/setupTests.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

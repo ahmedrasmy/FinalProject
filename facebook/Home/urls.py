@@ -19,4 +19,8 @@ urlpatterns = [
     #path('pro/', pro, name='pro'),
     path('pro/<str:id>', pro, name='pro'),
     path('Bio/',Bio, name='Bio'),
+    path('sugistions_list/', sugistions_list, name='sugistions_list'),
+    path('cancel_friend_request_sugustions/',cancel_friend_request_sugustions, name='cancel_friend_request_sugustions'),
+    path('frined_request_delete_sugustions/', frined_request_delete_sugustions,name='frined_request_delete_sugustions'),
+
 ]

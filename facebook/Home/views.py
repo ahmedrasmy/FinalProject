@@ -8,6 +8,9 @@ def pro(request,id):
     return render(request, 'index.html')
 
 
+def sugistions_list(request):
+    return render(request, 'index.html')
+
 def home(request):
     if request.session.has_key('user_name'):
         return render(request, 'index.html')
@@ -138,6 +141,16 @@ def frined_request_delete(request):
         return redirect('/auth/login/')
 
 
+def frined_request_delete_sugustions(request):
+    if request.session.has_key('user_name'):
+        friend_request = FriendRequest.objects.get(
+            id=int(request.POST['request_id']))
+        friend_request.delete()
+        return redirect('/home/sugistions_list/')
+    else:
+        return redirect('/auth/login/')
+
+
 def frined_request_accept(request):
     if request.session.has_key('user_name'):
         pk = int(request.session['user_id'])
@@ -151,6 +164,23 @@ def frined_request_accept(request):
             id=request.POST['request_id'])
         friend_request.delete()
         return redirect('friendRequests')
+    else:
+        return redirect('/auth/login/')
+
+
+def frined_request_accept_sugustions(request):
+    if request.session.has_key('user_name'):
+        pk = int(request.session['user_id'])
+        user = Useraccount.objects.get(id=pk)
+        user_friend_list = FrienList.objects.get(user=user)
+        sender = Useraccount.objects.get(id=request.POST['sender_id'])
+        sender_friend_list = FrienList.objects.get(user=sender)
+        sender_friend_list.add_friend(user)
+        user_friend_list.add_friend(sender)
+        friend_request = FriendRequest.objects.get(
+            id=request.POST['request_id'])
+        friend_request.delete()
+        return redirect('/home/sugistions_list/')
     else:
         return redirect('/auth/login/')
 
@@ -181,6 +211,23 @@ def cancel_friend_request(request, method='POST'):
         return redirect('/home/pro/' + request.POST['cancel_request'])
     else:
         return redirect('/auth/login/')
+
+
+def cancel_friend_request_sugustions(request, method='POST'):
+    if request.session.has_key('user_name'):
+        pk = int(request.session['user_id'])
+        user = Useraccount.objects.get(id=pk)
+        receiver = Useraccount.objects.get(id=request.POST['cancel_request'])
+        friend_requests = FriendRequest.objects.filter(
+            sender=user, reciver=receiver, is_active=True)
+        if len(friend_requests) > 1:
+            for request in friend_requests:
+                request.cancel()
+        friend_requests.delete()
+        return redirect('/home/sugistions_list/')
+    else:
+        return redirect('/auth/login/')
+
 
 def Friends_list(request):
     return render(request, 'index.html')
