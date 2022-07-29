@@ -32,7 +32,7 @@ function Post2() {
                 <div className="feed">
 
 
-
+                                post.id ?
                                 <
                                     AllPosts profilePic={post.user.pic}
                                             post_id={post.id}
@@ -43,7 +43,7 @@ function Post2() {
                                             comments={post.post_comments}
                                             user_id={post.user.id}
                                 />
-
+                               :null
 
                 </div>
                 <Contacts/>
