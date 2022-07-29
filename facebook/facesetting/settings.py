@@ -77,10 +77,10 @@ WSGI_APPLICATION = 'facesetting.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'facebook2',
+        'NAME': 'facebook3',
         'HOST':'localhost',
         'USER': 'postgres',
-        'PASSWORD': 'Ahmed_Rasmy4444',
+        'PASSWORD': '123',
         'PORT':5432,
     }
 }

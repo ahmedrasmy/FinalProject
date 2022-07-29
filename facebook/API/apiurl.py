@@ -54,6 +54,6 @@ urlpatterns = [
     path('sugistions_list/', sugistions_list, name='sugistions_list'),
     path('postNotification/',postNotification , name='postNotification'),
     path('unseenNotification/<pk>/<id>/', unseenNotification, name='unseenNotification'),
-    path('get_one_post/<id>/', get_one_post, name='get_one_post'),
+    path('get_one_post/<id>', get_one_post, name='get_one_post'),
 
 ]

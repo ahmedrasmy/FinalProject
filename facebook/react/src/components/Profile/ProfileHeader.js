@@ -13,7 +13,6 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ChatIcon from '@mui/icons-material/Chat';
 import {useLocation} from 'react-router-dom';
-import './Profile.css';
 import { Avatar } from '@mui/material';
 import '../Post/CreatPost.css';
 

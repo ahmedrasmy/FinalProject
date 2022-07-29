@@ -22,5 +22,5 @@ urlpatterns = [
     path('cancel_friend_request_sugustions/',cancel_friend_request_sugustions, name='cancel_friend_request_sugustions'),
     path('frined_request_delete_sugustions/', frined_request_delete_sugustions,name='frined_request_delete_sugustions'),
     path('frined_request_accept_sugustions/',frined_request_accept_sugustions, name='frined_request_accept_sugustions'),
-    path('Post/<post_id>/', Post,name='Post'),
+    path('Post/<str:id>/', Post, name='Post'),
 ]

@@ -5,22 +5,6 @@ import Post from '../Post/Post';
 import StoryReel from './StoryReel';
 import {useEffect, useState} from "react";
 import axios from "axios";
-import jQuery from "jquery";
-
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
 
 function Feed() {
     const [posts, setPosts] = useState([])
@@ -32,12 +16,6 @@ function Feed() {
             .catch((err) => console.log(err))
 
     }, [])
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> a25edaf330b562fd0aca57e3c78d75ea5772d69c
     return (
     <div className="feed">
         <StoryReel/>

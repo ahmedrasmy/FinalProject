@@ -17,22 +17,17 @@ function Post2() {
         axios.get('http://127.0.0.1:8000/api/get_one_post/'+id)
             .then(res => {
                 setPost(res.data[0]);
-                console.log(res)
-                console.log(res.data)
-
             })
             .catch((err) => console.log(err))
     }, [])
-    console.log(post)
     return (
         <div className="home">
             <Header/>
             <div className="home_body">
                 <Sidebar/>
                 <div className="feed">
-
-
-
+                    {
+                        post.id  ? 
                                 <
                                     AllPosts profilePic={post.user.pic}
                                             post_id={post.id}
@@ -43,7 +38,8 @@ function Post2() {
                                             comments={post.post_comments}
                                             user_id={post.user.id}
                                 />
-
+                        : null
+                    }
 
                 </div>
                 <Contacts/>

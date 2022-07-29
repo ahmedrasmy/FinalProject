@@ -238,6 +238,6 @@ def Bio(request,method='POST'):
     user.save()
     return redirect('/home/pro/'+str(request.session['user_id']))
 
-def Post(request, post_id):
+def Post(request, id):
     return render(request, 'index.html')
 
