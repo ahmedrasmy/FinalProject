@@ -6,7 +6,7 @@ import axios from "axios";
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import '../Post/CreatPost.css';
-import { Avatar, Button } from '@mui/material';
+import { Avatar } from '@mui/material';
 import Modal from 'react-bootstrap/Modal';
 import ClearIcon from '@mui/icons-material/Clear';
 import Fab from '@mui/material/Fab';
@@ -57,7 +57,7 @@ function StoryReel() {
                 setstories(res.data);
             })
             .catch((err) => console.log(err))
-    }, [stories])
+    }, [])
     const [imagecontent,setimagecontent] = useState('')
     const data  =
     {
@@ -190,7 +190,7 @@ function StoryReel() {
                                                         <Avatar src={story['user_pic']}/>{story['user_name']} 
                                                         {
                                                             story['is_mine'] === true ? 
-                                                            <Tooltip title="Delete">
+                                                            <Tooltip title="Delete" style={{color:'blue'}}>
                                                                 <IconButton>
                                                                     <DeleteIcon onClick={() =>deleteStory(story['story_id'])} color="blue" />
                                                                 </IconButton>

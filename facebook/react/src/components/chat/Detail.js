@@ -1,8 +1,7 @@
 import React from 'react'
 import './detail.css';
 import {useEffect, useState} from "react";
-import CSRF from "../Auth/CSRF";
-import {Link, useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import axios from "axios";
 
 function getCookie(name) {
@@ -55,16 +54,13 @@ function Detail() {
         axios.get('http://127.0.0.1:8000/api/detail_counter/'+id)
             .then(res => {
                 counter=res.data
-                console.log(res.data,"couuuuuuuuuuuuuuuuuuuuuuuuu")
         })
             .catch((err) => console.log(err))
     }, [])
-    console.log(counter,"coooooooonnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
     const [msg,setmsg] = useState('')
     function handleReg(e){
         const newData = e.target.value
         setmsg(newData)
-        console.log(newData)
     }
     const data  =
     {
@@ -87,8 +83,10 @@ function Detail() {
                 chatMessageBox.innerText = data.body
                 chat_body.append(chatMessageBox)
                 data = ""
-                document.getElementById("id_body").value=""
+                document.getElementById("body").value=""
             }).catch((err) => console.log(err))
+        document.getElementById("body").value=""
+        setmsg('')
     }
     useEffect(() => {
         const interval = setInterval(() => {
@@ -110,7 +108,6 @@ function Detail() {
                                 chatMessageBox.classList.add("chat-box-received")
                                 chatMessageBox.innerText = lastMsg
                                 chat_body.append(chatMessageBox)
-                                document.getElementById("id_body").value=""
                             }
                         }
                         counter=data.length
@@ -146,7 +143,7 @@ function Detail() {
                         </a>
                     </div>
 
-                    <h3>{friend.first_name}</h3>
+                    <h3 style={{color: "black"}}>{friend.first_name}</h3>
                     <div className="pro-pic">
                         <img src={friend.pic} alt="profile-picture"/>
                     </div>
@@ -175,13 +172,15 @@ function Detail() {
                             <div className="chat-box-sent" id="chat-box-sent" style={{display: "none"}}>
                             </div>
                         </div>
-                            <div className="form">
+                            <div className="form" style={{color: "black"}}>
                                 <input type="text"
+                                    style={{color: "black"}}
                                     placeholder="Type message Here "
                                     required
                                     onChange={(e) =>{handleReg(e)}}
                                     name="body"
-                                    id="id_body"
+                                    id="body"
+                                    value={msg}
                                     />
                                 <button onClick={addNewMessage}>Send</button>
                             </div>

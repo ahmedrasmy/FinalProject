@@ -94,6 +94,7 @@ def addpost(request):
                 post=newPost, imagecontent=request.data['imagecontent'])
             photo.save()
             return Response('successsfully')
+
 @api_view(['POST'])
 def updateprofile(request):
     user = Useraccount.objects.get(id=int(request.session['user_id']))
@@ -139,6 +140,7 @@ def updateprofile(request):
             )
             notify.save()
     return redirect('/home/pro/'+str(request.session['user_id']))
+
 @api_view(['GET'])
 def postNotification(request):
     if request.session.has_key('user_name'):
@@ -163,6 +165,8 @@ def unseenNotification(request,pk,id):
             return Response(status=status.HTTP_404_NOT_FOUND)
     else:
         return redirect('/auth/login/')
+
+        
 @api_view(['GET'])
 def get_one_post(request,id):
     if request.session.has_key('user_name'):
@@ -399,9 +403,11 @@ def chatNotification(request):
         friends = friend_list[0].friends.all()
         arr = []
         for friend in friends:
-            chats = ChatMessage.objects.filter(
-                msg_sender__id=friend.user.id, msg_receiver=user, seen=False)
-            arr.append(chats.count())
+            chats = ChatMessage.objects.filter(msg_sender__id=friend.user.id, msg_receiver=user, seen=False)
+            if chats.count() > 0 :
+                arr.append(chats.count())
+            else : 
+                arr.append(0)
         return JsonResponse(arr, safe=False)
     else:
         return redirect('/auth/login/')

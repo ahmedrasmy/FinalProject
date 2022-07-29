@@ -232,13 +232,12 @@ def cancel_friend_request_sugustions(request, method='POST'):
 def Friends_list(request):
     return render(request, 'index.html')
 
-
 def Bio(request,method='POST'):
     user = Useraccount.objects.get(id=int(request.session['user_id']))
     user.Bio = request.POST['BioInput']
     user.save()
     return redirect('/home/pro/'+str(request.session['user_id']))
 
-def Post(request, post_id):
+def Post(request, id):
     return render(request, 'index.html')
 

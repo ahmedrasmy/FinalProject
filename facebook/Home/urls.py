@@ -16,12 +16,11 @@ urlpatterns = [
     path('friend_request/<str:id>', send_friend_request, name='friend-request'),
     path('Home/', home, name='home'),
     path('updateprofile/', updateprofile, name='updateprofile'),
-    #path('pro/', pro, name='pro'),
     path('pro/<str:id>', pro, name='pro'),
     path('Bio/',Bio, name='Bio'),
     path('sugistions_list/', sugistions_list, name='sugistions_list'),
     path('cancel_friend_request_sugustions/',cancel_friend_request_sugustions, name='cancel_friend_request_sugustions'),
     path('frined_request_delete_sugustions/', frined_request_delete_sugustions,name='frined_request_delete_sugustions'),
     path('frined_request_accept_sugustions/',frined_request_accept_sugustions, name='frined_request_accept_sugustions'),
-    path('Post/<post_id>/', Post,name='Post'),
+    path('Post/<str:id>/', Post, name='Post'),
 ]
