@@ -22,22 +22,6 @@ import Logout from '@mui/icons-material/Logout';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import '../chat/Stylechat.css';
 
-
-
-function getNotification(){
-    let url = "http://127.0.0.1:8000/api/chatNotification/"
-    fetch(url)
-    .then(res=>res.json())
-    .then(data=>{
-        // console.log(data)
-        let chatNotificationBtn = document.getElementsByClassName("msg")
-        for(let i = 0; i<data.length; i++){
-            chatNotificationBtn[i].innerText = data[i]
-        }
-    })
-    .catch(error => console.log(error))
-}
-
 function Header() {
     const history = useHistory();
     const [users, setUsers] = useState({})
@@ -70,7 +54,37 @@ function Header() {
             })
             .catch((err) => console.log(err))
     }, [])
-    setInterval(getNotification, 1000)
+    let [Invisib,setInvisib] = useState(true)
+    const getNotification = () =>{
+        let url = "http://127.0.0.1:8000/api/chatNotification/"
+        fetch(url)
+        .then(res=>res.json())
+        .then(data=>{
+            let cou = 0
+            let chatNotificationBtn = document.getElementsByClassName("msg")
+            for(let i = 0; i<data.length; i++){
+                if (data[i] === 0 ){
+                    cou = cou + 0
+                }
+                else { 
+                    cou = cou + 1
+                    if (anchorEl === null){}
+                    else {
+                        chatNotificationBtn[i].innerText = data[i]
+                    }
+                }
+            }
+            if (cou === 0 ){
+                setInvisib(true)
+            }
+            else {
+                setInvisib(false)
+            }
+        })
+        .catch(error => console.log(error))
+    }
+    setInterval( getNotification,1000)
+    console.log(Invisib)
     return (
         <div className="header">
             <div className="header-left">
@@ -119,10 +133,11 @@ function Header() {
                         aria-expanded={open ? 'true' : undefined}
                         onClick={handleClick}
                         >
-                        <Badge badgeContent={4} color="primary"> 
+                        <Badge variant="dot" invisible={Invisib} color="primary"> 
                             <ForumIcon/>
                         </Badge>
                     </IconButton>
+                    <input type="hidden" id="hideme_pls"/>
                 <IconButton>
                     <NotificationsActiveIcon/>
                 </IconButton>
@@ -133,10 +148,10 @@ function Header() {
                             <ExpandMoreIcon/>
                         </IconButton>
                         <Menu {...bindMenu(popupState)}>
-                            <MenuItem onClick={popupState.close}><Avatar sx={{ width: 24, height: 24 }}/>  Profile</MenuItem>
-                            <MenuItem onClick={popupState.close}><PersonAdd fontSize="small" />   find friends</MenuItem>
+                            <MenuItem onClick={popupState.close}> <a href={"/home/pro/"+users.id} ><Avatar sx={{ width: 24, height: 24 }}/>  Profile </a></MenuItem>
+                            <MenuItem onClick={popupState.close}> <a href={"/home/sugistions_list/"} > <PersonAdd fontSize="small" />   find friends </a></MenuItem>
                             <MenuItem onClick={popupState.close}>
-                                <Logout fontSize="small" />  Logout
+                                <a href="/auth/logout"><Logout fontSize="small" />  Logout</a>
                             </MenuItem>
                         </Menu>
                         </React.Fragment>
@@ -151,33 +166,34 @@ function Header() {
                     'aria-labelledby': 'basic-button',
                     }}
                 >
-                    <MenuItem onClick={handleClose} ><div className="chat-container">
-                        <div className="header">chats</div>
-                        <div className="friends-container">
-                            {
-                                friends.map((friend)=>{
-                                    return <>
-                                        <a href={'/chats/detail/'+ friend.id} style={{color:"black", textDecoration: "none"}}>
-                                            <div className="friends">
-                                                <div className="pic">
-                                                <img src={friend.pic} alt="" />
+                    <MenuItem onClick={handleClose} >
+                        <div className="chat-container">
+                            <div className="header">chats</div>
+                            <div className="friends-container">
+                                {
+                                    friends.map((friend)=>{
+                                        return <>
+                                            <a href={'/chats/detail/'+ friend.id} style={{color:"black", textDecoration: "none"}}>
+                                                <div className="friends">
+                                                    <div className="pic">
+                                                    <img src={friend.pic} alt="" />
+                                                    </div>
+                                                    <div className="name">
+                                                    <h5>{friend.first_name+ ' ' + friend.last_name}</h5>
+                                                    </div>
+                                                    <div className="time_new_msg">
+                                                        <p>7:30am</p> 
+                                                    <div className="msg">0</div>
+                                                    </div>
                                                 </div>
-                                                <div className="name">
-                                                <h5>{friend.first_name+ ' ' + friend.last_name}</h5>
-                                                </div>
-                                                <div className="time_new_msg">
-                                                    <p>7:30am</p> 
-                                                <div className="msg">0</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </>
-                                })
-                            }
+                                            </a>
+                                        </>
+                                    })
+                                }
+                            </div>
                         </div>
-                    </div>
-                </MenuItem>
-            </Menu>
+                    </MenuItem>
+                </Menu>
             </div>
         </div>
     )

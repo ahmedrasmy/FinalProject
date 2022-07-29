@@ -232,7 +232,6 @@ def cancel_friend_request_sugustions(request, method='POST'):
 def Friends_list(request):
     return render(request, 'index.html')
 
-
 def Bio(request,method='POST'):
     user = Useraccount.objects.get(id=int(request.session['user_id']))
     user.Bio = request.POST['BioInput']

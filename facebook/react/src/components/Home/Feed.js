@@ -31,16 +31,12 @@ function Feed() {
             })
             .catch((err) => console.log(err))
 
-    }, [posts])
-
-    console.log(posts)
-
-
+    }, [])
     return (
     <div className="feed">
         <StoryReel/>
-            <
-                Post/> {
+            <Post /> 
+            {
                 posts.map((post) => {
                     return < >
                         <
@@ -55,7 +51,8 @@ function Feed() {
                         /> 
                         </>
                 })
-            }</div>
+            }
+    </div>
 )
 
 }

@@ -308,9 +308,11 @@ def chatNotification(request):
         friends = friend_list[0].friends.all()
         arr = []
         for friend in friends:
-            chats = ChatMessage.objects.filter(
-                msg_sender__id=friend.user.id, msg_receiver=user, seen=False)
-            arr.append(chats.count())
+            chats = ChatMessage.objects.filter(msg_sender__id=friend.user.id, msg_receiver=user, seen=False)
+            if chats.count() > 0 :
+                arr.append(chats.count())
+            else : 
+                arr.append(0)
         return JsonResponse(arr, safe=False)
     else:
         return redirect('/auth/login/')
