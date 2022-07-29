@@ -138,4 +138,13 @@ class Story(models.Model):
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
     pic = models.ImageField(upload_to="img", blank=True, null=True)
     body = models.TextField(blank=True, null=True)
+    timesstamp = models.DateTimeField(auto_now_add=True)
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(Useraccount, on_delete=models.CASCADE , related_name="user_sender")
+    body = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    seen = models.BooleanField(default=False)
+    user_receiver = models.ForeignKey(Useraccount, on_delete=models.CASCADE , related_name="user_receiver")
+    post = models.ForeignKey(Posts, on_delete=models.CASCADE, related_name='post_notifications')

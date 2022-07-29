@@ -17,6 +17,7 @@ import Dialog from '@mui/material/Dialog';
 import './CreatPost.css';
 import DialogContent from '@mui/material/DialogContent';
 import jQuery from "jquery";
+import {useLocation} from "react-router-dom";
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {

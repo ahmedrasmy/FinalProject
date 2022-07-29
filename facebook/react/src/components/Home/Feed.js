@@ -31,7 +31,7 @@ function Feed() {
             })
             .catch((err) => console.log(err))
 
-    }, [posts])
+    }, [])
 
 
 

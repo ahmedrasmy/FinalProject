@@ -10,6 +10,7 @@ import Profile from './components/Profile/Profile';
 import HomeChat from './components/chat/Index';
 import Detail from './components/chat/Detail';
 import Sugustions_List from './components/Home/Sugustions_List';
+import Post2 from './components/Home/Post2';
 function App() {
     return (
         <Router>
@@ -27,6 +28,7 @@ function App() {
                 <Route exact path={"/chats/detail/:id/"} component={Detail}/>
                 <Route exact path={"/home/search/:name"} component={SearchResults}/>
                 <Route exact path={"/home/sugistions_list/"} component={Sugustions_List}/>
+                <Route exact path={"/home/Post/:post_id/"} component={Post2}/>
               </Switch>
             </BrowserRouter>
       </div>

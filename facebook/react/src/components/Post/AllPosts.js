@@ -174,7 +174,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 <i className = "fa-regular fa-face-grin-beam icon3" > </i> 
                 <a href = "#" > </a> 
             </div> 
-            <a href = "#" class = "nums-comments" > 100 Coments 20 Shares </a> 
+            <a href = "#" class = "nums-comments" > {comments.length} Coments 20 Shares </a>
         </div>
         <div className = "like-comment-share" >
             <div className = "icon like" >
