@@ -13,6 +13,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ChatIcon from '@mui/icons-material/Chat';
 import {useLocation} from 'react-router-dom';
+import './Profile.css';
 import { Avatar } from '@mui/material';
 import '../Post/CreatPost.css';
 
@@ -31,7 +32,6 @@ function getCookie(name) {
         }
         return cookieValue;
     }
-
 
 function ProfileHeader() {
     let location = useLocation();
@@ -85,6 +85,29 @@ function ProfileHeader() {
                 setopenAddStory(false);
             }).catch((err) => console.log(err))
     }
+    const [pic, setPic] = useState(null)
+    const [picCover, setPicCover] = useState(null)
+    function submit(e){
+        e.preventDefault();
+    }
+    const sendpicsData = {
+        pic:pic,
+        pic_cover:picCover,
+    }
+    const updateProfilePics =  ()=>{axios.post("http://127.0.0.1:8000/api/updateprofile/",
+                sendpicsData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                },
+            ).then(res => {
+                setOpen(false);
+                console.log(res)
+
+            }).catch((err) => console.log(err))
+}
     return (
         <>
             <div>
@@ -104,23 +127,22 @@ function ProfileHeader() {
                         </Typography>
                         <div className="modal-content">
                             <div className="modal-body">
-                                <form action="/home/updateprofile/" method="post" encType="multipart/form-data">
-                                <CSRF/>
+                                <form onSubmit={(e) => submit(e) }   enctype="multipart/form-data" >
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputPassword1" className="form-label">Profile
                                             Picture</label>
                                         <input type="file" accept="image/*" name="pic" className="form-control"
-                                            id="exampleInputPassword1"/>
+                                            id="exampleInputPassword1" onChange={(e)=>setPic(e.target.files[0])}/>
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputPassword1" className="form-label">Cover
                                             Picture</label>
                                         <input type="file" accept="image/*" name="cover" className="form-control"
-                                            id="exampleInputPassword1"/>
+                                            id="exampleInputPassword1" onChange={(e)=>setPicCover(e.target.files[0])}/>
                                     </div>
                                     <DialogActions>
                                         <Button onClick={handleClose}>Close</Button>
-                                    <Button type="submit" autoFocus>
+                                    <Button type="submit" onClick={updateProfilePics} autoFocus>
                                         Submit
                                     </Button>
                                     </DialogActions>

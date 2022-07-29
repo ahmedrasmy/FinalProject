@@ -1,66 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-
-    <list default="true" id="92c29cac-eb8b-4020-9621-6108588696e6" name="Changes" comment="urls">
-      <change beforePath="$PROJECT_DIR$/facebook/mychatapp/templates/mychatapp/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/mychatapp/templates/mychatapp/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/mychatapp/templates/mychatapp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/mychatapp/templates/mychatapp/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/mychatapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/mychatapp/views.py" afterDir="false" />
-
+    <list default="true" id="92c29cac-eb8b-4020-9621-6108588696e6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/API/apiurl.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/apiurl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/API/serlizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/serlizer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/API/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0002_auto_20220728_1155.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/migrations/0003_auto_20220728_1208.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/Home/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Header/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Header/Header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Feed.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Feed.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Post/AllPosts.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Post/AllPosts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Post/Post.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Post/Post.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="JavaScript File" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2CZDA8oaIV1ysxb2D2c3R6tPsBF" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-
     <task active="true" id="Default" summary="Default task">
-      <changelist id="df9d4179-8d34-4952-9b07-4f766a38a94a" name="Changes" comment="urls" />
-      <created>1658594805768</created>
+      <changelist id="92c29cac-eb8b-4020-9621-6108588696e6" name="Changes" comment="" />
+      <created>1659001087763</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1658594805768</updated>
-      <workItem from="1658674771390" duration="8460000" />
-      <workItem from="1658763982124" duration="4669000" />
-      <workItem from="1658783535109" duration="17522000" />
+      <updated>1659001087763</updated>
     </task>
-    <task id="LOCAL-00001" summary="ؤاشىلثي">
-      <created>1658676884287</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1658676884287</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Auth Changes">
-      <created>1658677874735</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1658677874735</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Auth Changes">
-      <created>1658678171100</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1658678171100</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -72,14 +61,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="urls" />
-    <MESSAGE value="ؤاشىلثي" />
-    <MESSAGE value="Auth Changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Auth Changes" />
-  </component>
-
-    <servers />
   </component>
 </project>

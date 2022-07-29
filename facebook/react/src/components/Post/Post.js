@@ -72,6 +72,7 @@ const [ShowImageInput, setShowImageInput] = React.useState(false);
         user:users
     }
     const addNewPost =  ()=>{axios.post("http://127.0.0.1:8000/api/addpost/",
+
                 sendPostData,
                 {
                     headers: {

@@ -16,8 +16,8 @@ class Useraccount(models.Model):
     phone_number = models.CharField(max_length=11, blank=True)
     birthdate = models.DateField()
     gender = models.CharField(max_length=20, choices=GENDER_CHOICES)
-    pic = models.ImageField(upload_to="img", blank=True, null=True)
-    pic_cover = models.ImageField(upload_to="img", blank=True, null=True)
+    pic = models.ImageField(upload_to="img", default='img/defaultpic.png' , blank=True, null=True)
+    pic_cover = models.ImageField(upload_to="img", default='img/defaultpic.png' , blank=True, null=True)
     address = models.CharField(max_length=100, null=True)
     location = models.CharField(max_length=100, null=True)
     Bio = models.CharField(max_length=300, null=True)
@@ -138,4 +138,13 @@ class Story(models.Model):
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
     pic = models.ImageField(upload_to="img", blank=True, null=True)
     body = models.TextField(blank=True, null=True)
+    timesstamp = models.DateTimeField(auto_now_add=True)
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(Useraccount, on_delete=models.CASCADE , related_name="user_sender")
+    body = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    seen = models.BooleanField(default=False)
+    user_receiver = models.ForeignKey(Useraccount, on_delete=models.CASCADE , related_name="user_receiver")
+    post = models.ForeignKey(Posts, on_delete=models.CASCADE, related_name='post_notifications')

@@ -49,6 +49,11 @@ urlpatterns = [
     path('addpost/', addpost, name='addpost'),
     path('addcomment/', addcomment, name='addcomment'),
     path('friends_list_contacts/', friends_list_contacts, name='friends_list_contacts'),
+    path('updateprofile/', updateprofile, name='updateprofile'),
     path('deleteStory/<pk>', deleteStory, name='deleteStory'),
     path('sugistions_list/', sugistions_list, name='sugistions_list'),
+    path('postNotification/',postNotification , name='postNotification'),
+    path('unseenNotification/<pk>/<id>/', unseenNotification, name='unseenNotification'),
+    path('get_one_post/<id>/', get_one_post, name='get_one_post'),
+
 ]

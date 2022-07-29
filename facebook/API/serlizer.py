@@ -9,6 +9,8 @@ class userSerializer(serializers.ModelSerializer):
         model = Useraccount
         fields ='__all__'
 
+
+
 class commentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comments
@@ -28,6 +30,12 @@ class postSerializer(serializers.ModelSerializer):
     class Meta:
         model = Posts
         fields = '__all__'
+    user = postUserSerial(many=False)
+
+class notifySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields ='__all__'
     user = postUserSerial(many=False)
 
 class createPostSerializer(serializers.ModelSerializer):

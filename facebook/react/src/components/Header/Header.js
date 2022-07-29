@@ -46,6 +46,14 @@ function Header() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const [NotifyEl, setNotifyEl] = useState(null);
+    const openNotify = Boolean(NotifyEl);
+    const handleClickNotify = (event) => {
+        setNotifyEl(event.currentTarget);
+    };
+    const handleCloseNotify = () => {
+        setNotifyEl(null);
+    };
     const [friends, setfriends] = useState([])
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/friends_list_chat/')
@@ -85,6 +93,16 @@ function Header() {
     }
     setInterval( getNotification,1000)
     console.log(Invisib)
+
+    const [notifications, setNotifications] = useState([])
+    console.log(notifications.length)
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/postNotification/')
+            .then(res => {
+                setNotifications(res.data);
+            })
+            .catch((err) => console.log(err))
+    }, [])
     return (
         <div className="header">
             <div className="header-left">
@@ -137,9 +155,15 @@ function Header() {
                             <ForumIcon/>
                         </Badge>
                     </IconButton>
-                    <input type="hidden" id="hideme_pls"/>
-                <IconButton>
-                    <NotificationsActiveIcon/>
+                <IconButton id="basic-button-notify"
+                aria-controls={openNotify ? 'basic-menu-notify' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={openNotify ? 'true' : undefined}
+                        onClick={handleClickNotify}
+                        >
+                        <Badge badgeContent={notifications.length} color="primary">
+                            <NotificationsActiveIcon/>
+                        </Badge>
                 </IconButton>
                 <PopupState variant="popover" popupId="demo-popup-menu">
                     {(popupState) => (
@@ -151,7 +175,7 @@ function Header() {
                             <MenuItem onClick={popupState.close}> <a href={"/home/pro/"+users.id} ><Avatar sx={{ width: 24, height: 24 }}/>  Profile </a></MenuItem>
                             <MenuItem onClick={popupState.close}> <a href={"/home/sugistions_list/"} > <PersonAdd fontSize="small" />   find friends </a></MenuItem>
                             <MenuItem onClick={popupState.close}>
-                                <a href="/auth/logout"><Logout fontSize="small" />  Logout</a>
+                                <a href="/auth/logout/"> <Logout fontSize="small" />  Logout </a>
                             </MenuItem>
                         </Menu>
                         </React.Fragment>
@@ -192,8 +216,45 @@ function Header() {
                                 }
                             </div>
                         </div>
-                    </MenuItem>
-                </Menu>
+                </MenuItem>
+            </Menu>
+            <Menu
+                    id="basic-menu-notify"
+                    anchorEl={NotifyEl}
+                    open={openNotify}
+                    onClose={handleCloseNotify}
+                    MenuListProps={{
+                    'aria-labelledby': 'basic-button-notify',
+                    }}
+                >
+                    <MenuItem onClick={handleCloseNotify} ><div className="chat-container">
+                        <div className="header">Notifications</div>
+                        <div className="friends-container">
+                            {
+                                notifications.map((notify)=>{
+                                    return <>
+                                        <a href={'/api/unseenNotification/'+ notify.id+'/'+notify.post} style={{color:"black", textDecoration: "none"}}>
+                                            <div className="friends">
+                                                <div className="pic">
+                                                <img src={notify.user.pic} alt="" />
+                                                </div>
+                                                <div className="name">
+                                                <h4>{notify.user.first_name + " " + notify.user.last_name}</h4>
+                                                <h5>{notify.body}</h5>
+                                                </div>
+                                                <div className="time_new_msg">
+                                                    <p>7:30am</p>
+
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </>
+                                })
+                            }
+                        </div>
+                    </div>
+                </MenuItem>
+            </Menu>
             </div>
         </div>
     )

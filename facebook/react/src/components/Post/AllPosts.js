@@ -151,21 +151,21 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 <div className = "Top_section" >
                     <Avatar src = { profilePic } className = "Posts_avatar" / >
                     <div className = "Top_section_info" >
-                        <h3 > { username } </h3>
-                        <p> { timestamp }</p> 
+                    <h3 > { username } </h3>
+                    <p> { timestamp }</p> 
                     </div>
                 </div> 
                 <div className = "bottom_section" >
                     <p> { message } </p> 
                 </div> 
                 <div className = "bottom_section_image row" >
-                    {
-                        image.map((img) => {
-                            return <>
-                                <img src = { img } className = "col" alt = ""/>
-                            </>
-                        })
-                    } 
+                {
+                    image.map((img) => {
+                        return <>
+                            <img src = { img } className = "col" alt = ""/>
+                        </>
+                    })
+                } 
                 </div>
                 <div className = "nums-comments-iteractions">
                     <div className = "interaction">
@@ -174,7 +174,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                         <i className = "fa-regular fa-face-grin-beam icon3" > </i> 
                         <a href = "#" > </a> 
                     </div> 
-                    <a href = "#" class = "nums-comments" > 100 Coments 20 Shares </a> 
+                    <a href = "#" class = "nums-comments" > {comments.length} Coments 20 Shares </a>
                 </div>
                 <div className = "like-comment-share" >
                     <div className = "icon like" >
@@ -187,36 +187,22 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                         <i className = "fa-regular fa-comment" ></i> 
                         Comment 
                     </div> 
-                <div className = "icon"><i className="fa-solid fa-share" ></i> Share</div >
-                </div>
-                <div class = "comments" > {
-                    comments.map((comment) => {
-                        return < >
-                            <div className = "comment" >
-                                <img src = { comment.split(',')[1] }alt = "" / >
-                                <div className = "comment-body" >
-                                <p className = "name" > { comment.split(',')[0] } </p> 
-                                <p> { comment.split(',')[2] } </p> 
-                                </div> 
-                            </div>
-                        </>
-                    })
-                }
-                </div>  
-                <div className = "create-comment" >
-                    <Avatar src = { users.pic } className = "Posts_avatar" / >
+                    <div className = "icon"><i className="fa-solid fa-share" ></i> Share</div >
+                </div> 
+                    <div className = "create-comment" >
+                        <Avatar src = { users.pic } className = "Posts_avatar" / >
                         <input type = "text"
-                        placeholder = "Write A comment"
-                        className = "commentInput"
-                        name = "commentcontent"
-                        onChange = {
+                            placeholder = "Write A comment"
+                            className = "commentInput"
+                            name = "commentcontent"
+                            onChange = {
                             (e) => setComment(e.target.value) }
-                        onKeyDown = {
+                            onKeyDown = {
                             (e) => handleKeyDown(e) }
                         />
-                </div> 
-        </div> 
-    </>
+                    </div>
+            </div> 
+        </>
     )
 }
 

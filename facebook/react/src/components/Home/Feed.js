@@ -32,6 +32,12 @@ function Feed() {
             .catch((err) => console.log(err))
 
     }, [])
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> a25edaf330b562fd0aca57e3c78d75ea5772d69c
     return (
     <div className="feed">
         <StoryReel/>

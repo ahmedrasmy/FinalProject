@@ -1,3 +1,4 @@
+import json
 from audioop import reverse
 from lib2to3.pgen2.token import NOTEQUAL
 from django.shortcuts import render, redirect
@@ -69,6 +70,8 @@ def register_user(request):
             return Response(user.data, status=status.HTTP_201_CREATED)
         return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+
 @api_view(['POST'])
 def addpost(request):
     if request.session.has_key('user_name'):
@@ -78,10 +81,99 @@ def addpost(request):
         newPost = Posts.objects.create(
             user=user, postcontent=request.data['postcontent'])
         if newPost:
+            friend_list = FrienList.objects.filter(user=user.id)
+            friends = friend_list[0].friends.all()
+            for friend in friends:
+                user_receiver = Useraccount.objects.filter(id=friend.id)[0]
+                notify = Notification.objects.create(
+                    user=user , body=" Add A new post ",
+                    user_receiver= user_receiver ,post=newPost,
+                )
+                notify.save()
             photo = Photos.objects.create(
                 post=newPost, imagecontent=request.data['imagecontent'])
             photo.save()
             return Response('successsfully')
+@api_view(['POST'])
+def updateprofile(request):
+    user = Useraccount.objects.get(id=int(request.session['user_id']))
+    if request.data['pic'] :
+        user.pic = request.data['pic']
+        user.save()
+        newPost = Posts.objects.create(
+            user=user, postcontent="update his profile picture"
+        )
+        photo = Photos.objects.create(
+            post=newPost,
+            imagecontent=user.pic
+        )
+        photo.save()
+        friend_list = FrienList.objects.filter(user=user.id)
+        friends = friend_list[0].friends.all()
+        for friend in friends:
+            user_receiver = Useraccount.objects.filter(id=friend.id)[0]
+            notify = Notification.objects.create(
+                user=user, body=" Update His Profile Picture ",
+                user_receiver=user_receiver ,post=newPost
+            )
+            notify.save()
+
+    if request.data['pic_cover'] :
+        user.pic_cover = request.data['pic_cover']
+        user.save()
+        newPost = Posts.objects.create(
+            user=user, postcontent="update his cover picture" ,post=newPost
+        )
+        photo = Photos.objects.create(
+            post=newPost,
+            imagecontent=user.pic_cover
+        )
+        photo.save()
+        friend_list = FrienList.objects.filter(user=user.id)
+        friends = friend_list[0].friends.all()
+        for friend in friends:
+            user_receiver = Useraccount.objects.filter(id=friend.id)[0]
+            notify = Notification.objects.create(
+                user=user, body=" Update His Cover Picture ",
+                user_receiver=user_receiver
+            )
+            notify.save()
+    return redirect('/home/pro/'+str(request.session['user_id']))
+@api_view(['GET'])
+def postNotification(request):
+    if request.session.has_key('user_name'):
+        user_receiver = Useraccount.objects.filter(
+            id=int(request.session['user_id']))[0]
+        notifications = reversed(Notification.objects.filter(user_receiver=user_receiver , seen=False))
+        if notifications:
+            data = notifySerializer(notifications, many=True)
+            return Response(data.data)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        return redirect('/auth/login/')
+@api_view(['GET'])
+def unseenNotification(request,pk,id):
+    if request.session.has_key('user_name'):
+        notify = Notification.objects.get(id=pk)
+        if notify:
+            notify.delete()
+            return redirect('/home/Post/'+id)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        return redirect('/auth/login/')
+@api_view(['GET'])
+def get_one_post(request,id):
+    if request.session.has_key('user_name'):
+        post = Posts.objects.filter(id=id)
+        if post:
+            data = postSerializer(post , many=True)
+            return Response(data.data)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        return redirect('/auth/login/')
 
 @api_view(['POST'])
 def addcomment(request):
@@ -232,7 +324,6 @@ def get_one_user(request, id):
                     'pending_friend_request_id': pending_friend_request_id,
                     'Bio': account.Bio,
                 })
-
             print(friend_requests)
             return JsonResponse(data=context, safe=False)
     else:
