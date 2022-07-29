@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db.models.functions import Now
 from datetime import timedelta
 from django.db import models
@@ -46,7 +47,7 @@ class Shares(models.Model):
 class Postlike(models.Model):
     post = models.ForeignKey(Posts, on_delete=models.CASCADE)
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
-
+    iconId = models.IntegerField()
 
 
 class Comments(models.Model):

@@ -58,7 +58,10 @@ def get_Like(request):
     user = LIKE(data=request.data)
     if user.is_valid():
         user.save()
-        return Response(user.data, status=status.HTTP_201_CREATED)
+        # return Response(user.data, status=status.HTTP_201_CREATED)
+        users = Postlike.objects.all()
+        data = LIKE(users, many=True)
+        return Response(data.data)
     return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
