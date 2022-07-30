@@ -1,5 +1,5 @@
 import { useEffect, useState, React } from "react";
-import { Avatar } from '@mui/material';
+import { Avatar, IconButton, stepIconClasses } from '@mui/material';
 import './AllPosts.css';
 import love3 from '../images/love3.svg';
 import care from '../images/care.png';
@@ -27,10 +27,12 @@ function getCookie(name) {
 }
 
 function AllPosts({ post_id, profilePic, image, username, timestamp, message, comments }) {
-    var like;
     var likeid;
     const [users, setUsers] = useState({})
     const [posts, setPosts] = useState({})
+    const [userLike, setUserLike] = useState(0)
+    const [Icon,setIcon]= useState(0)
+    const [dbIcon,setdbIcon]= useState(0)
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/get/')
             .then(res => {
@@ -38,22 +40,65 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
             })
             .catch((err) => console.log(err))
     }, [])
-    const addlike = () => {
+    const addlike = (e) => {
         const sentmessage = {
             post: post_id,
             user: users.id,
+            iconId:parseInt(e),
         }
+        axios.post("http://127.0.0.1:8000/api/get_like/",
+            sentmessage, 
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            },
+            ).then(res => {
+                for (let i = 0; i <= res.data.length - 1; i++) {
+                    let obj = res.data[i]
+                    if (obj.post === post_id && obj.user === users.id) {
+                        likeid = obj.id
+                        setPosts(res.data)
+                        setIcon(obj.iconId)
+                        setColor('blue')
+                        setUserLike(1)
+                    }
+                }
+            }).catch((err) => console.log(err))
+    }
+
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/get_likee/')
+            .then(res => {
+                setPosts(res.data);
+            })
+            .catch((err) => console.log(err))
+    }, [])
+
+    useEffect(() => {
         for (let i = 0; i <= posts.length - 1; i++) {
             let obj = posts[i]
-            console.log(obj)
             if (obj.post === post_id && obj.user === users.id) {
-                like = 'available'
-                likeid = obj.id
-
+                setIcon(obj.iconId)
+                setColor('blue')
+                setUserLike(1)
             }
         }
-        if (like === 'available') {
-            axios.delete("http://127.0.0.1:8000/api/delete_like/" +
+    }, [post_id, users.id, posts]);
+
+    const [colors, setColor] = useState('')
+    const handleClose = () => {
+        setColor('')
+        setUserLike(0)
+        setIcon(0)
+        for (let i = 0; i <= posts.length - 1; i++) {
+            let obj = posts[i]
+            if (obj.post === post_id && obj.user === users.id) {
+                likeid = obj.id
+            }
+        }
+        axios.delete("http://127.0.0.1:8000/api/delete_like/" +
                 likeid, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -61,90 +106,34 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                     }
                 },
             ).then(res => {
-                console.log(res)
                 setColor('')
+                setUserLike(0)
+                setIcon(0)
             }).catch((err) => console.log(err))
-        } else {
-            axios.post("http://127.0.0.1:8000/api/get_like/",
-                sentmessage, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    }
-                },
-            ).then(res => {
-                console.log(res)
-                setColor('blue')
-
-            }).catch((err) => console.log(err))
-        }
-    }
-    useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/get_likee/')
-            .then(res => {
-                setPosts(res.data);
-
-            })
-            .catch((err) => console.log(err))
-
-
-    }, [])
-
-    useEffect(() => {
-        for (let i = 0; i <= posts.length - 1; i++) {
-            let obj = posts[i]
-            if (obj.post === post_id && obj.user === users.id) {
-
-                setColor('blue')
-            }
-        }
-
-    }, [post_id, users.id, posts]);
-
-    const [colors, setColor] = useState('')
-
-
-    const handleClose = () => {
-        if (colors) {
-            setColor('')
-        } else {
-            setColor('blue')
-        }
-
-
     };
-
     const [comment, setComment] = useState(null)
-
     const sendCommentData = {
         post: parseInt(post_id),
         user: parseInt(users.id),
         commentcontent: comment
     }
-
     const addNewComment = () => {
-
         axios.post("http://127.0.0.1:8000/api/addcomment/",
             sendCommentData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': getCookie('csrftoken')
-
                 }
             },
         ).then(res => {
-            console.log(res)
-
         }).catch((err) => console.log(err))
     }
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
-
             addNewComment()
             e.target.value = ""
         }
     }
-
     return ( 
         <>
             <div className = "all_posts" >
@@ -178,10 +167,81 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 </div>
                 <div className = "like-comment-share" >
                     <div className = "icon like" >
-                        <button onClick = { addlike } > <i onClick = { handleClose }
-                        className = "fa-regular fa-thumbs-up"
-                        style = {
-                            { color: colors } } > </i> Like </button>
+                        {
+                            userLike === 1 ? <>
+                                {
+                                    Icon === 0 ?
+                                        <IconButton onClick = { handleClose } > 
+                                            <i 
+                                                className = "fa-regular fa-thumbs-up"
+                                                style = {
+                                                { color: colors } } > 
+                                            </i>
+                                            Like
+                                        </IconButton>
+                                    : null 
+                                }
+                                {
+                                    Icon === 1 ?
+                                        <IconButton onClick = { handleClose } >
+                                            <img src={love3} class="love icon2" alt="" />
+                                        </IconButton>
+                                    : null 
+                                }
+                                {
+                                    Icon === 2 ?
+                                        <IconButton onClick = { handleClose } >
+                                            <img src={care} class="icon3" alt="" />
+                                        </IconButton>
+                                    : null 
+                                }
+                                {
+                                    Icon === 3 ?
+                                        <IconButton onClick = { handleClose } >
+                                            <img src={emotion4} class="icon4" alt="" />
+                                        </IconButton>
+                                    : null 
+                                }
+                                {
+                                    Icon === 4 ?
+                                        <IconButton onClick = { handleClose } >
+                                            <img src={emotion5} class="icon5" alt="" />
+                                        </IconButton>
+                                    : null 
+                                }
+                                {
+                                    Icon === 5 ?
+                                        <IconButton onClick = { handleClose } >
+                                            <img src={emotion6} class="icon6" alt="" />
+                                        </IconButton>
+                                    : null 
+                                }
+                                {
+                                    Icon === 6 ?
+                                        <IconButton onClick = { handleClose } >
+                                            <img src={emotion7} class="icon7" alt="" />
+                                        </IconButton>
+                                    : null 
+                                }
+
+                            </>
+                            : <>
+                                <IconButton id="0" > 
+                                    <i className = "fa-regular fa-thumbs-up"> 
+                                    </i>
+                                    Like
+                                </IconButton>
+                                <div class="emoji">
+                                    <IconButton id="0" onClick = {(e)=> addlike(0)}><i class="fa-solid fa-thumbs-up icon1"></i></IconButton>
+                                    <IconButton id="1" onClick = {(e)=> addlike(1)} ><img src={love3} class="love icon2" alt="" /></IconButton>
+                                    <IconButton id="2" onClick = {(e)=> addlike(2)} ><img src={care} class="icon3" alt="" /></IconButton>
+                                    <IconButton id="3" onClick = {(e)=> addlike(3)}><img src={emotion4} class="icon4" alt="" /></IconButton>
+                                    <IconButton id="4" onClick = {(e)=> addlike(4)}><img src={emotion5} class="icon5" alt="" /></IconButton>
+                                    <IconButton id="5" onClick = {(e)=> addlike(5)}><img src={emotion6} class="icon6" alt="" /></IconButton>
+                                    <IconButton id="6" onClick = {(e)=> addlike(6)}><img src={emotion7} class="icon7" alt="" /></IconButton>
+                                </div>
+                            </>
+                        }
                     </div> 
                     <div className = "icon icon-comment" >
                         <i className = "fa-regular fa-comment" ></i> 

@@ -93,7 +93,6 @@ function Header() {
     }
     setInterval( getNotification,1000)
     console.log(Invisib)
-
     const [notifications, setNotifications] = useState([])
     console.log(notifications.length)
     useEffect(() => {
