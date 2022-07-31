@@ -42,6 +42,7 @@ class Photos(models.Model):
 class Shares(models.Model):
     post = models.ForeignKey(Posts, on_delete=models.CASCADE)
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
+    sharedate = models.DateTimeField(auto_now_add=True)
 
 
 class Postlike(models.Model):

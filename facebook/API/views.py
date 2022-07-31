@@ -95,6 +95,7 @@ def get_share(request):
 
                     arr.append({
                         'post_id_share':post.id,
+                        'post_time_share': post.sharedate,
                         'username_share':post.user.first_name+' '+post.user.last_name,
                         'user_pic_share':str(post.user.pic.url),
                         'user_id_share':post.user.id,
@@ -117,6 +118,7 @@ def get_share(request):
 
             arr.append({
                 'post_id_share': post.id,
+                'post_time_share': post.sharedate,
                 'username_share': post.user.first_name + ' ' + post.user.last_name,
                 'user_pic_share': str(post.user.pic.url),
                 'user_id_share': post.user.id,
