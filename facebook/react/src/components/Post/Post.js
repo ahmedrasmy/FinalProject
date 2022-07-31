@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import {useState, useEffect} from "react";
 import React from 'react';
 import theme from './icons/theme.svg';
 import smile from './icons/smile.svg';
@@ -7,7 +7,7 @@ import tag from './icons/tag.svg';
 import emoji from './icons/emoji.svg';
 import mic from './icons/mic.svg';
 import more from './icons/more.svg';
-import { Avatar } from '@mui/material';
+import {Avatar} from '@mui/material';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import MoodIcon from '@mui/icons-material/Mood';
@@ -17,6 +17,7 @@ import Dialog from '@mui/material/Dialog';
 import './CreatPost.css';
 import DialogContent from '@mui/material/DialogContent';
 import jQuery from "jquery";
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -31,6 +32,7 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
 function Post() {
     const [users, setUsers] = useState({})
     useEffect(() => {
@@ -40,7 +42,7 @@ function Post() {
             })
             .catch((err) => console.log(err))
     }, [])
-    const [input , setInput] =useState("")
+    const [input, setInput] = useState("")
     const [open, setOpen] = React.useState(false);
     const handleClickOpen = () => {
         setOpen(true);
@@ -49,198 +51,200 @@ function Post() {
     const handleClose = () => {
         setOpen(false);
     };
-const [ShowImageInput, setShowImageInput] = React.useState(false);
+    const [ShowImageInput, setShowImageInput] = React.useState(false);
     const handleshowinput = () => {
-        if (ShowImageInput === false){
+        if (ShowImageInput === false) {
             setShowImageInput(true)
-        }
-        else {
+        } else {
             setShowImageInput(false)
         }
     };
     const [image, setImage] = useState([])
     const [post, setPost] = useState(null)
 
-     function submit(e){
+    function submit(e) {
         e.preventDefault();
-     }
-     const sendPostData = {
-        postcontent:post,
-        imagecontent:image,
-        user:users
-     }
-     console.log(image)
-     const addNewPost =  ()=>{axios.post("http://127.0.0.1:8000/api/addpost/",
-                sendPostData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        'X-CSRFToken': getCookie('csrftoken')
+    }
 
-                    }
-                },
-            ).then(res => {
-                setOpen(false);
-                console.log(res)
+    const sendPostData = {
+        postcontent: post,
+        imagecontent: image,
+        user: users
+    }
+    console.log(image)
+    const addNewPost = () => {
+        axios.post("http://127.0.0.1:8000/api/addpost/",
+            sendPostData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    'X-CSRFToken': getCookie('csrftoken')
 
-            }).catch((err) => console.log(err))
-}
+                }
+            },
+        ).then(res => {
+            setOpen(false);
+            console.log(res)
+
+        }).catch((err) => console.log(err))
+    }
 
     return (
         <>
             <div className="post ">
                 <div className="post_top">
-                    <Avatar src={users.pic} className="Posts_avatar" />
-                        <input 
-                            readonly 
-                            variant="contained"
-                            className="post_input"
-                            placeholder={"what's on your mind? "+users.first_name}
-                            value={input}
-                            name="postcontent"
-                            onChange={(e) => setInput(e.target.value)}
-                            onClick={handleClickOpen}
-                        />
+                    <Avatar src={users.pic} className="Posts_avatar"/>
+                    <input
+                        readonly
+                        variant="contained"
+                        className="post_input"
+                        placeholder={"what's on your mind? " + users.first_name}
+                        value={input}
+                        name="postcontent"
+                        onChange={(e) => setInput(e.target.value)}
+                        onClick={handleClickOpen}
+                    />
                 </div>
                 <div className="post_bottom">
                     <div className="post_OPTION">
-                        <VideocamIcon style={{color : "red"}}/>
+                        <VideocamIcon style={{color: "red"}}/>
                         <h3>Live Video</h3>
                     </div>
                     <div variant="contained" className="post_OPTION" onClick={handleClickOpen}>
-                        <CollectionsIcon style={{color : "green"}} />
+                        <CollectionsIcon style={{color: "green"}}/>
                         <h3>Photo/Video</h3>
                     </div>
                     <div className="post_OPTION">
-                        <MoodIcon style={{color : "yellow"}}/>
+                        <MoodIcon style={{color: "yellow"}}/>
                         <h3>Felling/Activity</h3>
                     </div>
                 </div>
             </div>
             <Dialog
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogContent dividers>
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogContent dividers>
 
-                        <div className="container">
-                <div className="wrapper">
-                    <section className="post">
-                    <header>Create Post</header>
-                    <form onSubmit={(e) => submit(e) }   enctype="multipart/form-data"   >
+                    <div className="container">
+                        <div className="wrapper">
+                            <section className="post">
+                                <header>Create Post</header>
+                                <form onSubmit={(e) => submit(e)} enctype="multipart/form-data">
 
-                        <div className="content">
-                        <img src={users.pic} alt="logo" />
-                        <div className="details">
-                            <p>{users.first_name+' '+users.last_name}</p>
-                            <div className="privacy">
-                            <i className="fas fa-user-friends"></i>
-                            <span>Friends</span>
-                            <i className="fas fa-caret-down"></i>
-                            </div>
-                        </div>
-                        </div>
-                        <textarea
-                        placeholder={"What's on your mind, ?"+users.first_name}
-                        spellcheck="false"
-                        required
-                        name="postcontent"
-                        onChange={(e) => setPost(e.target.value)}
-                        ></textarea>
-                        <div>{ ShowImageInput ? <input type="file" accept="image/*" multiple
-                            className="post_input"
-                            placeholder="Enter your image here"
-                            name ="imagecontent" onChange={(e)=>setImage(e.target.files[0])}/>
-                            :null }
-                        </div>
-                        <div className="theme-emoji">
-                        <img src={theme} alt="theme" />
-                        <img src={smile} alt="smile" />
-                        </div>
-                        <div className="options">
-                        <p>Add to Your Post</p>
-                        <ul className="list">
-                            <li><img src={gallery} alt="gallery" onClick={handleshowinput} /></li>
-                            <li><img src={tag} alt="gallery" /></li>
-                            <li><img src={emoji} alt="gallery" /></li>
-                            <li><img src={mic} alt="gallery" /></li>
-                            <li><img src={more} alt="gallery" /></li>
-                        </ul>
-                        </div>
-                        <button type='submit' onClick={addNewPost} >Post</button>
-                    </form>
-                    </section>
-                    <section className="audience">
-                    <header>
-                        <div className="arrow-back"><i className="fas fa-arrow-left"></i></div>
-                        <p>Select Audience</p>
-                    </header>
-                    <div className="content">
-                        <p>Who can see your post?</p>
-                        <span
-                        >Your post will show up in News Feed, on your profile and in
+                                    <div className="content">
+                                        <img src={users.pic} alt="logo"/>
+                                        <div className="details">
+                                            <p>{users.first_name + ' ' + users.last_name}</p>
+                                            <div className="privacy">
+                                                <i className="fas fa-user-friends"></i>
+                                                <span>Friends</span>
+                                                <i className="fas fa-caret-down"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <textarea
+                                        placeholder={"What's on your mind, ?" + users.first_name}
+                                        spellcheck="false"
+                                        required
+                                        name="postcontent"
+                                        onChange={(e) => setPost(e.target.value)}
+                                    ></textarea>
+                                    <div>{ShowImageInput ? <input type="file" accept="image/*" multiple
+                                                                  className="post_input"
+                                                                  placeholder="Enter your image here"
+                                                                  name="imagecontent"
+                                                                  onChange={(e) => setImage(e.target.files[0])}/>
+                                        : null}
+                                    </div>
+                                    <div className="theme-emoji">
+                                        <img src={theme} alt="theme"/>
+                                        <img src={smile} alt="smile"/>
+                                    </div>
+                                    <div className="options">
+                                        <p>Add to Your Post</p>
+                                        <ul className="list">
+                                            <li><img src={gallery} alt="gallery" onClick={handleshowinput}/></li>
+                                            <li><img src={tag} alt="gallery"/></li>
+                                            <li><img src={emoji} alt="gallery"/></li>
+                                            <li><img src={mic} alt="gallery"/></li>
+                                            <li><img src={more} alt="gallery"/></li>
+                                        </ul>
+                                    </div>
+                                    <button type='submit' onClick={addNewPost}>Post</button>
+                                </form>
+                            </section>
+                            <section className="audience">
+                                <header>
+                                    <div className="arrow-back"><i className="fas fa-arrow-left"></i></div>
+                                    <p>Select Audience</p>
+                                </header>
+                                <div className="content">
+                                    <p>Who can see your post?</p>
+                                    <span
+                                    >Your post will show up in News Feed, on your profile and in
                         search results.</span
-                        >
+                                    >
+                                </div>
+                                <ul className="list">
+                                    <li>
+                                        <div className="column">
+                                            <div className="icon"><i className="fas fa-globe-asia"></i></div>
+                                            <div className="details">
+                                                <p>Public</p>
+                                                <span>Anyone on or off Facebook</span>
+                                            </div>
+                                        </div>
+                                        <div className="radio"></div>
+                                    </li>
+                                    <li className="active">
+                                        <div className="column">
+                                            <div className="icon"><i className="fas fa-user-friends"></i></div>
+                                            <div className="details">
+                                                <p>Friends</p>
+                                                <span>Your friends on Facebook</span>
+                                            </div>
+                                        </div>
+                                        <div className="radio"></div>
+                                    </li>
+                                    <li>
+                                        <div className="column">
+                                            <div className="icon"><i className="fas fa-user"></i></div>
+                                            <div className="details">
+                                                <p>Specific</p>
+                                                <span>Only show to some friends</span>
+                                            </div>
+                                        </div>
+                                        <div className="radio"></div>
+                                    </li>
+                                    <li>
+                                        <div className="column">
+                                            <div className="icon"><i className="fas fa-lock"></i></div>
+                                            <div className="details">
+                                                <p>Only me</p>
+                                                <span>Only you can see your post</span>
+                                            </div>
+                                        </div>
+                                        <div className="radio"></div>
+                                    </li>
+                                    <li>
+                                        <div className="column">
+                                            <div className="icon"><i className="fas fa-cog"></i></div>
+                                            <div className="details">
+                                                <p>Custom</p>
+                                                <span>Include and exclude friends</span>
+                                            </div>
+                                        </div>
+                                        <div className="radio"></div>
+                                    </li>
+                                </ul>
+                            </section>
+                        </div>
                     </div>
-                    <ul className="list">
-                        <li>
-                        <div className="column">
-                            <div className="icon"><i className="fas fa-globe-asia"></i></div>
-                            <div className="details">
-                            <p>Public</p>
-                            <span>Anyone on or off Facebook</span>
-                            </div>
-                        </div>
-                        <div className="radio"></div>
-                        </li>
-                        <li className="active">
-                        <div className="column">
-                            <div className="icon"><i className="fas fa-user-friends"></i></div>
-                            <div className="details">
-                            <p>Friends</p>
-                            <span>Your friends on Facebook</span>
-                            </div>
-                        </div>
-                        <div className="radio"></div>
-                        </li>
-                        <li>
-                        <div className="column">
-                            <div className="icon"><i className="fas fa-user"></i></div>
-                            <div className="details">
-                            <p>Specific</p>
-                            <span>Only show to some friends</span>
-                            </div>
-                        </div>
-                        <div className="radio"></div>
-                        </li>
-                        <li>
-                        <div className="column">
-                            <div className="icon"><i className="fas fa-lock"></i></div>
-                            <div className="details">
-                            <p>Only me</p>
-                            <span>Only you can see your post</span>
-                            </div>
-                        </div>
-                        <div className="radio"></div>
-                        </li>
-                        <li>
-                        <div className="column">
-                            <div className="icon"><i className="fas fa-cog"></i></div>
-                            <div className="details">
-                            <p>Custom</p>
-                            <span>Include and exclude friends</span>
-                            </div>
-                        </div>
-                        <div className="radio"></div>
-                        </li>
-                    </ul>
-                    </section>
-                </div>
-            </div>
 
-                    </DialogContent>
+                </DialogContent>
             </Dialog>
         </>
     )

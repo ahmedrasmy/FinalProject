@@ -6,6 +6,7 @@ import StoryReel from './StoryReel';
 import {useEffect, useState} from "react";
 import axios from "axios";
 import jQuery from "jquery";
+import AllShares from "../Post/AllShares";
 
 function getCookie(name) {
     var cookieValue = null;
@@ -24,6 +25,8 @@ function getCookie(name) {
 
 function Feed() {
     const [posts, setPosts] = useState([])
+    const [shares, setShare] = useState([])
+
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/getAllPosts/')
             .then(res => {
@@ -32,32 +35,58 @@ function Feed() {
             .catch((err) => console.log(err))
 
     }, [])
+   useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/getshare/')
+            .then(res => {
+                setShare(res.data);
+                console.log(res.data)
+            })
+            .catch((err) => console.log(err))
+    }, [])
 
     console.log(posts)
+    console.log(shares)
 
 
-    return (<
-        div className="feed">
-        <
-            StoryReel/>
-            <
-                Post/> {
+    return (
+        <div className="feed">
+            <StoryReel/>
+            <Post/>
+            {
                 posts.map((post) => {
                     return < >
-                        <
-                            AllPosts profilePic={post.user.pic}
-                                     post_id={post.id}
-                                     message={post.postcontent}
-                                     timestamp={post.postdate}
-                                     username={post.user.first_name + ' ' + post.user.last_name}
-                                     image={post.post_photos}
-                                     comments={post.post_comments}
-                                     user_id={post.user.id}
-                        /> < /
-                >
+                        <AllPosts
+                            profilePic={post.user.pic}
+                            post_id={post.id}
+                            message={post.postcontent}
+                            timestamp={post.postdate}
+                            username={post.user.first_name + ' ' + post.user.last_name}
+                            image={post.post_photos}
+                            comments={post.post_comments}
+                            user_id={post.user.id}/>
+                    </>
                 })
-            }</div>
-)
+            }
+                 {
+                shares.map((share) => {
+                    return < >
+                        <AllShares
+                            profilePic={share.user_pic_share}
+                            username={share.username_share}
+                            post_id={share.post_org_id}
+                            post_user_org={share.user_org_pic}
+                            username_org={share.post_username}
+                            message={share.body_org}
+                            timestamp={share.post_org_time}
+                            image={share.pic}
+                            // comments={post.post_comments}
+                            // user_id={post.user.id}
+                            />
+                    </>
+                })
+            }
+        </div>
+    )
 
 }
 
