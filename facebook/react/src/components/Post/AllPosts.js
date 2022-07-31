@@ -134,6 +134,28 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
             e.target.value = ""
         }
     }
+     function renderTimestamp(timestamp){
+    let prefix = "";
+    const timeDiff = Math.round(
+      (new Date().getTime() - new Date(timestamp).getTime()) / 60000
+    );
+    if (timeDiff < 1) {
+      // less than one minute ago
+      prefix = "just now...";
+    } else if (timeDiff < 60 && timeDiff > 1) {
+      // less than sixty minutes ago
+      prefix = `${timeDiff} minutes ago`;
+    } else if (timeDiff < 24 * 60 && timeDiff > 60) {
+      // less than 24 hours ago
+      prefix = `${Math.round(timeDiff / 60)} hours ago`;
+    } else if (timeDiff < 31 * 24 * 60 && timeDiff > 24 * 60) {
+      // less than 7 days ago
+      prefix = `${Math.round(timeDiff / (60 * 24))} days ago`;
+    } else {
+      prefix = `${new Date(timestamp)}`;
+    }
+    return prefix;
+  }
     return ( 
         <>
             <div className = "all_posts" >
@@ -141,7 +163,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                     <Avatar src = { profilePic } className = "Posts_avatar" / >
                     <div className = "Top_section_info" >
                     <h3 > { username } </h3>
-                    <p> { timestamp }</p> 
+                    <p> { renderTimestamp(timestamp) }</p>
                     </div>
                 </div> 
                 <div className = "bottom_section" >
@@ -232,7 +254,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                                     Like
                                 </IconButton>
                                 <div class="emoji">
-                                    <IconButton id="0" onClick = {(e)=> addlike(0)}><i class="fa-solid fa-thumbs-up icon1"></i></IconButton>
+                                    <i id="0" onClick = {(e)=> addlike(0)} class="fa-solid fa-thumbs-up icon1"></i>
                                     <IconButton id="1" onClick = {(e)=> addlike(1)} ><img src={love3} class="love icon2" alt="" /></IconButton>
                                     <IconButton id="2" onClick = {(e)=> addlike(2)} ><img src={care} class="icon3" alt="" /></IconButton>
                                     <IconButton id="3" onClick = {(e)=> addlike(3)}><img src={emotion4} class="icon4" alt="" /></IconButton>
@@ -248,7 +270,22 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                         Comment 
                     </div> 
                     <div className = "icon"><i className="fa-solid fa-share" ></i> Share</div >
-                </div> 
+                </div>
+                <div class="comments">
+                    {
+                        comments.map((comment) => {
+                            return <>
+                                <div className="comment">
+                                    <img src={comment.split(',')[1]} alt=""/>
+                                    <div className="comment-body">
+                                        <p className="name">{comment.split(',')[0]}</p>
+                                        <p> {comment.split(',')[2]} </p>
+                                    </div>
+                                </div>
+                                </>
+                                })
+                    }
+                    </div>
                     <div className = "create-comment" >
                         <Avatar src = { users.pic } className = "Posts_avatar" / >
                         <input type = "text"
