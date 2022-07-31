@@ -49,11 +49,19 @@ urlpatterns = [
     path('addpost/', addpost, name='addpost'),
     path('addcomment/', addcomment, name='addcomment'),
     path('friends_list_contacts/', friends_list_contacts, name='friends_list_contacts'),
+    path('addshare/',add_share,name='shares'),
+    path('getshare/', get_share, name='sharess'),
     path('updateprofile/', updateprofile, name='updateprofile'),
     path('deleteStory/<pk>', deleteStory, name='deleteStory'),
     path('sugistions_list/', sugistions_list, name='sugistions_list'),
     path('postNotification/',postNotification , name='postNotification'),
     path('unseenNotification/<pk>/<id>/', unseenNotification, name='unseenNotification'),
     path('get_one_post/<id>', get_one_post, name='get_one_post'),
-
+    path('get_group/<id>', get_group, name='get_group'),
+    path('get_user_for_group/<id>', get_user_for_group, name='get_user_for_group'),
+    path('addpostforgroups/', addpostforgroups, name='addpostforgroups'),
+    path('getpostforgroup/<id>', getpostforgroup, name='getpostforgroup'),
+    path('get_like_group/', get_like_group, name='get_like_group'),
+    path('get_likee_group/', get_likee_group, name='get_likee_group'),
 ]
+

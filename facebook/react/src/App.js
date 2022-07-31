@@ -16,26 +16,26 @@ import Post2 from './components/Home/Post2';
 function App() {
     return (
         <Router>
-      <div className='app'>
-            <BrowserRouter>
-              <Switch>
-                <Route exact path={"/auth/register"} component={Register}/>
-                <Route exact path={"/auth/login"} component={Login}/>
-                <Route exact path={"/home/Home/"} component={Home}/>
-                <Route exact path={"/home/search"} component={SearchResults}/>
-                <Route exact path={"/home/friendRequests/"} component={FriendRequests}/>
-                <Route exact path={"/home/Friends_list/"} component={Friends_List}/>
-                <Route exact path={"/home/pro/:id/"} component={Profile}/>
-                <Route exact path={"/chats/"} component={HomeChat}/>
-                <Route exact path={"/chats/detail/:id/"} component={Detail}/>
-                <Route exact path={"/home/search/:name"} component={SearchResults}/>
-                <Route exact path={"/home/sugistions_list/"} component={Sugustions_List}/>
-                <Route exact path={"/group/"} component={Groups}/>
-                <Route exact path={"/home/Post/:post_id/"} component={Post2}/>
-              </Switch>
-            </BrowserRouter>
-      </div>
-    </Router>
+          <div className='app'>
+                <BrowserRouter>
+                  <Switch>
+                    <Route exact path={"/auth/register"} component={Register}/>
+                    <Route exact path={"/auth/login"} component={Login}/>
+                    <Route exact path={"/home/Home/"} component={Home}/>
+                    <Route exact path={"/home/search"} component={SearchResults}/>
+                    <Route exact path={"/home/friendRequests/"} component={FriendRequests}/>
+                    <Route exact path={"/home/Friends_list/"} component={Friends_List}/>
+                    <Route exact path={"/home/pro/:id/"} component={Profile}/>
+                    <Route exact path={"/chats/"} component={HomeChat}/>
+                    <Route exact path={"/chats/detail/:id/"} component={Detail}/>
+                    <Route exact path={"/home/search/:name"} component={SearchResults}/>
+                    <Route exact path={"/home/sugistions_list/"} component={Sugustions_List}/>
+                    <Route exact path={"/home/group/:id/"} component={Groups}/>
+                    <Route exact path={"/home/Post/:post_id/"} component={Post2}/>
+                  </Switch>
+                </BrowserRouter>
+          </div>
+      </Router>
   );
 }
 
