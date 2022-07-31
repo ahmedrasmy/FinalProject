@@ -64,6 +64,7 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
             },
         ).then(res => {
             console.log(res)
+            handleCloseDialog()
 
 
         }).catch((err) => console.log(err))
@@ -209,7 +210,7 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
             <div className="Top_section">
                 <Avatar src={profilePic} className="Posts_avatar"/>
                 <div className="Top_section_info">
-                    <h3> {username} < /h3> <p> {renderTimestamp(timestamp)} </p></div>
+                    <h3 style= {{paddingLeft:"0px"}}> {username} < /h3> <p> {renderTimestamp(timestamp)} </p></div>
             </div>
             <div className="bottom_section">
                 <p> {message} </p></div>
@@ -226,7 +227,7 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
                     <i className="fa-solid fa-heart icon2"> </i>
                     <i className="fa-regular fa-face-grin-beam icon3"> </i>
                     <a href="#"> < /a></div>
-                <a href="#" class="nums-comments"> {comments.length}Coments 20 Shares < /a></div>
+                <a href="#" class="nums-comments"> {comments.length} Coments 20 Shares < /a></div>
             <div className="like-comment-share">
                 <div className="icon like"> {
                     userLike === 1 ? < > {
@@ -311,8 +312,9 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
                     Comment
                 </div>
                 <
-                    div className="icon">< i className="fa-solid fa-share"> </i> Share
+                    div className="icon">< i className="fa-solid fa-share" onClick={handleClickOpenDialog}> </i> Share
                 </div>
+
 
             </div>
             <
@@ -343,10 +345,9 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
                        onKeyDown={
                            (e) => handleKeyDown(e)
                        }/></div>
-        < /div>
+        </div>
 
-        <
-            Dialog open={open}
+        <Dialog open={open}
                    onClose={handleCloseDialog}
                    aria-labelledby="alert-dialog-title"
                    aria-describedby="alert-dialog-description"
@@ -371,8 +372,7 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
                                 <div className="content">
                                     <img src={users.pic}
                                          alt="logo"/>
-                                    <
-                                        div className="details">
+                                    <div className="details">
                                         <p> {users.first_name + ' ' + users.last_name} </p>
                                         <div className="privacy">
                                             <i className="fas fa-user-friends"> < /i> <
@@ -381,21 +381,13 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
 
                                     </div>
                                 </div>
-                                <
-                                    textarea placeholder={"What's on your mind, ?" + users.first_name}
-                                             spellCheck="false"
-                                             required name="postcontent"
-                                             onChange={
-                                                 (e) => setShare(e.target.value)}
-                                             style={
-                                                 {height: "50px"}}>
-                        </textarea> <
-                                img src={image}
+                                <img src={image}
                                     className="col"
-                                    alt=""/>
-                                <
-                                    button type='submit'> Post
-                                </button>
+                                    alt="" style={{marginTop:"10px" ,marginRight:"20px"}}/>
+                                <button type="submit" className="bg-blue-600  rounded-lg text-white font-semibold" >
+                                            Share
+                                        </button>
+
 
 
                                 <div className="theme-emoji">

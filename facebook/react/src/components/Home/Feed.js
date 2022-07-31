@@ -82,7 +82,7 @@ function Feed() {
                             message={share.body_org}
                             timestamp={share.post_org_time}
                             image={share.pic}
-                            // comments={post.post_comments}
+                            timestamp_share={share.post_time_share}
                             // user_id={post.user.id}
                         /> </>
                 })
