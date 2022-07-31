@@ -7,7 +7,6 @@ import emotion4 from '../images/emotion4.webp';
 import emotion5 from '../images/emotion5.webp';
 import emotion6 from '../images/emotion6.webp';
 import emotion7 from '../images/emotion7.webp';
-import CSRF from '../Auth/CSRF'
 import axios from "axios";
 import jQuery from "jquery";
 
@@ -26,13 +25,12 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function AllPosts({ post_id, profilePic, image, username, timestamp, message, comments }) {
+function AllPosts({ post_id, profilePic, image, username, timestamp, message, comments ,group_id=0}) {
     var likeid;
     const [users, setUsers] = useState({})
     const [posts, setPosts] = useState({})
     const [userLike, setUserLike] = useState(0)
     const [Icon,setIcon]= useState(0)
-    const [dbIcon,setdbIcon]= useState(0)
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/get/')
             .then(res => {
@@ -46,7 +44,8 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
             user: users.id,
             iconId:parseInt(e),
         }
-        axios.post("http://127.0.0.1:8000/api/get_like/",
+        if ( group_id != 0){
+            axios.post("http://127.0.0.1:8000/api/get_like_group/",
             sentmessage, 
             {
                 headers: {
@@ -66,15 +65,48 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                     }
                 }
             }).catch((err) => console.log(err))
+        }
+        else {
+            axios.post("http://127.0.0.1:8000/api/get_like/",
+            sentmessage, 
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            },
+            ).then(res => {
+                for (let i = 0; i <= res.data.length - 1; i++) {
+                    let obj = res.data[i]
+                    if (obj.post === post_id && obj.user === users.id) {
+                        likeid = obj.id
+                        setPosts(res.data)
+                        setIcon(obj.iconId)
+                        setColor('blue')
+                        setUserLike(1)
+                    }
+                }
+            }).catch((err) => console.log(err))
+        }
     }
-
-    useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/get_likee/')
-            .then(res => {
-                setPosts(res.data);
-            })
-            .catch((err) => console.log(err))
-    }, [])
+    if ( group_id  != 0 ){
+            useEffect(() => {
+                        axios.get('http://127.0.0.1:8000/api/get_likee_group/')
+                            .then(res => {
+                                setPosts(res.data);
+                            })
+                            .catch((err) => console.log(err))
+                    }, [])
+        }
+    else {
+        useEffect(() => {
+            axios.get('http://127.0.0.1:8000/api/get_likee/')
+                .then(res => {
+                    setPosts(res.data);
+                })
+                .catch((err) => console.log(err))
+        }, [])
+    }
 
     useEffect(() => {
         for (let i = 0; i <= posts.length - 1; i++) {
@@ -223,7 +255,6 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                                         </IconButton>
                                     : null 
                                 }
-
                             </>
                             : <>
                                 <IconButton id="0" > 

@@ -83,6 +83,10 @@ def search(request):
     return render(request, 'index.html')
 
 
+def group(request,id):
+    return render(request, 'index.html')
+
+
 def send_friend_request(request):
     pk = int(request.session['user_id'])
     user = Useraccount.objects.get(id=pk)

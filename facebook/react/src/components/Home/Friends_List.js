@@ -1,13 +1,19 @@
 import React from 'react';
 import '../css/Account.css';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 function Friends_List() {
-    let friends=[
-        {
-            id:1,pic:'pic',username:'username',
-        }
-    ]
+    const [friends, setfriends] = useState([])
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/friends_list_contacts/')
+            .then(res => {
+                setfriends(res.data);
+                console.log(res.data)
+        })
+            .catch((err) => console.log(err))
+    }, [])
     return (
         <>
             <div className="container">
@@ -19,16 +25,16 @@ function Friends_List() {
                                     friends.map ((friend) => {
                                         return <>
                                             <div className="card flex-row flex-grow-1 p-2 mx-2 my-2 align-items-center col-4">
-                                                <a className="profile-link" href={'/home/account/'+friend.id}>
+                                                <a className="profile-link" href={'/home/pro/'+friend.id}>
                                                     <div className="card-image m-2">
-                                                        <img className="img-fluid profile-image" src="friend.pic" alt="" />
+                                                        <img className="img-fluid profile-image" src={friend.pic} alt="" />
                                                     </div>
                                                 </a>
                                                 <div className="card-center px-2">
-                                                    <a className="profile-link" href={'/home/account/'+friend.id}>
+                                                    <a className="profile-link" href={'/home/pro/'+friend.id}>
                                                         <h4 className="card-title">{friend.username}</h4>
                                                     </a>
-                                                    <a href="#" >Send a Message</a>      
+                                                    <a href={"/chats/detail/"+friend.id} >Send a Message</a>      
                                                 </div>
                                                 <div className="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
                                                 <div className="d-flex flex-row friends-text-container p-3">

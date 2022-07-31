@@ -33,7 +33,7 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-function Post({poll}) {
+function Post({poll,group_id}) {
     const [users, setUsers] = useState({})
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/get/')
@@ -47,7 +47,6 @@ function Post({poll}) {
     const handleClickOpen = () => {
         setOpen(true);
     };
-
     const handleClose = () => {
         setOpen(false);
     };
@@ -72,7 +71,6 @@ const [ShowImageInput, setShowImageInput] = React.useState(false);
         user:users
     }
     const addNewPost =  ()=>{axios.post("http://127.0.0.1:8000/api/addpost/",
-
                 sendPostData,
                 {
                     headers: {
@@ -84,10 +82,27 @@ const [ShowImageInput, setShowImageInput] = React.useState(false);
             ).then(res => {
                 setOpen(false);
                 console.log(res)
-
             }).catch((err) => console.log(err))
-}
-
+    }
+    const sendPostDatagroup = {
+        postcontent:post,
+        images:image,
+        group:group_id,
+        user:users,
+    }
+    const addNewPostforGroups = ()=>{axios.post("http://127.0.0.1:8000/api/addpostforgroups/",
+                sendPostDatagroup,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                },
+            ).then(res => {
+                setOpen(false);
+                console.log(res)
+            }).catch((err) => console.log(err))
+    }
     return (
         <>
             <div className="post ">
@@ -136,7 +151,7 @@ const [ShowImageInput, setShowImageInput] = React.useState(false);
                     <DialogContent dividers>
 
                         <div className="container">
-                <div className="wrapper">
+                    <div className="wrapper">
                     <section className="post">
                     <header>Create Post</header>
                     <form onSubmit={(e) => submit(e) }   enctype="multipart/form-data"   >
@@ -179,7 +194,12 @@ const [ShowImageInput, setShowImageInput] = React.useState(false);
                             <li><img src={more} alt="gallery" /></li>
                         </ul>
                         </div>
-                        <button type='submit' onClick={addNewPost} >Post</button>
+                        {
+                            poll === "0" ?
+                                <button type='submit' onClick={addNewPostforGroups} >Post</button>
+                            :     
+                                <button type='submit' onClick={addNewPost} >Post</button>
+                        }
                     </form>
                     </section>
                     <section className="audience">
