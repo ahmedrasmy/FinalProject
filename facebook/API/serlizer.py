@@ -87,7 +87,7 @@ class ChatMessagesel(serializers.ModelSerializer):
         model = ChatMessage
         fields = '__all__'
 
-
+################# story ###################
 class Storyserializer(serializers.ModelSerializer):
     class Meta:
         model = Story
@@ -100,7 +100,32 @@ class LIKE(serializers.ModelSerializer):
         fields = '__all__'
 
 
+###############################  for group ###########################3
+class GetGroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= Groups
+        fields = '__all__'
 
+
+class PostsGroupsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostsGroups
+        fields = '__all__'
+
+
+class PostsGroupsSerializerget(serializers.ModelSerializer):
+    post_comments = serializers.StringRelatedField(many=True)
+    class Meta:
+        model = PostsGroups
+        fields = '__all__'
+    user = postUserSerial(many=False)
+
+
+class LIKEGroup(serializers.ModelSerializer):
+
+    class Meta:
+        model = Postlikegroup
+        fields = '__all__'
 
 
 class postShareSerial(serializers.ModelSerializer):

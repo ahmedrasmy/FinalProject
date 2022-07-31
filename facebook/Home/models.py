@@ -1,4 +1,5 @@
 from email.policy import default
+from tokenize import group
 from django.db.models.functions import Now
 from datetime import timedelta
 from django.db import models
@@ -29,7 +30,7 @@ class Posts(models.Model):
     postdate = models.DateTimeField(auto_now_add=True)
     postcontent = models.TextField()
     islike=models.BooleanField(default=False)
-
+    
 
 class Photos(models.Model):
     post = models.ForeignKey(Posts, on_delete=models.CASCADE, related_name='post_photos')
@@ -76,10 +77,6 @@ class Pageslike(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
 
-
-class Friends(models.Model):
-    user = models.ForeignKey(Useraccount, on_delete=models.CASCADE, related_name="useraccount_user")
-    friend = models.ForeignKey(Useraccount, on_delete=models.CASCADE, related_name="useraccount_friend")
 
 
 class ChatMessage(models.Model):
@@ -150,3 +147,78 @@ class Notification(models.Model):
     seen = models.BooleanField(default=False)
     user_receiver = models.ForeignKey(Useraccount, on_delete=models.CASCADE , related_name="user_receiver")
     post = models.ForeignKey(Posts, on_delete=models.CASCADE, related_name='post_notifications')
+
+###################################### groups #############################
+class Groups(models.Model):
+    owner=models.ForeignKey(Useraccount, on_delete=models.CASCADE , related_name="group")
+    group_name=models.TextField()
+    group_pic= models.ImageField(upload_to="img", blank=True, null=True)
+    About_group=models.TextField()
+    members = models.ManyToManyField(Useraccount, blank=True, related_name="members")
+
+
+    def _str_(self):
+        return self.group_name
+
+
+    def add_member(self, account):
+        if not account in self.members.all():
+            self.members.add(account)
+            self.save()
+
+
+    def remove_member(self, account):
+        if account in self.members.all():
+            self.members.remove(account)
+
+
+    def is_mutual_member(self, member):
+        if member in self.members.all():
+            return True
+        else:
+            return False
+
+
+class MemberRequest(models.Model):
+    sender = models.ForeignKey(
+        Useraccount, on_delete=models.CASCADE, related_name="group_sender_req")
+    reciver = models.ForeignKey(
+        Groups, on_delete=models.CASCADE, related_name="group_sender_req")
+    timesstamp = models.DateTimeField(auto_now_add=True)
+
+    def _str_(self):
+        return self.sender.first_name
+
+    def decline(self):
+        self.is_active = False
+        self.save()
+
+    def cancel(self):
+        self.is_active = False
+        self.save()
+
+
+class PostsGroups(models.Model):
+    group = models.ForeignKey(Groups, on_delete=models.CASCADE)
+    postdate = models.DateTimeField(auto_now_add=True)
+    postcontent = models.TextField(blank=True, null=True)
+    images = models.ImageField(upload_to="img",blank=True,null=True)
+    user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
+
+
+class Commentsgroup(models.Model):
+    post = models.ForeignKey(
+        PostsGroups, on_delete=models.CASCADE, related_name='post_comments')
+    user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
+    commentdate = models.DateTimeField(auto_now_add=True)
+    commentcontent = models.TextField()
+
+    def __str__(self):
+        return (
+            str(self.user.first_name + " " + self.user.last_name + " , " + self.user.pic.url + " , " + self.commentcontent))
+
+
+class Postlikegroup(models.Model):
+    post = models.ForeignKey(PostsGroups, on_delete=models.CASCADE)
+    user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
+    iconId = models.IntegerField()

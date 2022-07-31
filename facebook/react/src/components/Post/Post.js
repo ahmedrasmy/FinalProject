@@ -36,8 +36,7 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function Post({poll}) {
-
+function Post({poll,group_id}) {
     const [users, setUsers] = useState({})
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/get/')
@@ -51,7 +50,6 @@ function Post({poll}) {
     const handleClickOpen = () => {
         setOpen(true);
     };
-
     const handleClose = () => {
         setOpen(false);
     };
@@ -71,31 +69,44 @@ function Post({poll}) {
         e.preventDefault();
     }
 
-  
     const sendPostData = {
         postcontent:post,
         imagecontent:image,
         user:users
     }
-   
+    const addNewPost =  ()=>{axios.post("http://127.0.0.1:8000/api/addpost/",
+                sendPostData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        'X-CSRFToken': getCookie('csrftoken')
 
-    const addNewPost = () => {
-        axios.post("http://127.0.0.1:8000/api/addpost/",
-            sendPostData,
-            {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    'X-CSRFToken': getCookie('csrftoken')
-
-                }
-            },
-        ).then(res => {
-            setOpen(false);
-            console.log(res)
-
-        }).catch((err) => console.log(err))
+                    }
+                },
+            ).then(res => {
+                setOpen(false);
+                console.log(res)
+            }).catch((err) => console.log(err))
     }
-
+    const sendPostDatagroup = {
+        postcontent:post,
+        images:image,
+        group:group_id,
+        user:users,
+    }
+    const addNewPostforGroups = ()=>{axios.post("http://127.0.0.1:8000/api/addpostforgroups/",
+                sendPostDatagroup,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                },
+            ).then(res => {
+                setOpen(false);
+                console.log(res)
+            }).catch((err) => console.log(err))
+    }
     return (
         <>
             <div className="post ">
@@ -144,64 +155,67 @@ function Post({poll}) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogContent dividers>
+                        <div className="container">
+                    <div className="wrapper">
+                    <section className="post">
+                    <header>Create Post</header>
+                    <form onSubmit={(e) => submit(e) }   enctype="multipart/form-data"   >
 
-                    <div className="container">
-                        <div className="wrapper">
-                            <section className="post">
-                                <header>Create Post</header>
-                                <form onSubmit={(e) => submit(e)} enctype="multipart/form-data">
-
-                                    <div className="content">
-                                        <img src={users.pic} alt="logo"/>
-                                        <div className="details">
-                                            <p>{users.first_name + ' ' + users.last_name}</p>
-                                            <div className="privacy">
-                                                <i className="fas fa-user-friends"></i>
-                                                <span>Friends</span>
-                                                <i className="fas fa-caret-down"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <textarea
-                                        placeholder={"What's on your mind, ?" + users.first_name}
-                                        spellcheck="false"
-                                        required
-                                        name="postcontent"
-                                        onChange={(e) => setPost(e.target.value)}
-                                    ></textarea>
-                                    <div>{ShowImageInput ? <input type="file" accept="image/*" multiple
-                                                                  className="post_input"
-                                                                  placeholder="Enter your image here"
-                                                                  name="imagecontent"
-                                                                  onChange={(e) => setImage(e.target.files[0])}/>
-                                        : null}
-                                    </div>
-                                    <div className="theme-emoji">
-                                        <img src={theme} alt="theme"/>
-                                        <img src={smile} alt="smile"/>
-                                    </div>
-                                    <div className="options">
-                                        <p>Add to Your Post</p>
-                                        <ul className="list">
-                                            <li><img src={gallery} alt="gallery" onClick={handleshowinput}/></li>
-                                            <li><img src={tag} alt="gallery"/></li>
-                                            <li><img src={emoji} alt="gallery"/></li>
-                                            <li><img src={mic} alt="gallery"/></li>
-                                            <li><img src={more} alt="gallery"/></li>
-                                        </ul>
-                                    </div>
-                                    <button type='submit' onClick={addNewPost}>Post</button>
-                                </form>
-                            </section>
-                            <section className="audience">
-                                <header>
-                                    <div className="arrow-back"><i className="fas fa-arrow-left"></i></div>
-                                    <p>Select Audience</p>
-                                </header>
-                                <div className="content">
-                                    <p>Who can see your post?</p>
-                                    <span
-                                    >Your post will show up in News Feed, on your profile and in
+                        <div className="content">
+                        <img src={users.pic} alt="logo" />
+                        <div className="details">
+                            <p>{users.first_name+' '+users.last_name}</p>
+                            <div className="privacy">
+                            <i className="fas fa-user-friends"></i>
+                            <span>Friends</span>
+                            <i className="fas fa-caret-down"></i>
+                            </div>
+                        </div>
+                        </div>
+                        <textarea
+                        placeholder={"What's on your mind, ?"+users.first_name}
+                        spellcheck="false"
+                        required
+                        name="postcontent"
+                        onChange={(e) => setPost(e.target.value)}
+                        ></textarea>
+                        <div>{ ShowImageInput ? <input type="file" accept="image/*" multiple
+                            className="post_input"
+                            placeholder="Enter your image here"
+                            name ="imagecontent" onChange={(e)=>setImage(e.target.files[0])}/>
+                            :null }
+                        </div>
+                        <div className="theme-emoji">
+                        <img src={theme} alt="theme" />
+                        <img src={smile} alt="smile" />
+                        </div>
+                        <div className="options">
+                        <p>Add to Your Post</p>
+                        <ul className="list">
+                            <li><img src={gallery} alt="gallery" onClick={handleshowinput} /></li>
+                            <li><img src={tag} alt="gallery" /></li>
+                            <li><img src={emoji} alt="gallery" /></li>
+                            <li><img src={mic} alt="gallery" /></li>
+                            <li><img src={more} alt="gallery" /></li>
+                        </ul>
+                        </div>
+                        {
+                            poll === "0" ?
+                                <button type='submit' onClick={addNewPostforGroups} >Post</button>
+                            :     
+                                <button type='submit' onClick={addNewPost} >Post</button>
+                        }
+                    </form>
+                    </section>
+                    <section className="audience">
+                    <header>
+                        <div className="arrow-back"><i className="fas fa-arrow-left"></i></div>
+                        <p>Select Audience</p>
+                    </header>
+                    <div className="content">
+                        <p>Who can see your post?</p>
+                        <span
+                        >Your post will show up in News Feed, on your profile and in
                         search results.</span
                                     >
                                 </div>

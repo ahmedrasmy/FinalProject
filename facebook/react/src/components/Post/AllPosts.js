@@ -30,8 +30,30 @@ function getCookie(name) {
     return cookieValue;
 }
 
+function renderTimestamp(timestamp) {
+    let prefix = "";
+    const timeDiff = Math.round(
+        (new Date().getTime() - new Date(timestamp).getTime()) / 60000
+    );
+    if (timeDiff < 1) {
+        // less than one minute ago
+        prefix = "just now...";
+    } else if (timeDiff < 60 && timeDiff > 1) {
+        // less than sixty minutes ago
+        prefix = `${timeDiff} minutes ago`;
+    } else if (timeDiff < 24 * 60 && timeDiff > 60) {
+        // less than 24 hours ago
+        prefix = `${Math.round(timeDiff / 60)} hours ago`;
+    } else if (timeDiff < 31 * 24 * 60 && timeDiff > 24 * 60) {
+        // less than 7 days ago
+        prefix = `${Math.round(timeDiff / (60 * 24))} days ago`;
+    } else {
+        prefix = `${new Date(timestamp)}`;
+    }
+    return prefix;
+}
 
-function AllPosts({post_id, profilePic, image, username, timestamp, message, comments}) {
+function AllPosts({post_id, profilePic, image, username, timestamp, message, comments, group_id = 0}) {
     var likeid;
     const [users, setUsers] = useState({})
     const [posts, setPosts] = useState({})
@@ -39,22 +61,16 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
     const [Icon, setIcon] = useState(0)
     const [dbIcon, setdbIcon] = useState(0)
     var like;
-
-
     const [share, setShare] = useState(null)
-
     const [scroll, setScroll] = useState('paper');
     const [open, setOpen] = useState(false);
-
 
     function submit(e) {
         const shares = {
             post: post_id,
             user: users.id,
         }
-
         e.preventDefault();
-
         axios.post("http://127.0.0.1:8000/api/addshare/",
             shares, {
                 headers: {
@@ -64,23 +80,18 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
             },
         ).then(res => {
             console.log(res)
+
             handleCloseDialog()
 
-
         }).catch((err) => console.log(err))
-
-
     }
 
     const handleClickOpenDialog = () => {
         setOpen(true);
     };
-
     const handleCloseDialog = () => {
         setOpen(false);
     };
-
-
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/get/')
             .then(res => {
@@ -94,34 +105,65 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
             user: users.id,
             iconId: parseInt(e),
         }
-        axios.post("http://127.0.0.1:8000/api/get_like/",
-            sentmessage, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
+        if (group_id != 0) {
+            axios.post("http://127.0.0.1:8000/api/get_like_group/",
+                sentmessage, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                },
+            ).then(res => {
+                for (let i = 0; i <= res.data.length - 1; i++) {
+                    let obj = res.data[i]
+                    if (obj.post === post_id && obj.user === users.id) {
+                        likeid = obj.id
+                        setPosts(res.data)
+                        setIcon(obj.iconId)
+                        setColor('blue')
+                        setUserLike(1)
+                    }
                 }
-            },
-        ).then(res => {
-            for (let i = 0; i <= res.data.length - 1; i++) {
-                let obj = res.data[i]
-                if (obj.post === post_id && obj.user === users.id) {
-                    likeid = obj.id
-                    setPosts(res.data)
-                    setIcon(obj.iconId)
-                    setColor('blue')
-                    setUserLike(1)
+            }).catch((err) => console.log(err))
+        } else {
+            axios.post("http://127.0.0.1:8000/api/get_like/",
+                sentmessage, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                },
+            ).then(res => {
+                for (let i = 0; i <= res.data.length - 1; i++) {
+                    let obj = res.data[i]
+                    if (obj.post === post_id && obj.user === users.id) {
+                        likeid = obj.id
+                        setPosts(res.data)
+                        setIcon(obj.iconId)
+                        setColor('blue')
+                        setUserLike(1)
+                    }
                 }
-            }
-        }).catch((err) => console.log(err))
+            }).catch((err) => console.log(err))
+        }
     }
-
-    useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/get_likee/')
-            .then(res => {
-                setPosts(res.data);
-            })
-            .catch((err) => console.log(err))
-    }, [])
+    // if (group_id != 0) {
+    //     useEffect(() => {
+    //         axios.get('http://127.0.0.1:8000/api/get_likee_group/')
+    //             .then(res => {
+    //                 setPosts(res.data);
+    //             })
+    //             .catch((err) => console.log(err))
+    //     }, [])
+    // } else {
+        useEffect(() => {
+            axios.get('http://127.0.0.1:8000/api/get_likee/')
+                .then(res => {
+                    setPosts(res.data);
+                })
+                .catch((err) => console.log(err))
+        }, [])
+    // }
 
     useEffect(() => {
         for (let i = 0; i <= posts.length - 1; i++) {
@@ -205,57 +247,103 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
         return prefix;
     }
 
-    return (<>
-        <div className="all_posts">
-            <div className="Top_section">
-                <Avatar src={profilePic} className="Posts_avatar"/>
-                <div className="Top_section_info">
-                    <h3 style= {{paddingLeft:"0px"}}> {username} < /h3> <p> {renderTimestamp(timestamp)} </p></div>
-            </div>
-            <div className="bottom_section">
-                <p> {message} </p></div>
-            <div className="bottom_section_image row"> {
-                image.map((img) => {
-                    return <>
-                        <img src={img} className="col" alt=""/>
-                    </>
-                })
-            } </div>
-            <div className="nums-comments-iteractions">
-                <div className="interaction">
-                    <i className="fa-solid fa-thumbs-up icon1"> </i>
-                    <i className="fa-solid fa-heart icon2"> </i>
-                    <i className="fa-regular fa-face-grin-beam icon3"> </i>
-                    <a href="#"> < /a></div>
-                <a href="#" class="nums-comments"> {comments.length} Coments 20 Shares < /a></div>
-            <div className="like-comment-share">
-                <div className="icon like"> {
-                    userLike === 1 ? < > {
+    return (< >
+            <
+                div className="all_posts">
+                <
+                    div className="Top_section">
+                    <
+                        Avatar src={profilePic}
+                               className="Posts_avatar"/>
+                    <
+                        div className="Top_section_info">
+                        <
+                            h3 style={
+                            {paddingLeft: "0px"}}> {username} < /h3> <p> {renderTimestamp(timestamp)} </p>< /div>
+                <
+        /div>
+                <
+                    div className="bottom_section">
+                    <
+                        p> {message} < /p></div>
+                <
+                    div className="bottom_section_image row"> {
+                    image.map((img) => {
+                        return < >
+                            <
+                                img src={img}
+                                    className="col"
+                                    alt=""/>
+                        <
+                    />
+                    })
+                } </div>
+                <
+                    div className="nums-comments-iteractions">
+                    <div className="interaction">
+                        <i className="fa-solid fa-thumbs-up icon1"> < /i>
+                        <i className="fa-solid fa-heart icon2"> < /i> <i
+                        className="fa-regular fa-face-grin-beam icon3"> < /i> <
+                        a href="#"> < /a></div>
+                    <
+                        a href="#"
+                          class="nums-comments"> {comments.length}
+                        Coments 20 Shares < /a></div>
+                <
+                    div className="like-comment-share">
+                    <
+                        div className="icon like"> {
+                        userLike === 1 ? < > {
                             Icon === 0 ?
-                                <IconButton onClick={handleClose}>
-                                    <i className="fa-regular fa-thumbs-up" style={{color: colors}}>
-                                    </i>
-                                    Like </IconButton> :
+                                <
+                                    IconButton onClick={handleClose}>
+                                    <
+                                        i className="fa-regular fa-thumbs-up"
+                                          style={
+                                              {color: colors}}>
+                                    <
+                /i>
+                                    Like < /IconButton> :
                                 null
                         } {
                             Icon === 1 ?
-                                <IconButton onClick={handleClose}>
-                                    <img src={love3} class="love icon2" alt=""/>
-                                </IconButton> : null} {Icon === 2 ?
-                            <IconButton onClick={handleClose}>
-                                <img src={care} class="icon3" alt=""/>
-                            </IconButton> : null
+                                <
+                                    IconButton onClick={handleClose}>
+                                    <
+                                        img src={love3}
+                                            class="love icon2"
+                                            alt=""/>
+                                </IconButton> : null} {Icon === 2 ? <
+                            IconButton onClick={handleClose}>
+                            <
+                                img src={care}
+                                    class="icon3"
+                                    alt=""/>
+                        </IconButton> : null
                         } {
                             Icon === 3 ?
-                                <IconButton onClick={handleClose}>
-                                    <img src={emotion4} class="icon4" alt=""/>
-                                < /IconButton> : null} {Icon === 4 ?
-                            <IconButton onClick={handleClose}>
-                                <img src={emotion5} class="icon5" alt=""/>
-                            </IconButton> : null} {Icon === 5 ?
-                            <IconButton onClick={handleClose}>
-                                <img src={emotion6} class="icon6" alt=""/>
-                            < /IconButton> : null
+                                <
+                                    IconButton onClick={handleClose}>
+                                    <
+                                        img src={emotion4}
+                                            class="icon4"
+                                            alt=""/>
+                                <
+                                /IconButton> : null} {Icon === 4 ? <
+                            IconButton onClick={handleClose}>
+                            <
+                                img src={emotion5}
+                                    class="icon5"
+                                    alt=""/>
+                        <
+                                /IconButton> : null} {Icon === 5 ? <
+                            IconButton onClick={handleClose}>
+                            <
+                                img src={emotion6}
+                                    class="icon6"
+                                    alt=""/>
+                        <
+                                /IconButton> : null
                         } {
                             Icon === 6 ?
                                 <
@@ -264,153 +352,198 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
                                         img src={emotion7}
                                             class="icon7"
                                             alt=""/>
-                                </IconButton> : null
+                                <
+                                /IconButton> : null
                         }
 
-                        </> :
-                        <>
-                            <IconButton id="0">
-                                <i className="fa-regular fa-thumbs-up"></i>Like </IconButton>
-                            <div class="emoji">
-                                <i id="0" onClick={(e) => addlike(0)} class="fa-solid fa-thumbs-up icon1"> < /i> <
+                        </> : <
+            >
+                            <
+                                IconButton id="0">
+                                <
+                                    i className="fa-regular fa-thumbs-up"> < /i>Like </IconButton>
+                            <
+                                div class="emoji">
+                                <
+                                    i id="0"
+                                      onClick={
+                                          (e) => addlike(0)}
+                                      class="fa-solid fa-thumbs-up icon1"> < /i> <
                                 IconButton id="1"
                                            onClick={
-                                               (e) => addlike(1)}> < img src={love3}
-                                                                         class="love icon2"
-                                                                         alt=""/> < /IconButton> <
+                                               (e) => addlike(1)
+                                           }> < img src={love3}
+                                                    class="love icon2"
+                                                    alt=""/> < /IconButton> <
                                 IconButton id="2"
                                            onClick={
-                                               (e) => addlike(2)}> < img src={care}
-                                                                         class="icon3"
-                                                                         alt=""/> < /IconButton> <
+                                               (e) => addlike(2)
+                                           }> < img src={care}
+                                                    class="icon3"
+                                                    alt=""/> < /IconButton> <
                                 IconButton id="3"
                                            onClick={
-                                               (e) => addlike(3)}> < img src={emotion4}
-                                                                         class="icon4"
-                                                                         alt=""/> < /IconButton> <
+                                               (e) => addlike(3)
+                                           }> < img src={emotion4}
+                                                    class="icon4"
+                                                    alt=""/> < /IconButton> <
                                 IconButton id="4"
                                            onClick={
-                                               (e) => addlike(4)}> < img src={emotion5}
-                                                                         class="icon5"
-                                                                         alt=""/> < /IconButton> <
+                                               (e) => addlike(4)
+                                           }> < img src={emotion5}
+                                                    class="icon5"
+                                                    alt=""/> < /IconButton> <
                                 IconButton id="5"
                                            onClick={
-                                               (e) => addlike(5)}> < img src={emotion6}
-                                                                         class="icon6"
-                                                                         alt=""/> < /IconButton> <
+                                               (e) => addlike(5)
+                                           }> < img src={emotion6}
+                                                    class="icon6"
+                                                    alt=""/> < /IconButton> <
                                 IconButton id="6"
                                            onClick={
-                                               (e) => addlike(6)}> < img src={emotion7}
-                                                                         class="icon7"
-                                                                         alt=""/> </IconButton><
-                /div>
+                                               (e) => addlike(6)
+                                           }> < img src={emotion7}
+                                                    class="icon7"
+                                                    alt=""/> < /IconButton><
+            /div>
                         </>
-                } </div>
-                <div className="icon icon-comment">
+                    } < /div>
                     <
-                        i className="fa-regular fa-comment"> </i>
-                    Comment
-                </div>
-                <
-                    div className="icon">< i className="fa-solid fa-share" onClick={handleClickOpenDialog}> </i> Share
-                </div>
-
-
-            </div>
-            <
-                div class="comments"> {
-                comments.map((comment) => {
-
-                    return <>
-                        <div className="comment">
-                            <img src={comment.split(',')[1]}
-                                 alt=""/>
-                            <div className="comment-body">
-                                <p className="name"> {comment.split(',')[0]} </p> <p> {comment.split(',')[2]} </p></div>
-                        </div>
-                    </>
-                })
-            }
-
-            <
-                        /div>
-            <
-                div className="create-comment">
-                <
-                    Avatar src={users.pic}
-                           className="Posts_avatar"/>
-                <input type="text" placeholder="Write A comment" className="commentInput" name="commentcontent"
-                       onChange={(e) => setComment(e.target.value)
-                       }
-                       onKeyDown={
-                           (e) => handleKeyDown(e)
-                       }/></div>
-        </div>
-
-        <Dialog open={open}
-                   onClose={handleCloseDialog}
-                   aria-labelledby="alert-dialog-title"
-                   aria-describedby="alert-dialog-description"
-                   scroll={scroll}>
-            <DialogContent dividers>
-
-                <div className="container"
-                     style={
-                         {overflowY: "auto"}}>
-                    <
-                        div className="wrapper">
+                        div className="icon icon-comment">
                         <
-                            section className="post">
-                            <
-                                header> Share Post
-                            </header>
-                            <
-                                form onSubmit={
-                                (e) => submit(e)}
-                                     enctype="multipart/form-data">
+                            i className="fa-regular fa-comment"> < /i>
+                        Comment
+                    <
+        /div>
+                    <
+                        div className="icon">< i className="fa-solid fa-share"
+                                                 onClick={handleClickOpenDialog}> </i> Share
+                    </div>
 
-                                <div className="content">
-                                    <img src={users.pic}
-                                         alt="logo"/>
-                                    <div className="details">
-                                        <p> {users.first_name + ' ' + users.last_name} </p>
-                                        <div className="privacy">
-                                            <i className="fas fa-user-friends"> < /i> <
-                                            span> Friends </span> <
-                                            i className="fas fa-caret-down"> < /i>< /div>
 
+                </div>
+                <
+                    div class="comments"> {
+                    comments.map((comment) => {
+
+                        return < >
+                            <
+                                div className="comment">
+                                <
+                                    img src={comment.split(',')[1]}
+                                        alt=""/>
+                                <
+                                    div className="comment-body">
+                                    <
+                                        p className="name"> {comment.split(',')[0]} < /p>
+                                    <p> {comment.split(',')[2]} </p>< /div>
+                            </div>
+                        </>
+                    })
+                }
+
+                </div>
+                <
+                    div className="create-comment">
+                    <Avatar src={users.pic}
+                            className="Posts_avatar"/>
+                    <
+                        input type="text"
+                              placeholder="Write A comment"
+                              className="commentInput"
+                              name="commentcontent"
+                              onChange={
+                                  (e) => setComment(e.target.value)
+                              }
+                              onKeyDown={
+                                  (e) => handleKeyDown(e)
+                              }/></div>
+            </div>
+
+            <Dialog open={open}
+                    onClose={handleCloseDialog}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    scroll={scroll}>
+                <
+                    DialogContent dividers>
+
+                    <
+                        div className="container"
+                            style={
+                                {overflowY: "auto"}
+                            }>
+                        <
+                            div className="wrapper">
+                            <
+                                section className="post">
+                                <
+                                    header> Share Post
+                                </header>
+                                <
+                                    form onSubmit={
+                                    (e) => submit(e)
+                                }
+                                         enctype="multipart/form-data">
+
+                                    <
+                                        div className="content">
+                                        <
+                                            img src={users.pic}
+                                                alt="logo"/>
+                                        <
+                                            div className="details">
+                                            <
+                                                p> {users.first_name + ' ' + users.last_name} </p>
+                                            <
+                                                div className="privacy">
+                                                <
+                                                    i className="fas fa-user-friends"> </i> <
+                                                span> Friends < /span> <
+                                                i className="fas fa-caret-down"> </i></div>
+
+                                        </div>
                                     </div>
-                                </div>
-                                <img src={image}
-                                    className="col"
-                                    alt="" style={{marginTop:"10px" ,marginRight:"20px"}}/>
-                                <button type="submit" className="bg-blue-600  rounded-lg text-white font-semibold" >
-                                            Share
-                                        </button>
+                                    <
+                                        img src={image}
+                                            className="col"
+                                            alt=""
+                                            style={
+                                                {marginTop: "10px", marginRight: "20px"}}
+                                    />
+                                    <
+                                        button type="submit"
+                                               className="bg-blue-600  rounded-lg text-white font-semibold">
+                                        Share
+                                    <
+        /button>
 
 
+                                    <
+                                        div className="theme-emoji">
+                                        <
+                                            img src={theme}
+                                                alt="theme"/>
+                                        <
+                                            img src={smile}
+                                                alt="smile"/>
+                                    </div>
 
-                                <div className="theme-emoji">
-                                    <img src={theme} alt="theme"/>
-                                    <img src={smile} alt="smile"/>
-                                </div>
 
+                                </form>
 
-                            </form>
+                            </section>
 
-                        </section>
+                        </div>
 
                     </div>
 
-                </div>
+                </DialogContent> </Dialog>
 
-            < /DialogContent>
-        </Dialog> </>
-
+        </ >
 
 
-
-)
+    )
 }
 
 export default AllPosts

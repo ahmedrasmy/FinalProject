@@ -232,6 +232,7 @@ def postNotification(request):
             return Response(status=status.HTTP_404_NOT_FOUND)
     else:
         return redirect('/auth/login/')
+
 @api_view(['GET'])
 def unseenNotification(request,pk,id):
     if request.session.has_key('user_name'):
@@ -710,60 +711,149 @@ def friends_list_contacts(request):
 
 @api_view(['GET'])
 def sugistions_list(request):
-    user = Useraccount.objects.get(id=request.session['user_id'])
-    arr=[]
-    try:
-        friend_list = FrienList.objects.filter(user=user)
-        print("iam heree")
-        friends = friend_list[0].friends.all()
-        users = Useraccount.objects.filter(~Q(id=user.id))
-        for use in users:
-            if friends.filter(id=use.id).exists():
-                pass 
-            else :
+    if request.session.has_key('user_name'):
+        user = Useraccount.objects.get(id=request.session['user_id'])
+        arr=[]
+        try:
+            friend_list = FrienList.objects.filter(user=user)
+            print("iam heree")
+            friends = friend_list[0].friends.all()
+            users = Useraccount.objects.filter(~Q(id=user.id))
+            for use in users:
+                if friends.filter(id=use.id).exists():
+                    pass 
+                else :
+                    pending_friend_request_id = ''
+                    request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
+                    if get_friend_request_or_false(sender=use, receiver=user) != False:
+                        request_sent = FriendRequestStatus.THEM_SENT_TO_YOU.value
+                        pending_friend_request_id = get_friend_request_or_false(
+                            sender=use, receiver=user).id
+                    elif get_friend_request_or_false(sender=user, receiver=use) != False:
+                        request_sent = FriendRequestStatus.YOU_SENT_TO_THEM.value
+                    else:
+                        request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
+                    arr.append(
+                        {
+                            'user_name': use.first_name+" "+use.last_name,
+                            'user_id': use.id,
+                            'user_pic': str(use.pic.url),
+                            'user_email': use.email,
+                            'request_sent': request_sent,
+                            'pending_friend_request_id': pending_friend_request_id,
+                        }
+                    )
+        except FrienList.DoesNotExist:
+            friend_list = FrienList(user=user)
+            friend_list.save()
+            friends = Useraccount.objects.filter(~Q(id=user.id))
+            for friend in friends:
                 pending_friend_request_id = ''
                 request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
-                if get_friend_request_or_false(sender=use, receiver=user) != False:
+                if get_friend_request_or_false(sender=friend, receiver=user) != False:
                     request_sent = FriendRequestStatus.THEM_SENT_TO_YOU.value
                     pending_friend_request_id = get_friend_request_or_false(
-                        sender=use, receiver=user).id
-                elif get_friend_request_or_false(sender=user, receiver=use) != False:
+                        sender=friend, receiver=user).id
+                elif get_friend_request_or_false(sender=user, receiver=friend) != False:
                     request_sent = FriendRequestStatus.YOU_SENT_TO_THEM.value
                 else:
                     request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
                 arr.append(
                     {
-                        'user_name': use.first_name+" "+use.last_name,
-                        'user_id': use.id,
-                        'user_pic': str(use.pic.url),
-                        'user_email': use.email,
+                        'user_name': friend.first_name+" "+friend.last_name,
+                        'user_id': friend.id,
+                        'user_pic': str(friend.pic.url),
+                        'user_email': friend.email,
                         'request_sent': request_sent,
                         'pending_friend_request_id': pending_friend_request_id,
                     }
                 )
-    except FrienList.DoesNotExist:
-        friend_list = FrienList(user=user)
-        friend_list.save()
-        friends = Useraccount.objects.filter(~Q(id=user.id))
-        for friend in friends:
-            pending_friend_request_id = ''
-            request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
-            if get_friend_request_or_false(sender=friend, receiver=user) != False:
-                request_sent = FriendRequestStatus.THEM_SENT_TO_YOU.value
-                pending_friend_request_id = get_friend_request_or_false(
-                    sender=friend, receiver=user).id
-            elif get_friend_request_or_false(sender=user, receiver=friend) != False:
-                request_sent = FriendRequestStatus.YOU_SENT_TO_THEM.value
-            else:
-                request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
-            arr.append(
-                {
-                    'user_name': friend.first_name+" "+friend.last_name,
-                    'user_id': friend.id,
-                    'user_pic': str(friend.pic.url),
-                    'user_email': friend.email,
-                    'request_sent': request_sent,
-                    'pending_friend_request_id': pending_friend_request_id,
-                }
-            )
-    return JsonResponse(arr, safe=False)
+        return JsonResponse(arr, safe=False)
+    else:
+        return redirect('/auth/login/')
+
+
+################# for group #############
+@api_view(['GET'])
+def get_group(request,id):
+    if request.session.has_key('user_name'):
+        group = Groups.objects.filter(id=id)
+        data = GetGroupSerializer(group, many=True)
+        print(data)
+        return Response(data.data)
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['GET'])
+def get_user_for_group(request,id):
+    if request.session.has_key('user_name'):
+        user_id = int(request.session['user_id'])
+        user = Useraccount.objects.get(id=user_id)
+        group = Groups.objects.filter(id=id)
+        members = group[0].members.all()
+        arr=[]
+        is_member = False
+        if members.filter(id=user.id):
+            is_member = True
+        else:
+            is_member = False
+        arr.append({
+            "user_id":user.id,
+            "user_name":user.first_name+" "+user.last_name,
+            "user_pic":user.pic,
+            "is_member": is_member,
+        })
+        return JsonResponse(arr, safe=False)
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['POST'])
+def addpostforgroups(request):
+    if request.session.has_key('user_name'):
+        user_id = int(request.session['user_id'])
+        user = Useraccount.objects.get(id=user_id)
+        data = PostsGroupsSerializer(data=request.data)
+        if data.is_valid():
+            data.save()
+            return Response(data.data)
+        return Response(data.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['POST'])
+def getpostforgroup(request,id):
+    if request.session.has_key('user_name'):
+        posts= reversed(PostsGroups.objects.filter(group=id))
+        data = PostsGroupsSerializerget(posts, many=True)
+        return Response(data.data)
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['GET'])
+def get_likee_group(request):
+    users = Postlikegroup.objects.all()
+    data = LIKEGroup(users, many=True)
+    return Response(data.data)
+
+
+@api_view(['delete'])
+def delete_like(request, pk):
+    trainee = Postlike.objects.get(pk=pk)
+    trainee.delete()
+    return Response(status=status.HTTP_202_ACCEPTED)
+
+
+@api_view(['Post'])
+def get_like_group(request):
+    user = LIKE(data=request.data)
+    if user.is_valid():
+        user.save()
+        # return Response(user.data, status=status.HTTP_201_CREATED)
+        users = Postlike.objects.all()
+        data = LIKE(users, many=True)
+        return Response(data.data)
+    return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)

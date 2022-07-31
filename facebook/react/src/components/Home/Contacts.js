@@ -30,7 +30,7 @@ function Contacts() {
                                         </span>
                                     </a>
                                 </>
-                        }
+                            }
                         )
                     }
             </div>

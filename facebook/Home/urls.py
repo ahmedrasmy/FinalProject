@@ -23,4 +23,6 @@ urlpatterns = [
     path('frined_request_delete_sugustions/', frined_request_delete_sugustions,name='frined_request_delete_sugustions'),
     path('frined_request_accept_sugustions/',frined_request_accept_sugustions, name='frined_request_accept_sugustions'),
     path('Post/<str:id>/', Post, name='Post'),
+    path('group/<id>/', group, name='group'),
+
 ]
