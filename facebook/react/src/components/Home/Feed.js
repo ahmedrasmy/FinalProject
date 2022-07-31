@@ -5,6 +5,7 @@ import Post from '../Post/Post';
 import StoryReel from './StoryReel';
 import {useEffect, useState} from "react";
 import axios from "axios";
+
 import jQuery from "jquery";
 import AllShares from "../Post/AllShares";
 
@@ -23,6 +24,7 @@ function getCookie(name) {
     return cookieValue;
 }
 
+
 function Feed() {
     const [posts, setPosts] = useState([])
     const [shares, setShare] = useState([])
@@ -35,7 +37,8 @@ function Feed() {
             .catch((err) => console.log(err))
 
     }, [])
-   useEffect(() => {
+
+    useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/getshare/')
             .then(res => {
                 setShare(res.data);
@@ -48,14 +51,15 @@ function Feed() {
     console.log(shares)
 
 
-    return (
-        <div className="feed">
-            <StoryReel/>
-            <Post/>
-            {
+    return (<
+        div className="feed">
+        <
+            StoryReel/>
+            <Post/> {
                 posts.map((post) => {
                     return < >
-                        <AllPosts
+                        <
+                            AllPosts
                             profilePic={post.user.pic}
                             post_id={post.id}
                             message={post.postcontent}
@@ -63,11 +67,10 @@ function Feed() {
                             username={post.user.first_name + ' ' + post.user.last_name}
                             image={post.post_photos}
                             comments={post.post_comments}
-                            user_id={post.user.id}/>
-                    </>
+                            user_id={post.user.id}
+                        /> </>
                 })
-            }
-                 {
+            } {
                 shares.map((share) => {
                     return < >
                         <AllShares
@@ -81,12 +84,13 @@ function Feed() {
                             image={share.pic}
                             // comments={post.post_comments}
                             // user_id={post.user.id}
-                            />
-                    </>
+                        /> </>
                 })
-            }
-        </div>
-    )
+            }</div>
+)
+
+
+
 
 }
 

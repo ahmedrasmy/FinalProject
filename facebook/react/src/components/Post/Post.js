@@ -18,6 +18,9 @@ import './CreatPost.css';
 import DialogContent from '@mui/material/DialogContent';
 import jQuery from "jquery";
 
+import PollIcon from '@mui/icons-material/Poll';
+
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -33,7 +36,8 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function Post() {
+function Post({poll}) {
+
     const [users, setUsers] = useState({})
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/get/')
@@ -62,16 +66,19 @@ function Post() {
     const [image, setImage] = useState([])
     const [post, setPost] = useState(null)
 
+
     function submit(e) {
         e.preventDefault();
     }
 
+  
     const sendPostData = {
-        postcontent: post,
-        imagecontent: image,
-        user: users
+        postcontent:post,
+        imagecontent:image,
+        user:users
     }
-    console.log(image)
+   
+
     const addNewPost = () => {
         axios.post("http://127.0.0.1:8000/api/addpost/",
             sendPostData,
@@ -114,10 +121,20 @@ function Post() {
                         <CollectionsIcon style={{color: "green"}}/>
                         <h3>Photo/Video</h3>
                     </div>
-                    <div className="post_OPTION">
-                        <MoodIcon style={{color: "yellow"}}/>
-                        <h3>Felling/Activity</h3>
-                    </div>
+
+                    {
+                        poll === "0" ?
+                            <div className="post_OPTION">
+                                <PollIcon style={{color : "orange"}}/>
+                                <h3>Poll</h3>
+                            </div>
+                        :     
+                            <div className="post_OPTION">
+                                <MoodIcon style={{color : "yellow"}}/>
+                                <h3>Felling/Activity</h3>
+                            </div>
+                    }
+
                 </div>
             </div>
             <Dialog

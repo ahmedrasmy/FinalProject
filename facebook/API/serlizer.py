@@ -11,6 +11,8 @@ class userSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
+
 class commentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comments
@@ -33,6 +35,12 @@ class postSerializer(serializers.ModelSerializer):
 
     user = postUserSerial(many=False)
 
+
+class notifySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields ='__all__'
+    user = postUserSerial(many=False)
 
 class createPostSerializer(serializers.ModelSerializer):
     post_photos = serializers.StringRelatedField(many=True)

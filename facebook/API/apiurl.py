@@ -50,7 +50,12 @@ urlpatterns = [
     path('addcomment/', addcomment, name='addcomment'),
     path('friends_list_contacts/', friends_list_contacts, name='friends_list_contacts'),
     path('addshare/',add_share,name='shares'),
-    path('getshare/', get_share, name='sharess')
-
+    path('getshare/', get_share, name='sharess'),
+    path('updateprofile/', updateprofile, name='updateprofile'),
+    path('deleteStory/<pk>', deleteStory, name='deleteStory'),
+    path('sugistions_list/', sugistions_list, name='sugistions_list'),
+    path('postNotification/',postNotification , name='postNotification'),
+    path('unseenNotification/<pk>/<id>/', unseenNotification, name='unseenNotification'),
+    path('get_one_post/<id>', get_one_post, name='get_one_post'),
 
 ]

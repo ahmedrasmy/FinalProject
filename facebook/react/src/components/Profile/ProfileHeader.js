@@ -13,7 +13,24 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ChatIcon from '@mui/icons-material/Chat';
 import {useLocation} from 'react-router-dom';
-import './Profile.css';
+import { Avatar } from '@mui/material';
+import '../Post/CreatPost.css';
+
+function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                }
+        }
+        return cookieValue;
+    }
 
 function ProfileHeader() {
     let location = useLocation();
@@ -42,6 +59,54 @@ function ProfileHeader() {
     const handleCloseBio = () => {
         setOpenBio(false);
     };
+    const [openAddStory, setopenAddStory] = React.useState(false);
+    const handleastoryOpen = () => {
+        setopenAddStory(true);
+    };
+    const handlestoryClose = () => {
+        setopenAddStory(false);
+    };
+    const [imagecontent,setimagecontent] = useState('')
+    const data  =
+    {
+        pic: imagecontent,
+        user: parseInt(users.id),
+    }
+    const addNewٍStory =  ()=>{axios.post("http://127.0.0.1:8000/api/addStory/",
+                data,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                },
+            ).then(res => {
+                setopenAddStory(false);
+            }).catch((err) => console.log(err))
+    }
+    const [pic, setPic] = useState(null)
+    const [picCover, setPicCover] = useState(null)
+    function submit(e){
+        e.preventDefault();
+    }
+    const sendpicsData = {
+        pic:pic,
+        pic_cover:picCover,
+    }
+    const updateProfilePics =  ()=>{axios.post("http://127.0.0.1:8000/api/updateprofile/",
+                sendpicsData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                },
+            ).then(res => {
+                setOpen(false);
+                console.log(res)
+
+            }).catch((err) => console.log(err))
+}
     return (
         <>
             <div>
@@ -61,23 +126,22 @@ function ProfileHeader() {
                         </Typography>
                         <div className="modal-content">
                             <div className="modal-body">
-                                <form action="/home/updateprofile/" method="post" encType="multipart/form-data">
-                                <CSRF/>
+                                <form onSubmit={(e) => submit(e) }   enctype="multipart/form-data" >
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputPassword1" className="form-label">Profile
                                             Picture</label>
                                         <input type="file" accept="image/*" name="pic" className="form-control"
-                                            id="exampleInputPassword1"/>
+                                            id="exampleInputPassword1" onChange={(e)=>setPic(e.target.files[0])}/>
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputPassword1" className="form-label">Cover
                                             Picture</label>
                                         <input type="file" accept="image/*" name="cover" className="form-control"
-                                            id="exampleInputPassword1"/>
+                                            id="exampleInputPassword1" onChange={(e)=>setPicCover(e.target.files[0])}/>
                                     </div>
                                     <DialogActions>
                                         <Button onClick={handleClose}>Close</Button>
-                                    <Button type="submit" autoFocus>
+                                    <Button type="submit" onClick={updateProfilePics} autoFocus>
                                         Submit
                                     </Button>
                                     </DialogActions>
@@ -161,14 +225,12 @@ function ProfileHeader() {
                                 users['is_self'] ? 
                                 <> 
                                     <li className="px-2 font-semibold">
-                                        <button className="bg-blue-600 px-5 py-1 rounded-lg text-white font-semibold">
-                                            <i className="bx bx-plus-circle text-xl mr-2"></i>
+                                        <button className="bg-blue-600 px-5 py-1 rounded-lg text-white font-semibold" onClick={handleastoryOpen}>
                                             Add to Story
                                         </button>
                                     </li>
                                     <li className="px-2 font-semibold">
                                         <Button variant="contained" className="  bg-blue-600 px-5 py-1 rounded-lg text-white font-semibold "onClick={handleClickOpen}>
-                                            <i className="bx bx-plus-circle text-xl mr-2"></i>
                                             Edit profile
                                         </Button>
                                     </li>
@@ -176,8 +238,8 @@ function ProfileHeader() {
                                 :
                                     <>
                                         {users['request_sent'] === 0 ?
-                                            <div className="card m-2 ">
-                                                <div className="d-flex flex-row align-items-center">
+                                            <li className="px-2 font-semibold">
+                                                <div className="d-flex flex-row align-items-center px-5 py-1 ">
                                                     <span className="friend-text align-items-center mr-2">Accept Friend Request</span>
                                                     <form action={'/home/frined_request_delete/'} method="post">
                                                         <CSRF/>
@@ -192,25 +254,28 @@ function ProfileHeader() {
                                                         <Button type="submit" ><CheckCircleIcon/></Button>
                                                     </form>
                                                 </div>
-                                            </div>
+                                            </li>
                                         : null }
                                         {/*<!-- Cancel Friend Request / Send Friend Request / Remove Friend -->*/}
                                         { users['is_friend'] === false && users['is_self'] === false ?
                                             <>
                                                 {/*<!-- You sent them a request -->*/}
                                                 { users['request_sent'] === 1 ?
-                                                <div className="d-flex flex-column align-items-center">
-                                                    <form action={'/home/cancel_friend_request/'} method="post">
-                                                        <CSRF/>
-                                                        <input type="hidden" name="cancel_request" value={users['id']}/>
-                                                        <button type="submit" className="btn btn-danger">
-                                                            Cancel Friend Request
-                                                        </button>
-                                                    </form>
-                                                </div>
+                                                <li className="px-2 font-semibold">
+                                                    <div className="d-flex flex-column align-items-center">
+                                                        <form action={'/home/cancel_friend_request/'} method="post">
+                                                            <CSRF/>
+                                                            <input type="hidden" name="cancel_request" value={users['id']}/>
+                                                            <button type="submit" className="btn btn-danger">
+                                                                Cancel Friend Request
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </li>
                                                 :null }
                                                 {/*<!-- No requests have been sent -->*/}
                                                 { users['request_sent'] === -1 ?
+                                                <li className="px-2 font-semibold">
                                                     <div className="d-flex flex-column align-items-center">
                                                         <form action={'/home/send_friend_request/'} method="post">
                                                             <CSRF/>
@@ -218,11 +283,13 @@ function ProfileHeader() {
                                                             <input type="submit" className="btn btn-primary" id="sendFriendRequestBtn" value="Send Friend Request"/>
                                                         </form>
                                                     </div>
+                                                </li>    
                                                 :null }
                                             </>
                                         : null }
                                         {users['is_friend'] ?
                                             <>
+                                            <li className="px-2 font-semibold">
                                                 <div className="dropdown pt-4 m-auto">
                                                     <form action={'/home/unfriend/'} method="post">
                                                         <CSRF/>
@@ -234,6 +301,7 @@ function ProfileHeader() {
                                                     <ChatIcon/>
                                                     <span className="message-btn-text m-auto pl-2">Message</span>
                                                 </div>
+                                            </li>    
                                             </>
                                         : null }
                                     </>
@@ -246,6 +314,7 @@ function ProfileHeader() {
                         </ul>
                     </div>
                 </div>
+            </div>
                 {/* // END TABS */}
                 <Dialog
                     open={openBio}
@@ -279,8 +348,38 @@ function ProfileHeader() {
                             </div>
                     </DialogContent>
             </Dialog>
-
-            </div>
+            <Dialog
+                    open={openAddStory}
+                    onClose={handlestoryClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogContent dividers>
+                        <DialogContent dividers>
+                            <div className="container">
+                                <div className="wrapper">
+                                    <section className="post">
+                                    <header>Create Post</header>
+                                        <div className="content">
+                                        <Avatar src={users.pic}/>
+                                        <div className="details">
+                                            <p>{users.first_name+' '+users.last_name}</p>
+                                        </div>
+                                        </div>
+                                        <div> 
+                                            <input type="file" accept="image/*"
+                                            className="post_input"
+                                            onChange={(e) =>{setimagecontent(e.target.files[0])}}
+                                            placeholder="Enter your image here"
+                                            name ="imagecontent"/> 
+                                        </div>
+                                        <button onClick={addNewٍStory} style={{width:'100%'}}>Post</button>
+                                    </section>
+                                </div>
+                            </div>
+                        </DialogContent>
+                    </DialogContent>
+            </Dialog>
         </>
     )
 }

@@ -1,4 +1,6 @@
+import json
 from audioop import reverse
+from lib2to3.pgen2.token import NOTEQUAL
 from django.shortcuts import render, redirect
 from rest_framework.response import Response
 from rest_framework import status
@@ -41,7 +43,6 @@ def get_all(request):
 def get_Likee(request):
     users = Postlike.objects.all()
     data = LIKE(users, many=True)
-
     return Response(data.data)
 
 #####################   Add New User   ################
@@ -49,17 +50,18 @@ def get_Likee(request):
 def delete_like(request, pk):
     trainee = Postlike.objects.get(pk=pk)
     trainee.delete()
-
     return Response(status=status.HTTP_202_ACCEPTED)
 
 
 @api_view(['Post'])
 def get_Like(request):
     user = LIKE(data=request.data)
-
     if user.is_valid():
         user.save()
-        return Response(user.data, status=status.HTTP_201_CREATED)
+        # return Response(user.data, status=status.HTTP_201_CREATED)
+        users = Postlike.objects.all()
+        data = LIKE(users, many=True)
+        return Response(data.data)
     return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['Post'])
@@ -138,14 +140,12 @@ def get_share(request):
 
 @api_view(['POST'])
 def register_user(request):
-    if request.session.has_key('user_name'):
         user = userSerializer(data=request.data)
         if user.is_valid():
             user.save()
             return Response(user.data, status=status.HTTP_201_CREATED)
         return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return redirect('/auth/login/')
+
 
 
 @api_view(['POST'])
@@ -157,10 +157,103 @@ def addpost(request):
         newPost = Posts.objects.create(
             user=user, postcontent=request.data['postcontent'])
         if newPost:
+            friend_list = FrienList.objects.filter(user=user.id)
+            friends = friend_list[0].friends.all()
+            for friend in friends:
+                user_receiver = Useraccount.objects.filter(id=friend.id)[0]
+                notify = Notification.objects.create(
+                    user=user , body=" Add A new post ",
+                    user_receiver= user_receiver ,post=newPost,
+                )
+                notify.save()
             photo = Photos.objects.create(
                 post=newPost, imagecontent=request.data['imagecontent'])
             photo.save()
             return Response('successsfully')
+
+@api_view(['POST'])
+def updateprofile(request):
+    user = Useraccount.objects.get(id=int(request.session['user_id']))
+    if request.data['pic'] :
+        user.pic = request.data['pic']
+        user.save()
+        newPost = Posts.objects.create(
+            user=user, postcontent="update his profile picture"
+        )
+        photo = Photos.objects.create(
+            post=newPost,
+            imagecontent=user.pic
+        )
+        photo.save()
+        friend_list = FrienList.objects.filter(user=user.id)
+        friends = friend_list[0].friends.all()
+        for friend in friends:
+            user_receiver = Useraccount.objects.filter(id=friend.id)[0]
+            notify = Notification.objects.create(
+                user=user, body=" Update His Profile Picture ",
+                user_receiver=user_receiver ,post=newPost
+            )
+            notify.save()
+
+    if request.data['pic_cover'] :
+        user.pic_cover = request.data['pic_cover']
+        user.save()
+        newPost = Posts.objects.create(
+            user=user, postcontent="update his cover picture" ,post=newPost
+        )
+        photo = Photos.objects.create(
+            post=newPost,
+            imagecontent=user.pic_cover
+        )
+        photo.save()
+        friend_list = FrienList.objects.filter(user=user.id)
+        friends = friend_list[0].friends.all()
+        for friend in friends:
+            user_receiver = Useraccount.objects.filter(id=friend.id)[0]
+            notify = Notification.objects.create(
+                user=user, body=" Update His Cover Picture ",
+                user_receiver=user_receiver
+            )
+            notify.save()
+    return redirect('/home/pro/'+str(request.session['user_id']))
+
+@api_view(['GET'])
+def postNotification(request):
+    if request.session.has_key('user_name'):
+        user_receiver = Useraccount.objects.filter(
+            id=int(request.session['user_id']))[0]
+        notifications = reversed(Notification.objects.filter(user_receiver=user_receiver , seen=False))
+        if notifications:
+            data = notifySerializer(notifications, many=True)
+            return Response(data.data)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        return redirect('/auth/login/')
+@api_view(['GET'])
+def unseenNotification(request,pk,id):
+    if request.session.has_key('user_name'):
+        notify = Notification.objects.get(id=pk)
+        if notify:
+            notify.delete()
+            return redirect('/home/Post/'+id)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        return redirect('/auth/login/')
+
+        
+@api_view(['GET'])
+def get_one_post(request,id):
+    if request.session.has_key('user_name'):
+        post = Posts.objects.filter(id=id)
+        if post:
+            data = postSerializer(post , many=True)
+            return Response(data.data)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        return redirect('/auth/login/')
 
 @api_view(['POST'])
 def addcomment(request):
@@ -306,12 +399,11 @@ def get_one_user(request, id):
                     'is_self': is_self,
                     'is_friend': is_friend,
                     'user_name': account.first_name + " " + account.last_name,
-                    'request_sent': request_sent,
                     'friend_requests': friend_requests,
+                    'request_sent': request_sent,
                     'pending_friend_request_id': pending_friend_request_id,
                     'Bio': account.Bio,
                 })
-
             print(friend_requests)
             return JsonResponse(data=context, safe=False)
     else:
@@ -321,7 +413,7 @@ def get_one_user(request, id):
 @api_view(['GET'])
 def get_one_user_Posts(request, id):
     if request.session.has_key('user_name'):
-        posts = reversed(Posts.objects.filter(user=int(id)).reverse())
+        posts = reversed(Posts.objects.filter(user=int(id)))
         if posts:
             data = postSerializer(posts, many=True)
             return Response(data.data)
@@ -365,7 +457,7 @@ def friends_list_chat(request):
         return redirect('/auth/login/')
 
 
-################ chat views ##################3
+################ chat views ##################
 @api_view(['GET'])
 def chatIndex(request):
     if request.session.has_key('user_name'):
@@ -387,9 +479,11 @@ def chatNotification(request):
         friends = friend_list[0].friends.all()
         arr = []
         for friend in friends:
-            chats = ChatMessage.objects.filter(
-                msg_sender__id=friend.user.id, msg_receiver=user, seen=False)
-            arr.append(chats.count())
+            chats = ChatMessage.objects.filter(msg_sender__id=friend.user.id, msg_receiver=user, seen=False)
+            if chats.count() > 0 :
+                arr.append(chats.count())
+            else : 
+                arr.append(0)
         return JsonResponse(arr, safe=False)
     else:
         return redirect('/auth/login/')
@@ -437,18 +531,6 @@ def sentMessages(request, pk):
     else:
         return redirect('/auth/login/')
 
-@api_view(['POST'])
-def addStory(request):
-    if request.session.has_key('user_name'):
-        data = Storyserializer(data=request.data)
-        if data.is_valid():
-            data.save()
-            return Response(data.data)
-        return Response(data.errors, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return redirect('/auth/login/')
-
-
 @api_view(['GET'])
 def receivedMessages(request, pk):
     if request.session.has_key('user_name'):
@@ -467,31 +549,74 @@ def receivedMessages(request, pk):
         return redirect('/auth/login/')
 
 
+@api_view(['POST'])
+def addStory(request):
+    if request.session.has_key('user_name'):
+        data = Storyserializer(data=request.data)
+        if data.is_valid():
+            data.save()
+            return Response(data.data)
+        return Response(data.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return redirect('/auth/login/')
+
 @api_view(['GET'])
 def story(request):
     if request.session.has_key('user_name'):
-        # user_id = int(request.session['user_id'])
-        # user = Useraccount.objects.get(id=pk)
-        # storys = Story.objects.filter(user=user)
-        storys = Story.objects.all()
-        arr=[]
-        for story in storys:
-            if story.pic :
-                arr.append({
-                    "story_id":story.id,
-                    "story_pic":str(story.pic.url),
-                    "story_body": story.body,
-                    "user_pic":str(story.user.pic.url),
-                    "user_name":story.user.first_name+" "+story.user.last_name,
-                })
-            else :
-                arr.append({
-                    "story_id": story.id,
-                    "story_body": story.body,
-                    "user_pic": str(story.user.pic.url),
-                    "user_name": story.user.first_name+" "+story.user.last_name,
-                })
+        user = Useraccount.objects.get(id=int(request.session['user_id']))
+        mystorys = Story.objects.filter(user=user)
+        arr = []
+        for st in mystorys:
+            arr.append({
+                "story_id": st.id,
+                "story_pic": str(st.pic.url),
+                "story_body": st.body,
+                "user_pic": str(st.user.pic.url),
+                "user_name": st.user.first_name+" "+st.user.last_name,
+                "user_id": st.user.id,
+                "is_mine":True,
+            })
+        try:
+            friend_list = FrienList.objects.get(user=user)
+        except FrienList.DoesNotExist:
+            friend_list = FrienList(user=user)
+            friend_list.save()
+        try:
+            friends = friend_list[0].friends.all()
+            for friend in friends:
+                storys = Story.objects.filter(user=friend)
+                for story in storys:
+                    if story.pic:
+                        arr.append({
+                            "story_id": story.id,
+                            "story_pic": str(story.pic.url),
+                            "story_body": story.body,
+                            "user_pic": str(story.user.pic.url),
+                            "user_name": story.user.first_name+" "+story.user.last_name,
+                            "user_id": story.user.id,
+                            "is_mine": False,
+                        })
+                    else:
+                        arr.append({
+                            "story_id": story.id,
+                            "story_body": story.body,
+                            "user_pic": str(story.user.pic.url),
+                            "user_name": story.user.first_name+" "+story.user.last_name,
+                            "user_id": story.user.id,
+                            "is_mine": False,
+                        })
+        except:
+            pass
         return JsonResponse(arr, safe=False)
+    else:
+        return redirect('/auth/login/')
+
+@api_view(['DELETE'])
+def deleteStory(request,pk):
+    if request.session.has_key('user_name'):
+        story = Story.objects.get(pk=pk)
+        story.delete()
+        return Response(status=status.HTTP_202_ACCEPTED)
     else:
         return redirect('/auth/login/')
 
@@ -570,7 +695,6 @@ def get_all_users(request,name):
         return redirect('/auth/login/')
 
 @api_view(['GET'])
-
 def friends_list_contacts(request):
     if request.session.has_key('user_name'):
         user_id = int(request.session['user_id'])
@@ -581,3 +705,63 @@ def friends_list_contacts(request):
     else:
         return redirect('/auth/login/')
 
+
+@api_view(['GET'])
+def sugistions_list(request):
+    user = Useraccount.objects.get(id=request.session['user_id'])
+    arr=[]
+    try:
+        friend_list = FrienList.objects.filter(user=user)
+        print("iam heree")
+        friends = friend_list[0].friends.all()
+        users = Useraccount.objects.filter(~Q(id=user.id))
+        for use in users:
+            if friends.filter(id=use.id).exists():
+                pass 
+            else :
+                pending_friend_request_id = ''
+                request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
+                if get_friend_request_or_false(sender=use, receiver=user) != False:
+                    request_sent = FriendRequestStatus.THEM_SENT_TO_YOU.value
+                    pending_friend_request_id = get_friend_request_or_false(
+                        sender=use, receiver=user).id
+                elif get_friend_request_or_false(sender=user, receiver=use) != False:
+                    request_sent = FriendRequestStatus.YOU_SENT_TO_THEM.value
+                else:
+                    request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
+                arr.append(
+                    {
+                        'user_name': use.first_name+" "+use.last_name,
+                        'user_id': use.id,
+                        'user_pic': str(use.pic.url),
+                        'user_email': use.email,
+                        'request_sent': request_sent,
+                        'pending_friend_request_id': pending_friend_request_id,
+                    }
+                )
+    except FrienList.DoesNotExist:
+        friend_list = FrienList(user=user)
+        friend_list.save()
+        friends = Useraccount.objects.filter(~Q(id=user.id))
+        for friend in friends:
+            pending_friend_request_id = ''
+            request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
+            if get_friend_request_or_false(sender=friend, receiver=user) != False:
+                request_sent = FriendRequestStatus.THEM_SENT_TO_YOU.value
+                pending_friend_request_id = get_friend_request_or_false(
+                    sender=friend, receiver=user).id
+            elif get_friend_request_or_false(sender=user, receiver=friend) != False:
+                request_sent = FriendRequestStatus.YOU_SENT_TO_THEM.value
+            else:
+                request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
+            arr.append(
+                {
+                    'user_name': friend.first_name+" "+friend.last_name,
+                    'user_id': friend.id,
+                    'user_pic': str(friend.pic.url),
+                    'user_email': friend.email,
+                    'request_sent': request_sent,
+                    'pending_friend_request_id': pending_friend_request_id,
+                }
+            )
+    return JsonResponse(arr, safe=False)
