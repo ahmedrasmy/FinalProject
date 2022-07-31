@@ -102,12 +102,35 @@ function Header() {
             })
             .catch((err) => console.log(err))
     }, [])
+    function renderTimestamp(timestamp){
+    let prefix = "";
+    const timeDiff = Math.round(
+      (new Date().getTime() - new Date(timestamp).getTime()) / 60000
+    );
+    if (timeDiff < 1) {
+      // less than one minute ago
+      prefix = "just now...";
+    } else if (timeDiff < 60 && timeDiff > 1) {
+      // less than sixty minutes ago
+      prefix = `${timeDiff} minutes ago`;
+    } else if (timeDiff < 24 * 60 && timeDiff > 60) {
+      // less than 24 hours ago
+      prefix = `${Math.round(timeDiff / 60)} hours ago`;
+    } else if (timeDiff < 31 * 24 * 60 && timeDiff > 24 * 60) {
+      // less than 7 days ago
+      prefix = `${Math.round(timeDiff / (60 * 24))} days ago`;
+    } else {
+      prefix = `${new Date(timestamp)}`;
+    }
+    return prefix;
+  }
     return (
         <div className="header">
             <div className="header-left">
                 <img
                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/1024px-Facebook_f_logo_%282019%29.svg.png"
-                    alt=""/>
+                    alt=""
+                    style={{marginTop:"12px"}}/>
                 <>
                     <div className="header-input">
                         <SearchIcon/>
@@ -242,7 +265,7 @@ function Header() {
                                                 <h5>{notify.body}</h5>
                                                 </div>
                                                 <div className="time_new_msg">
-                                                    <p>7:30am</p>
+                                                    <p>{ renderTimestamp(notify.timestamp) }</p>
 
                                                 </div>
                                             </div>

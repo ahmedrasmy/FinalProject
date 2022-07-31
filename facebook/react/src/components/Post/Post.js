@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import {useState, useEffect} from "react";
 import React from 'react';
 import theme from './icons/theme.svg';
 import smile from './icons/smile.svg';
@@ -7,7 +7,7 @@ import tag from './icons/tag.svg';
 import emoji from './icons/emoji.svg';
 import mic from './icons/mic.svg';
 import more from './icons/more.svg';
-import { Avatar } from '@mui/material';
+import {Avatar} from '@mui/material';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import MoodIcon from '@mui/icons-material/Mood';
@@ -17,7 +17,9 @@ import Dialog from '@mui/material/Dialog';
 import './CreatPost.css';
 import DialogContent from '@mui/material/DialogContent';
 import jQuery from "jquery";
+
 import PollIcon from '@mui/icons-material/Poll';
+
 
 function getCookie(name) {
     var cookieValue = null;
@@ -33,6 +35,7 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
 function Post({poll,group_id}) {
     const [users, setUsers] = useState({})
     useEffect(() => {
@@ -42,7 +45,7 @@ function Post({poll,group_id}) {
             })
             .catch((err) => console.log(err))
     }, [])
-    const [input , setInput] =useState("")
+    const [input, setInput] = useState("")
     const [open, setOpen] = React.useState(false);
     const handleClickOpen = () => {
         setOpen(true);
@@ -50,21 +53,22 @@ function Post({poll,group_id}) {
     const handleClose = () => {
         setOpen(false);
     };
-const [ShowImageInput, setShowImageInput] = React.useState(false);
+    const [ShowImageInput, setShowImageInput] = React.useState(false);
     const handleshowinput = () => {
-        if (ShowImageInput === false){
+        if (ShowImageInput === false) {
             setShowImageInput(true)
-        }
-        else {
+        } else {
             setShowImageInput(false)
         }
     };
     const [image, setImage] = useState([])
     const [post, setPost] = useState(null)
 
-    function submit(e){
+
+    function submit(e) {
         e.preventDefault();
     }
+
     const sendPostData = {
         postcontent:post,
         imagecontent:image,
@@ -107,27 +111,28 @@ const [ShowImageInput, setShowImageInput] = React.useState(false);
         <>
             <div className="post ">
                 <div className="post_top">
-                    <Avatar src={users.pic} className="Posts_avatar" />
-                        <input 
-                            readonly 
-                            variant="contained"
-                            className="post_input"
-                            placeholder={"what's on your mind? "+users.first_name}
-                            value={input}
-                            name="postcontent"
-                            onChange={(e) => setInput(e.target.value)}
-                            onClick={handleClickOpen}
-                        />
+                    <Avatar src={users.pic} className="Posts_avatar"/>
+                    <input
+                        readonly
+                        variant="contained"
+                        className="post_input"
+                        placeholder={"what's on your mind? " + users.first_name}
+                        value={input}
+                        name="postcontent"
+                        onChange={(e) => setInput(e.target.value)}
+                        onClick={handleClickOpen}
+                    />
                 </div>
                 <div className="post_bottom">
                     <div className="post_OPTION">
-                        <VideocamIcon style={{color : "red"}}/>
+                        <VideocamIcon style={{color: "red"}}/>
                         <h3>Live Video</h3>
                     </div>
                     <div variant="contained" className="post_OPTION" onClick={handleClickOpen}>
-                        <CollectionsIcon style={{color : "green"}} />
+                        <CollectionsIcon style={{color: "green"}}/>
                         <h3>Photo/Video</h3>
                     </div>
+
                     {
                         poll === "0" ?
                             <div className="post_OPTION">
@@ -140,16 +145,16 @@ const [ShowImageInput, setShowImageInput] = React.useState(false);
                                 <h3>Felling/Activity</h3>
                             </div>
                     }
+
                 </div>
             </div>
             <Dialog
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogContent dividers>
-
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogContent dividers>
                         <div className="container">
                     <div className="wrapper">
                     <section className="post">
@@ -212,65 +217,65 @@ const [ShowImageInput, setShowImageInput] = React.useState(false);
                         <span
                         >Your post will show up in News Feed, on your profile and in
                         search results.</span
-                        >
+                                    >
+                                </div>
+                                <ul className="list">
+                                    <li>
+                                        <div className="column">
+                                            <div className="icon"><i className="fas fa-globe-asia"></i></div>
+                                            <div className="details">
+                                                <p>Public</p>
+                                                <span>Anyone on or off Facebook</span>
+                                            </div>
+                                        </div>
+                                        <div className="radio"></div>
+                                    </li>
+                                    <li className="active">
+                                        <div className="column">
+                                            <div className="icon"><i className="fas fa-user-friends"></i></div>
+                                            <div className="details">
+                                                <p>Friends</p>
+                                                <span>Your friends on Facebook</span>
+                                            </div>
+                                        </div>
+                                        <div className="radio"></div>
+                                    </li>
+                                    <li>
+                                        <div className="column">
+                                            <div className="icon"><i className="fas fa-user"></i></div>
+                                            <div className="details">
+                                                <p>Specific</p>
+                                                <span>Only show to some friends</span>
+                                            </div>
+                                        </div>
+                                        <div className="radio"></div>
+                                    </li>
+                                    <li>
+                                        <div className="column">
+                                            <div className="icon"><i className="fas fa-lock"></i></div>
+                                            <div className="details">
+                                                <p>Only me</p>
+                                                <span>Only you can see your post</span>
+                                            </div>
+                                        </div>
+                                        <div className="radio"></div>
+                                    </li>
+                                    <li>
+                                        <div className="column">
+                                            <div className="icon"><i className="fas fa-cog"></i></div>
+                                            <div className="details">
+                                                <p>Custom</p>
+                                                <span>Include and exclude friends</span>
+                                            </div>
+                                        </div>
+                                        <div className="radio"></div>
+                                    </li>
+                                </ul>
+                            </section>
+                        </div>
                     </div>
-                    <ul className="list">
-                        <li>
-                        <div className="column">
-                            <div className="icon"><i className="fas fa-globe-asia"></i></div>
-                            <div className="details">
-                            <p>Public</p>
-                            <span>Anyone on or off Facebook</span>
-                            </div>
-                        </div>
-                        <div className="radio"></div>
-                        </li>
-                        <li className="active">
-                        <div className="column">
-                            <div className="icon"><i className="fas fa-user-friends"></i></div>
-                            <div className="details">
-                            <p>Friends</p>
-                            <span>Your friends on Facebook</span>
-                            </div>
-                        </div>
-                        <div className="radio"></div>
-                        </li>
-                        <li>
-                        <div className="column">
-                            <div className="icon"><i className="fas fa-user"></i></div>
-                            <div className="details">
-                            <p>Specific</p>
-                            <span>Only show to some friends</span>
-                            </div>
-                        </div>
-                        <div className="radio"></div>
-                        </li>
-                        <li>
-                        <div className="column">
-                            <div className="icon"><i className="fas fa-lock"></i></div>
-                            <div className="details">
-                            <p>Only me</p>
-                            <span>Only you can see your post</span>
-                            </div>
-                        </div>
-                        <div className="radio"></div>
-                        </li>
-                        <li>
-                        <div className="column">
-                            <div className="icon"><i className="fas fa-cog"></i></div>
-                            <div className="details">
-                            <p>Custom</p>
-                            <span>Include and exclude friends</span>
-                            </div>
-                        </div>
-                        <div className="radio"></div>
-                        </li>
-                    </ul>
-                    </section>
-                </div>
-            </div>
 
-                    </DialogContent>
+                </DialogContent>
             </Dialog>
         </>
     )

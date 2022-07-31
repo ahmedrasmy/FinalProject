@@ -64,6 +64,81 @@ def get_Like(request):
         return Response(data.data)
     return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['Post'])
+def add_share(request):
+    user = Share2(data=request.data)
+    if user.is_valid():
+        user.save()
+        return Response(user.data, status=status.HTTP_201_CREATED)
+    return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_share(request):
+    if request.session.has_key('user_name'):
+
+        friendlist=FrienList.objects.filter(
+            user=int(request.session['user_id']))
+        arr = []
+        if friendlist :
+
+            friends= friendlist[0].friends.all()
+
+
+            for friend in friends:
+                posts = reversed(Shares.objects.filter(
+                    user=friend))
+                for post in posts:
+                    arr2 = []
+                    photos = Photos.objects.filter(post=post.post)
+                    for photo in photos:
+                        arr2.append( str(photo))
+
+                    arr.append({
+                        'post_id_share':post.id,
+                        'post_time_share': post.sharedate,
+                        'username_share':post.user.first_name+' '+post.user.last_name,
+                        'user_pic_share':str(post.user.pic.url),
+                        'user_id_share':post.user.id,
+                        'post_username':post.post.user.first_name+' '+post.post.user.last_name,
+                        'user_org_pic':str(post.post.user.pic.url),
+                        'post_org_id':post.post.id,
+                        'body_org':post.post.postcontent,
+                        'pic':arr2,
+                        'post_org_time':post.post.postdate
+                    })
+
+
+        postss = reversed(Shares.objects.filter(
+            user=int(request.session['user_id'])))
+        for post in postss:
+            arr2 = []
+            photos = Photos.objects.filter(post=post.post)
+            for photo in photos:
+                arr2.append(str(photo))
+
+            arr.append({
+                'post_id_share': post.id,
+                'post_time_share': post.sharedate,
+                'username_share': post.user.first_name + ' ' + post.user.last_name,
+                'user_pic_share': str(post.user.pic.url),
+                'user_id_share': post.user.id,
+                'post_username': post.post.user.first_name + ' ' + post.post.user.last_name,
+                'user_org_pic': str(post.post.user.pic.url),
+                'post_org_id': post.post.id,
+                'body_org': post.post.postcontent,
+                'pic': arr2,
+                'post_org_time': post.post.postdate
+            })
+
+        return JsonResponse(arr, safe=False)
+
+    else:
+        return redirect('/auth/login/')
+
+
+
+
+
 
 @api_view(['POST'])
 def register_user(request):
