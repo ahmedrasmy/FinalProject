@@ -153,8 +153,8 @@ class Share2(serializers.ModelSerializer):
         model = Shares
         fields = '__all__'
 
-
 class commentSerializergroup(serializers.ModelSerializer):
     class Meta:
         model = Commentsgroup
         fields = '__all__'
+

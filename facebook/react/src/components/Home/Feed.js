@@ -3,7 +3,7 @@ import AllPosts from '../Post/AllPosts';
 import '../css/Feed.css';
 import Post from '../Post/Post';
 import StoryReel from './StoryReel';
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 import jQuery from "jquery";
@@ -45,17 +45,16 @@ function Feed() {
             })
             .catch((err) => console.log(err))
     }, [])
+
     console.log(posts)
     console.log(shares)
 
-
     return (
         <div className="feed">
-        <StoryReel/>
-            <Post/> 
-            {
+            <StoryReel />
+            <Post /> {
                 posts.map((post) => {
-                    return <>
+                    return < >
                         <AllPosts
                             profilePic={post.user.pic}
                             post_id={post.id}
@@ -65,31 +64,27 @@ function Feed() {
                             image={post.post_photos}
                             comments={post.post_comments}
                             user_id={post.user.id}
-                            group_id="0"
-                        /> 
-                    </>
+
+                        /> </>
                 })
-            } 
-            {
+            } {
                 shares.map((share) => {
-                        return <>
-                            <AllShares
-                                profilePic={share.user_pic_share}
-                                username={share.username_share}
-                                post_id={share.post_org_id}
-                                post_user_org={share.user_org_pic}
-                                username_org={share.post_username}
-                                message={share.body_org}
-                                timestamp={share.post_org_time}
-                                image={share.pic}
-                                // comments={post.post_comments}
-                                // user_id={post.user.id}
-                            /> 
-                        </>
+                    return < >
+                        <AllShares
+                            profilePic={share.user_pic_share}
+                            username={share.username_share}
+                            post_id={share.post_org_id}
+                            post_user_org={share.user_org_pic}
+                            username_org={share.post_username}
+                            message={share.body_org}
+                            timestamp={share.post_org_time}
+                            image={share.pic}
+                            timestamp_share={share.post_time_share}
+                        // user_id={post.user.id}
+                        /> </>
                 })
-            }
-    </div>
-)
+            }</div>
+    )
 
 
 
