@@ -64,6 +64,81 @@ def get_Like(request):
         return Response(data.data)
     return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['Post'])
+def add_share(request):
+    user = Share2(data=request.data)
+    if user.is_valid():
+        user.save()
+        return Response(user.data, status=status.HTTP_201_CREATED)
+    return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_share(request):
+    if request.session.has_key('user_name'):
+
+        friendlist=FrienList.objects.filter(
+            user=int(request.session['user_id']))
+        arr = []
+        if friendlist :
+
+            friends= friendlist[0].friends.all()
+
+
+            for friend in friends:
+                posts = reversed(Shares.objects.filter(
+                    user=friend))
+                for post in posts:
+                    arr2 = []
+                    photos = Photos.objects.filter(post=post.post)
+                    for photo in photos:
+                        arr2.append( str(photo))
+
+                    arr.append({
+                        'post_id_share':post.id,
+                        'post_time_share': post.sharedate,
+                        'username_share':post.user.first_name+' '+post.user.last_name,
+                        'user_pic_share':str(post.user.pic.url),
+                        'user_id_share':post.user.id,
+                        'post_username':post.post.user.first_name+' '+post.post.user.last_name,
+                        'user_org_pic':str(post.post.user.pic.url),
+                        'post_org_id':post.post.id,
+                        'body_org':post.post.postcontent,
+                        'pic':arr2,
+                        'post_org_time':post.post.postdate
+                    })
+
+
+        postss = reversed(Shares.objects.filter(
+            user=int(request.session['user_id'])))
+        for post in postss:
+            arr2 = []
+            photos = Photos.objects.filter(post=post.post)
+            for photo in photos:
+                arr2.append(str(photo))
+
+            arr.append({
+                'post_id_share': post.id,
+                'post_time_share': post.sharedate,
+                'username_share': post.user.first_name + ' ' + post.user.last_name,
+                'user_pic_share': str(post.user.pic.url),
+                'user_id_share': post.user.id,
+                'post_username': post.post.user.first_name + ' ' + post.post.user.last_name,
+                'user_org_pic': str(post.post.user.pic.url),
+                'post_org_id': post.post.id,
+                'body_org': post.post.postcontent,
+                'pic': arr2,
+                'post_org_time': post.post.postdate
+            })
+
+        return JsonResponse(arr, safe=False)
+
+    else:
+        return redirect('/auth/login/')
+
+
+
+
+
 
 @api_view(['POST'])
 def register_user(request):
@@ -716,18 +791,25 @@ def get_user_for_group(request,id):
         user_id = int(request.session['user_id'])
         user = Useraccount.objects.get(id=user_id)
         group = Groups.objects.filter(id=id)
+        print(group[0].owner)
         members = group[0].members.all()
         arr=[]
         is_member = False
-        if members.filter(id=user.id):
+        is_owner = False
+        if members.filter( id=user.id ):
             is_member = True
         else:
             is_member = False
+        if user == group[0].owner:
+            is_owner = True
+        else :
+            is_owner = False
         arr.append({
             "user_id":user.id,
             "user_name":user.first_name+" "+user.last_name,
-            "user_pic":user.pic,
+            "user_pic":str(user.pic.url),
             "is_member": is_member,
+            "is_owner": is_owner,
         })
         return JsonResponse(arr, safe=False)
     else:
@@ -748,7 +830,7 @@ def addpostforgroups(request):
         return redirect('/auth/login/')
 
 
-@api_view(['POST'])
+@api_view(['GET'])
 def getpostforgroup(request,id):
     if request.session.has_key('user_name'):
         posts= reversed(PostsGroups.objects.filter(group=id))
@@ -760,25 +842,36 @@ def getpostforgroup(request,id):
 
 @api_view(['GET'])
 def get_likee_group(request):
-    users = Postlikegroup.objects.all()
-    data = LIKEGroup(users, many=True)
+    likes = Postlikegroup.objects.all()
+    data = LIKEGroup(likes, many=True)
     return Response(data.data)
 
 
 @api_view(['delete'])
-def delete_like(request, pk):
-    trainee = Postlike.objects.get(pk=pk)
-    trainee.delete()
+def delete_like_group(request, pk):
+    like = Postlikegroup.objects.get(pk=pk)
+    like.delete()
     return Response(status=status.HTTP_202_ACCEPTED)
 
 
 @api_view(['Post'])
 def get_like_group(request):
-    user = LIKE(data=request.data)
-    if user.is_valid():
-        user.save()
-        # return Response(user.data, status=status.HTTP_201_CREATED)
-        users = Postlike.objects.all()
-        data = LIKE(users, many=True)
+    like = LIKEGroup(data=request.data)
+    if like.is_valid():
+        like.save()
+        likes = Postlikegroup.objects.all()
+        data = LIKEGroup(likes, many=True)
         return Response(data.data)
-    return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(like.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def addcommentGroup(request):
+    if request.session.has_key('user_name'):
+        comment = commentSerializergroup(data=request.data)
+        if comment.is_valid():
+            comment.save()
+            return Response(comment.data, status=status.HTTP_201_CREATED)
+        return Response(comment.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return redirect('/auth/login/')

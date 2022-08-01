@@ -35,10 +35,12 @@ function Groups() {
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/get_user_for_group/'+ id)
             .then(res => {
-                setUser(res.data);
+                setUser(res.data[0]);
+                console.log(res.data)
             })
             .catch((err) => console.log(err))
     }, [])
+    console.log(user['is_member'])
     const [posts, setPosts] = useState([])
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/getpostforgroup/'+id)
@@ -82,12 +84,30 @@ function Groups() {
                         </ul>
                         <ul className="flex mb:pl-14"> 
                                 {
-                                    user['is_member'] === false ?
+                                    user['is_member'] === false && user['is_owner'] === false ?
                                     <>
                                         <li className="px-2 font-semibold">
                                             <button className="bg-blue-600  py-1 rounded-lg text-white font-semibold" >
                                                 join
                                             </button>
+                                        </li>
+                                    </>
+                                    :
+                                        null
+                                }
+                                {
+                                    user['is_member'] === true ?
+                                    <>
+                                        <li className="px-2 font-semibold">
+                                                <div class="dropdown">
+                                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        join
+                                                    </a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="#">leave group</a></li>
+                                                        {/* <li><a class="dropdown-item" href="#">Something else here</a></li> */}
+                                                    </ul>
+                                                </div>
                                         </li>
                                         <li className="px-2 font-semibold">
                                             <button className="bg-blue-600  py-1 rounded-lg text-white font-semibold" >
@@ -95,18 +115,7 @@ function Groups() {
                                             </button>
                                         </li>
                                     </>
-                                    :
-                                        <li className="px-2 font-semibold">
-                                            <div class="dropdown">
-                                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    join
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" href="#">leave group</a></li>
-                                                    {/* <li><a class="dropdown-item" href="#">Something else here</a></li> */}
-                                                </ul>
-                                            </div>
-                                        </li>
+                                    : null
                                 }
                             <li className="px-2 font-semibold">
                                 <button className="bg-gray-200 px-3 py-1 rounded-lg text-black font-semibold">
@@ -126,7 +135,7 @@ function Groups() {
                         <div className="col" style={{margin:"5px",paddingTop:"10px"}}>
                             <div className="row">
                                 {    
-                                    user['is_member'] === true ?
+                                    user['is_member'] === true  || user['is_owner'] === true ?
                                         <div style={{marginBottom:"10px",width:"100%"}}>
                                             <Post poll="0" group_id={id}/>
                                         </div>
@@ -135,9 +144,8 @@ function Groups() {
                                 <div style={{marginBottom:"10px",width:"100%"}}>
                                     {
                                         posts.map((post) => {
-                                            return < >
-                                                <
-                                                    AllPosts profilePic={post.user.pic}
+                                            return <>
+                                                <AllPosts profilePic={post.user.pic}
                                                             post_id={post.id}
                                                             message={post.postcontent}
                                                             timestamp={post.postdate}
@@ -147,7 +155,7 @@ function Groups() {
                                                             user_id={post.user.id}
                                                             group_id={id}
                                                 /> 
-                                                </>
+                                            </>
                                         })
                                     }
                                 </div> 
@@ -165,6 +173,13 @@ function Groups() {
                                 <div style={{marginBottom:"10px",backgroundColor:"white",height: '348px',width:"100%"}}>
                                     
                                 </div>
+                                {
+                                    user['is_owner'] === true ?
+                                        <div style={{marginBottom:"10px",backgroundColor:"white",height: '348px',width:"100%"}}>
+                                            <h4>Join Requests : </h4>
+                                        </div>
+                                    : null
+                                } 
                             </div>
                         </div>
                     </div>

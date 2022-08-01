@@ -43,6 +43,7 @@ class Photos(models.Model):
 class Shares(models.Model):
     post = models.ForeignKey(Posts, on_delete=models.CASCADE)
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
+    sharedate = models.DateTimeField(auto_now_add=True)
 
 
 class Postlike(models.Model):
@@ -149,7 +150,7 @@ class Notification(models.Model):
 
 ###################################### groups #############################
 class Groups(models.Model):
-    owner=models.ForeignKey(Useraccount, on_delete=models.CASCADE , related_name="group")
+    owner=models.ForeignKey(Useraccount, on_delete=models.CASCADE)
     group_name=models.TextField()
     group_pic= models.ImageField(upload_to="img", blank=True, null=True)
     About_group=models.TextField()
@@ -207,7 +208,7 @@ class PostsGroups(models.Model):
 
 class Commentsgroup(models.Model):
     post = models.ForeignKey(
-        PostsGroups, on_delete=models.CASCADE, related_name='post_comments')
+        PostsGroups, on_delete=models.CASCADE, related_name='post_comments_group')
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
     commentdate = models.DateTimeField(auto_now_add=True)
     commentcontent = models.TextField()

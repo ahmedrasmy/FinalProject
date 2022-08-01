@@ -1,14 +1,19 @@
-import { useEffect, useState, React } from "react";
-import { Avatar, IconButton, stepIconClasses } from '@mui/material';
-import './AllPosts.css';
+import {useEffect, useState, React} from "react";
+import {Avatar, IconButton, stepIconClasses} from '@mui/material';
 import love3 from '../images/love3.svg';
 import care from '../images/care.png';
 import emotion4 from '../images/emotion4.webp';
 import emotion5 from '../images/emotion5.webp';
 import emotion6 from '../images/emotion6.webp';
 import emotion7 from '../images/emotion7.webp';
+import './AllPosts.css';
 import axios from "axios";
 import jQuery from "jquery";
+import Dialog from '@mui/material/Dialog';
+import DialogContent from "@mui/material/DialogContent";
+import theme from "./icons/theme.svg";
+import smile from "./icons/smile.svg";
+
 
 function getCookie(name) {
     var cookieValue = null;
@@ -25,12 +30,40 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function AllPosts({ post_id, profilePic, image, username, timestamp, message, comments ,group_id=0}) {
+function renderTimestamp(timestamp) {
+        let prefix = "";
+        const timeDiff = Math.round(
+            (new Date().getTime() - new Date(timestamp).getTime()) / 60000
+        );
+        if (timeDiff < 1) {
+            // less than one minute ago
+            prefix = "just now...";
+        } else if (timeDiff < 60 && timeDiff > 1) {
+            // less than sixty minutes ago
+            prefix = `${timeDiff} minutes ago`;
+        } else if (timeDiff < 24 * 60 && timeDiff > 60) {
+            // less than 24 hours ago
+            prefix = `${Math.round(timeDiff / 60)} hours ago`;
+        } else if (timeDiff < 31 * 24 * 60 && timeDiff > 24 * 60) {
+            // less than 7 days ago
+            prefix = `${Math.round(timeDiff / (60 * 24))} days ago`;
+        } else {
+            prefix = `${new Date(timestamp)}`;
+        }
+        return prefix;
+    }
+
+function AllPosts({ post_id, profilePic, image, username, timestamp, message, comments ,group_id }) {
     var likeid;
     const [users, setUsers] = useState({})
+    const [Postsdata, setPostsdata] = useState({})
     const [posts, setPosts] = useState({})
     const [userLike, setUserLike] = useState(0)
-    const [Icon,setIcon]= useState(0)
+    const [Icon, setIcon] = useState(0)
+    const [share, setShare] = useState(null)
+    const [scroll, setScroll] = useState('paper');
+    const [open, setOpen] = useState(false);
+    {/************** user **************************/}
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/get/')
             .then(res => {
@@ -38,35 +71,61 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
             })
             .catch((err) => console.log(err))
     }, [])
-    const addlike = (e) => {
-        const sentmessage = {
+    {/************** shares **************************/}
+    function submit(e) {
+        const shares = {
             post: post_id,
             user: users.id,
-            iconId:parseInt(e),
         }
-        if ( group_id != 0){
-            axios.post("http://127.0.0.1:8000/api/get_like_group/",
-            sentmessage, 
-            {
+        e.preventDefault();
+        axios.post("http://127.0.0.1:8000/api/addshare/",
+            shares, {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': getCookie('csrftoken')
                 }
             },
-            ).then(res => {
-                for (let i = 0; i <= res.data.length - 1; i++) {
-                    let obj = res.data[i]
-                    if (obj.post === post_id && obj.user === users.id) {
-                        likeid = obj.id
-                        setPosts(res.data)
-                        setIcon(obj.iconId)
-                        setColor('blue')
-                        setUserLike(1)
-                    }
-                }
-            }).catch((err) => console.log(err))
+        ).then(res => {
+            console.log(res)
+        }).catch((err) => console.log(err))
+    }
+    const handleClickOpenDialog = () => {
+        setOpen(true);
+    };
+    const handleCloseDialog = () => {
+        setOpen(false);
+    };
+    {/************** endshares **************************/}
+    {/************** git likes **************************/}
+    useEffect(() => {
+            axios.get('http://127.0.0.1:8000/api/get_likee/')
+                .then(res => {
+                    setPostsdata(res.data);
+                })
+                .catch((err) => console.log(err))
+        }, [])
+    {/************** git likes  groups*************************
+    // useEffect(() => {
+    //                     axios.get('http://127.0.0.1:8000/api/get_likee_group/')
+    //                         .then(res => {
+    //                             setPostsdata(res.data);
+    //                         })
+    //                         .catch((err) => console.log(err))
+    //                 }, [])
+    // if ( parseInt(group_id)  === 0 ){
+    //     setPosts(Postsdata)
+    //     }
+    // else {
+    //     setPosts(Postsdata)
+    // }*/}
+    {/************** add likes **************************/}
+    const addlike = (e) => {
+        const sentmessage = {
+            post: post_id,
+            user: users.id,
+            iconId: parseInt(e),
         }
-        else {
+        if( parseInt(group_id) === 0 ){
             axios.post("http://127.0.0.1:8000/api/get_like/",
             sentmessage, 
             {
@@ -88,26 +147,29 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 }
             }).catch((err) => console.log(err))
         }
+        else {
+            axios.post("http://127.0.0.1:8000/api/get_like_group/",
+            sentmessage, 
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            },
+            ).then(res => {
+                for (let i = 0; i <= res.data.length - 1; i++) {
+                    let obj = res.data[i]
+                    if (obj.post === post_id && obj.user === users.id) {
+                        likeid = obj.id
+                        setPosts(res.data)
+                        setIcon(obj.iconId)
+                        setColor('blue')
+                        setUserLike(1)
+                    }
+                }
+                }).catch((err) => console.log(err))
+        }   
     }
-    if ( group_id  != 0 ){
-            useEffect(() => {
-                        axios.get('http://127.0.0.1:8000/api/get_likee_group/')
-                            .then(res => {
-                                setPosts(res.data);
-                            })
-                            .catch((err) => console.log(err))
-                    }, [])
-        }
-    else {
-        useEffect(() => {
-            axios.get('http://127.0.0.1:8000/api/get_likee/')
-                .then(res => {
-                    setPosts(res.data);
-                })
-                .catch((err) => console.log(err))
-        }, [])
-    }
-
     useEffect(() => {
         for (let i = 0; i <= posts.length - 1; i++) {
             let obj = posts[i]
@@ -130,18 +192,34 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 likeid = obj.id
             }
         }
-        axios.delete("http://127.0.0.1:8000/api/delete_like/" +
+        if( group_id === 0 ){
+            axios.delete("http://127.0.0.1:8000/api/delete_like/" +
                 likeid, {
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': getCookie('csrftoken')
                     }
                 },
-            ).then(res => {
-                setColor('')
-                setUserLike(0)
-                setIcon(0)
-            }).catch((err) => console.log(err))
+                ).then(res => {
+                    setColor('')
+                    setUserLike(0)
+                    setIcon(0)
+                }).catch((err) => console.log(err))
+        }
+        else{
+            axios.delete("http://127.0.0.1:8000/api/delete_like_group/" +
+                likeid, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                },
+                ).then(res => {
+                    setColor('')
+                    setUserLike(0)
+                    setIcon(0)
+                }).catch((err) => console.log(err))
+        }
     };
     const [comment, setComment] = useState(null)
     const sendCommentData = {
@@ -150,15 +228,28 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
         commentcontent: comment
     }
     const addNewComment = () => {
-        axios.post("http://127.0.0.1:8000/api/addcomment/",
+        if( parseInt(group_id) === 0){
+            axios.post("http://127.0.0.1:8000/api/addcomment/",
             sendCommentData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': getCookie('csrftoken')
                 }
             },
-        ).then(res => {
-        }).catch((err) => console.log(err))
+            ).then(res => {
+            }).catch((err) => console.log(err))
+        }
+        else {
+            axios.post("http://127.0.0.1:8000/api/addcommentGroup/",
+            sendCommentData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            },
+            ).then(res => {
+            }).catch((err) => console.log(err))
+        }
     }
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
@@ -172,8 +263,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 <div className = "Top_section" >
                     <Avatar src = { profilePic } className = "Posts_avatar" / >
                     <div className = "Top_section_info" >
-                    <h3 > { username } </h3>
-                    <p> { timestamp }</p> 
+                        <h3> {username} </h3> <p> {renderTimestamp(timestamp)} </p></div>
                     </div>
                 </div> 
                 <div className = "bottom_section" >
@@ -257,44 +347,142 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                                 }
                             </>
                             : <>
-                                <IconButton id="0" > 
-                                    <i className = "fa-regular fa-thumbs-up"> 
-                                    </i>
-                                    Like
-                                </IconButton>
-                                <div class="emoji">
-                                    <IconButton id="0" onClick = {(e)=> addlike(0)}><i class="fa-solid fa-thumbs-up icon1"></i></IconButton>
-                                    <IconButton id="1" onClick = {(e)=> addlike(1)} ><img src={love3} class="love icon2" alt="" /></IconButton>
-                                    <IconButton id="2" onClick = {(e)=> addlike(2)} ><img src={care} class="icon3" alt="" /></IconButton>
-                                    <IconButton id="3" onClick = {(e)=> addlike(3)}><img src={emotion4} class="icon4" alt="" /></IconButton>
-                                    <IconButton id="4" onClick = {(e)=> addlike(4)}><img src={emotion5} class="icon5" alt="" /></IconButton>
-                                    <IconButton id="5" onClick = {(e)=> addlike(5)}><img src={emotion6} class="icon6" alt="" /></IconButton>
-                                    <IconButton id="6" onClick = {(e)=> addlike(6)}><img src={emotion7} class="icon7" alt="" /></IconButton>
+                            <IconButton id="0">
+                                <i className="fa-regular fa-thumbs-up"></i>Like </IconButton>
+                            <div class="emoji">
+                                <i id="0" onClick={(e) => addlike(0)} class="fa-solid fa-thumbs-up icon1"> </i> 
+                                <i id="1"
+                                        onClick={
+                                            (e) => addlike(1)}> < img src={love3}
+                                                                        class="love icon2"
+                                                                        alt=""/> </i> 
+                                <i id="2"
+                                        onClick={
+                                            (e) => addlike(2)}> < img src={care}
+                                                                        class="icon3"
+                                                                        alt=""/> </i> 
+                            <i id="3"
+                                        onClick={
+                                            (e) => addlike(3)}> < img src={emotion4}
+                                                                        class="icon4"
+                                                                        alt=""/> </i> 
+                            <i id="4"
+                                        onClick={
+                                            (e) => addlike(4)}> < img src={emotion5}
+                                                                        class="icon5"
+                                                                        alt=""/> </i> 
+                            <i id="5"
+                                        onClick={
+                                            (e) => addlike(5)}> < img src={emotion6}
+                                                                        class="icon6"
+                                                                        alt=""/> </i> 
+                            <i id="6"
+                                        onClick={
+                                            (e) => addlike(6)}> < img src={emotion7}
+                                                                        class="icon7"
+                                                                        alt=""/> </i>
+                            </div>
+                        </>
+            } </div>
+                <div className="icon icon-comment">
+                    <
+                        i className="fa-regular fa-comment"> </i>
+                    Comment
+                </div>
+                <div className = "icon" > < i className = "fa-solid fa-share"
+                    onClick = {handleClickOpenDialog} > </i> Share 
+                </div>
+            </div>
+            <div class="comments"> {
+                comments.map((comment) => {
+                    return <>
+                        <div className="comment">
+                            <img src={comment.split(',')[1]}
+                                alt=""/>
+                            <div className="comment-body">
+                                <p className="name"> {comment.split(',')[0]} </p> <p> {comment.split(',')[2]} </p></div>
+                        </div>
+                    </>
+                })
+            }
+            </div>
+            <div className="create-comment">
+                <Avatar src={users.pic} className="Posts_avatar"/>
+                <input type="text" placeholder="Write A comment" className="commentInput" name="commentcontent"
+                    onChange={(e) => setComment(e.target.value)
+                    }
+                    onKeyDown={
+                        (e) => handleKeyDown(e)
+                    }/></div>
+        <Dialog open={open}
+                onClose={handleCloseDialog}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                scroll={scroll}>
+            <DialogContent dividers>
+
+                <div className="container"
+                    style={
+                        {overflowY: "auto"}}>
+                    <div className="wrapper">
+                        <section className="post">
+                            <header> Share Post
+                            </header>
+                            <form onSubmit={
+                                (e) => submit(e)}
+                                enctype="multipart/form-data">
+
+                                <div className="content">
+                                    <img src={users.pic}
+                                        alt="logo"/>
+                                    <
+                                        div className="details">
+                                        <p> {users.first_name + ' ' + users.last_name} </p>
+                                        <div className="privacy">
+                                            <i className="fas fa-user-friends"> </i> <
+                                            span> Friends </span> <
+                                            i className="fas fa-caret-down"> </i></div>
+
+                                    </div>
                                 </div>
-                            </>
-                        }
-                    </div> 
-                    <div className = "icon icon-comment" >
-                        <i className = "fa-regular fa-comment" ></i> 
-                        Comment 
-                    </div> 
-                    <div className = "icon"><i className="fa-solid fa-share" ></i> Share</div >
-                </div> 
-                    <div className = "create-comment" >
-                        <Avatar src = { users.pic } className = "Posts_avatar" / >
-                        <input type = "text"
-                            placeholder = "Write A comment"
-                            className = "commentInput"
-                            name = "commentcontent"
-                            onChange = {
-                            (e) => setComment(e.target.value) }
-                            onKeyDown = {
-                            (e) => handleKeyDown(e) }
-                        />
+                                <
+                                    textarea placeholder={"What's on your mind, ?" + users.first_name}
+                                            spellCheck="false"
+                                            required name="postcontent"
+                                            onChange={
+                                                (e) => setShare(e.target.value)}
+                                            style={
+                                                {height: "50px"}}>
+                        </textarea> <
+                                img src={image}
+                                    className="col"
+                                    alt=""/>
+                                <
+                                    button type='submit'> Post
+                                </button>
+
+
+                                <div className="theme-emoji">
+                                    <img src={theme} alt="theme"/>
+                                    <img src={smile} alt="smile"/>
+                                </div>
+
+
+                            </form>
+
+                        </section>
+
                     </div>
-            </div> 
-        </>
-    )
+
+                </div>
+
+            </DialogContent>
+        </Dialog> </>
+
+
+
+
+)
 }
 
 export default AllPosts
