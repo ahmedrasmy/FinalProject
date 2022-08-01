@@ -144,16 +144,8 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
             }).catch((err) => console.log(err))
         }
     }
-    if ( group_id  != 0 ){
-            useEffect(() => {
-                        axios.get('http://127.0.0.1:8000/api/get_likee_group/')
-                            .then(res => {
-                                setPosts(res.data);
-                            })
-                            .catch((err) => console.log(err))
-                    }, [])
-        }
-    else {
+
+
         useEffect(() => {
             axios.get('http://127.0.0.1:8000/api/get_likee/')
                 .then(res => {
@@ -161,7 +153,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 })
                 .catch((err) => console.log(err))
         }, [])
-    }
+
 
     useEffect(() => {
         for (let i = 0; i <= posts.length - 1; i++) {
