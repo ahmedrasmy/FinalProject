@@ -22,7 +22,7 @@ class commentSerializer(serializers.ModelSerializer):
 class postUserSerial(serializers.ModelSerializer):
     class Meta:
         model = Useraccount
-        fields = ('first_name', 'last_name', 'pic', 'id')
+        fields = ('first_name', 'last_name', 'pic', 'id','isactive')
 
 
 class postSerializer(serializers.ModelSerializer):
@@ -120,7 +120,7 @@ class PostsGroupsSerializer(serializers.ModelSerializer):
 
 
 class PostsGroupsSerializerget(serializers.ModelSerializer):
-    post_comments = serializers.StringRelatedField(many=True)
+    post_comments_group = serializers.StringRelatedField(many=True)
     class Meta:
         model = PostsGroups
         fields = '__all__'
@@ -128,7 +128,6 @@ class PostsGroupsSerializerget(serializers.ModelSerializer):
 
 
 class LIKEGroup(serializers.ModelSerializer):
-
     class Meta:
         model = Postlikegroup
         fields = '__all__'
@@ -143,10 +142,9 @@ class postShareSerial(serializers.ModelSerializer):
     user = postUserSerial(many=False)
 
 class ShareUserSerial(serializers.ModelSerializer):
-
     class Meta:
         model = Useraccount
-        fields = ('first_name', 'last_name', 'pic', 'id')
+        fields = ('first_name', 'last_name', 'pic', 'id', 'email',)
 
 
 class Share(serializers.ModelSerializer):
@@ -161,3 +159,26 @@ class Share2(serializers.ModelSerializer):
         model = Shares
         fields = '__all__'
 
+class commentSerializergroup(serializers.ModelSerializer):
+    class Meta:
+        model = Commentsgroup
+        fields = '__all__'
+
+
+class MemberRequestSerializergroup(serializers.ModelSerializer):
+    class Meta:
+        model = MemberRequest
+        fields = '__all__'
+
+
+class getRequestSerializergroup(serializers.ModelSerializer):
+    class Meta:
+        model = MemberRequest
+        fields = '__all__'
+    sender= ShareUserSerial(many=False)
+
+
+class NotificationInviteGroup(serializers.ModelSerializer):
+    class Meta:
+        model = NotificationInvite
+        fields = '__all__'

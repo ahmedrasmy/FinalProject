@@ -3,7 +3,7 @@ import AllPosts from '../Post/AllPosts';
 import '../css/Feed.css';
 import Post from '../Post/Post';
 import StoryReel from './StoryReel';
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 import jQuery from "jquery";
@@ -35,7 +35,6 @@ function Feed() {
                 setPosts(res.data);
             })
             .catch((err) => console.log(err))
-
     }, [])
 
     useEffect(() => {
@@ -48,16 +47,13 @@ function Feed() {
     }, [])
 
 
-
-    return (<
-        div className="feed">
-        <
-            StoryReel/>
-            <Post/> {
+    return (
+        <div className="feed">
+            <StoryReel />
+            <Post /> {
                 posts.map((post) => {
                     return < >
-                        <
-                            AllPosts
+                        <AllPosts
                             profilePic={post.user.pic}
                             post_id={post.id}
                             message={post.postcontent}
@@ -66,6 +62,7 @@ function Feed() {
                             image={post.post_photos}
                             comments={post.post_comments}
                             user_id={post.user.id}
+
                         /> </>
                 })
             } {
@@ -81,11 +78,11 @@ function Feed() {
                             timestamp={share.post_org_time}
                             image={share.pic}
                             timestamp_share={share.post_time_share}
-                            // user_id={post.user.id}
+                        // user_id={post.user.id}
                         /> </>
                 })
             }</div>
-)
+    )
 
 
 

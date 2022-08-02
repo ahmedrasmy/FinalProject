@@ -25,11 +25,24 @@
     padding: 5px;
     position: relative;
 }
+.contacts .images {
+    color: #050505;
+    font-weight: bold;
+    display: flex;
+    padding: 5px;
+    position: relative;
+}
 .contacts .more-hover:hover {
     background-color: #e3e5e8;
     border-radius: 5px;
 }
 .contacts .image img {
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.contacts .images img {
     height: 36px;
     width: 36px;
     border-radius: 50%;
@@ -45,6 +58,17 @@
     left: 30px;
     bottom: 5px;
 }
+.contacts .images::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background-color:red;
+    border-radius: 50%;
+    position: absolute;
+    left: 30px;
+    bottom: 5px;
+}
+
 /* End contacts  */
 
 

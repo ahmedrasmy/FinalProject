@@ -13,7 +13,7 @@ urlpatterns = [
     path('unfriend/', unfriend, name='unfriend'),
     path('cancel_friend_request/', cancel_friend_request, name='cancel_friend_request'),
     path('Friends_list/', Friends_list, name='Friends_list'),
-    path('friend_request/<str:id>', send_friend_request, name='friend-request'),
+    # path('friend_request/<str:id>', send_friend_request, name='friend-request'),
     path('Home/', home, name='home'),
     path('updateprofile/', updateprofile, name='updateprofile'),
     path('pro/<str:id>', pro, name='pro'),
@@ -24,5 +24,9 @@ urlpatterns = [
     path('frined_request_accept_sugustions/',frined_request_accept_sugustions, name='frined_request_accept_sugustions'),
     path('Post/<str:id>/', Post, name='Post'),
     path('group/<id>/', group, name='group'),
+    path('group/people/<id>/', group_people, name='group_people'),
+    path('member_request_delete/', member_request_delete,name='member_request_delete'),
+    path('member_request_accept/', member_request_accept,name='member_request_accept'),
+    path('leave_group/', leave_group, name='leave_group'),
 
 ]

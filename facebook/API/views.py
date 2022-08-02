@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 import json
 from audioop import reverse
 from lib2to3.pgen2.token import NOTEQUAL
@@ -12,6 +13,7 @@ from .utils import get_friend_request_or_false
 from Home.FriendRequestStatus import FriendRequestStatus
 from django.http import HttpResponse
 from django.db.models import Q
+from django.db.models import Count
 
 # Create your views here.
 @api_view(['GET'])
@@ -44,6 +46,24 @@ def get_Likee(request):
     users = Postlike.objects.all()
     data = LIKE(users, many=True)
     return Response(data.data)
+
+@api_view(['GET'])
+def get_Likeeuser(request,id):
+    arr=[]
+
+    result = (Postlike.objects.filter(post=id)
+            .values('iconId')
+            .annotate(dcount=Count('iconId'))
+            .order_by()
+            )
+
+    for x in  result:
+        arr.append(x)
+    return JsonResponse(arr, safe=False)
+    # # data = LIKE(users, many=True)
+    # return Response(data.data)
+
+
 
 #####################   Add New User   ################
 @api_view(['delete'])
@@ -594,7 +614,7 @@ def story(request):
                 "is_mine":True,
             })
         try:
-            friend_list = FrienList.objects.get(user=user)
+            friend_list = FrienList.objects.filter(user=user)
         except FrienList.DoesNotExist:
             friend_list = FrienList(user=user)
             friend_list.save()
@@ -805,18 +825,25 @@ def get_user_for_group(request,id):
         user_id = int(request.session['user_id'])
         user = Useraccount.objects.get(id=user_id)
         group = Groups.objects.filter(id=id)
+        print(group[0].owner)
         members = group[0].members.all()
         arr=[]
         is_member = False
-        if members.filter(id=user.id):
+        is_owner = False
+        if members.filter( id=user.id ):
             is_member = True
         else:
             is_member = False
+        if user == group[0].owner:
+            is_owner = True
+        else :
+            is_owner = False
         arr.append({
             "user_id":user.id,
             "user_name":user.first_name+" "+user.last_name,
-            "user_pic":user.pic,
+            "user_pic":str(user.pic.url),
             "is_member": is_member,
+            "is_owner": is_owner,
         })
         return JsonResponse(arr, safe=False)
     else:
@@ -837,7 +864,7 @@ def addpostforgroups(request):
         return redirect('/auth/login/')
 
 
-@api_view(['POST'])
+@api_view(['GET'])
 def getpostforgroup(request,id):
     if request.session.has_key('user_name'):
         posts= reversed(PostsGroups.objects.filter(group=id))
@@ -849,25 +876,134 @@ def getpostforgroup(request,id):
 
 @api_view(['GET'])
 def get_likee_group(request):
-    users = Postlikegroup.objects.all()
-    data = LIKEGroup(users, many=True)
+    likes = Postlikegroup.objects.all()
+    data = LIKEGroup(likes, many=True)
     return Response(data.data)
 
 
 @api_view(['delete'])
-def delete_like(request, pk):
-    trainee = Postlike.objects.get(pk=pk)
-    trainee.delete()
+def delete_like_group(request, pk):
+    like = Postlikegroup.objects.get(pk=pk)
+    like.delete()
     return Response(status=status.HTTP_202_ACCEPTED)
 
 
 @api_view(['Post'])
 def get_like_group(request):
-    user = LIKE(data=request.data)
-    if user.is_valid():
-        user.save()
-        # return Response(user.data, status=status.HTTP_201_CREATED)
-        users = Postlike.objects.all()
-        data = LIKE(users, many=True)
+    like = LIKEGroup(data=request.data)
+    if like.is_valid():
+        like.save()
+        likes = Postlikegroup.objects.all()
+        data = LIKEGroup(likes, many=True)
         return Response(data.data)
-    return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(like.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['Post'])
+def invite(request):
+    if request.session.has_key('user_name'):
+        invite = NotificationInviteGroup(data=request.data)
+        if invite.is_valid():
+            invite.save()
+            return Response(invite.data, status=status.HTTP_201_CREATED)
+        return Response(invite.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return redirect('/auth/login/')
+
+
+
+@api_view(['POST'])
+def addcommentGroup(request):
+    if request.session.has_key('user_name'):
+        comment = commentSerializergroup(data=request.data)
+        if comment.is_valid():
+            comment.save()
+            return Response(comment.data, status=status.HTTP_201_CREATED)
+        return Response(comment.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return redirect('/auth/login/')
+
+################################# send request to join ############################3
+@api_view(['POST'])
+def joinGroup(request):
+    if request.session.has_key('user_name'):
+        payload = []
+        try:
+                # Get any friend requests (active and not-active)
+                member_requests = MemberRequest.objects.filter(
+                    sender=request.data['sender'], reciver=request.data['reciver'])
+                print(request.data)
+                print(request.data['sender'])
+                # print(request.data.reciver,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                # find if any of them are active (pending)
+                try:
+                    for request in member_requests:
+                        if request.is_active:
+                            raise Exception(
+                                "You already sent them a friend request.")
+                    # If none are active create a new friend request
+                    reques = MemberRequestSerializergroup(data=request.data)
+                    if reques.is_valid():
+                        reques.save()
+                        return Response(reques.data, status=status.HTTP_201_CREATED)
+                    payload['response'] = "Friend request sent."
+                except Exception as e:
+                    payload['response'] = str(e)
+        except MemberRequest.DoesNotExist:
+                # There are no friend requests so create one.
+                reques = MemberRequestSerializergroup(data=request.data)
+                if reques.is_valid():
+                    reques.save()
+                    return Response(reques.data, status=status.HTTP_201_CREATED)
+        return Response(reques.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return redirect('/auth/login/')
+
+
+########################### get requests to join ######################
+@api_view(['GET'])
+def joinrequests(request,pk):
+    if request.session.has_key('user_name'):
+        reques=MemberRequest.objects.filter(reciver=pk)
+        data = getRequestSerializergroup(reques, many=True)
+        return Response(data.data)
+    else:
+        return redirect('/auth/login/')
+
+
+########################### accept requests to join ######################
+@api_view(['GET'])
+def friends_list_group(request, pk):
+    if request.session.has_key('user_name'):
+        user = Useraccount.objects.get(id=int(request.session['user_id']))
+        user_id = int(request.session['user_id'])
+        user = Useraccount.objects.get(id=user_id)
+        friend_list = FrienList.objects.filter(user=user)
+        group = Groups.objects.get(id=pk)
+        friends = friend_list[0].friends.all()
+        data = []
+        for friend in friends:
+            if group.is_mutual_member(friend):
+                print("yes")
+            else :
+                data.append(
+                    {
+                        'friend_id': friend.id,
+                        'friend_name': friend.first_name+" "+friend.last_name,
+                        'friend_pic': str(friend.pic.url),
+                    }
+                )
+        return JsonResponse(data, safe=False)
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['GET'])
+def get_all_users_group(request, pk):
+    if request.session.has_key('user_name'):
+        group = Groups.objects.get(id=pk)
+        members=group.members.all()
+        data = ShareUserSerial(members, many=True)
+        return Response(data.data)
+    else:
+        return redirect('/auth/login/')

@@ -23,6 +23,7 @@ class Useraccount(models.Model):
     address = models.CharField(max_length=100, null=True)
     location = models.CharField(max_length=100, null=True)
     Bio = models.CharField(max_length=300, null=True)
+    isactive=models.BooleanField(default=False)
 
 
 class Posts(models.Model):
@@ -157,7 +158,7 @@ class NotifyRequest(models.Model):
 
 ###################################### groups #############################
 class Groups(models.Model):
-    owner=models.ForeignKey(Useraccount, on_delete=models.CASCADE , related_name="group")
+    owner=models.ForeignKey(Useraccount, on_delete=models.CASCADE)
     group_name=models.TextField()
     group_pic= models.ImageField(upload_to="img", blank=True, null=True)
     About_group=models.TextField()
@@ -215,7 +216,7 @@ class PostsGroups(models.Model):
 
 class Commentsgroup(models.Model):
     post = models.ForeignKey(
-        PostsGroups, on_delete=models.CASCADE, related_name='post_comments')
+        PostsGroups, on_delete=models.CASCADE, related_name='post_comments_group')
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
     commentdate = models.DateTimeField(auto_now_add=True)
     commentcontent = models.TextField()
@@ -229,3 +230,12 @@ class Postlikegroup(models.Model):
     post = models.ForeignKey(PostsGroups, on_delete=models.CASCADE)
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
     iconId = models.IntegerField()
+
+
+class NotificationInvite(models.Model):
+    user = models.ForeignKey(Useraccount, on_delete=models.CASCADE,related_name="Invit_user")
+    body = models.TextField(blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    seen = models.BooleanField(default=False)
+    Invit_receiver = models.ForeignKey(Useraccount, on_delete=models.CASCADE,related_name="Invit_reciver")
+    group = models.ForeignKey(Groups, on_delete=models.CASCADE)
