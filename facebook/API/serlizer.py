@@ -22,7 +22,7 @@ class commentSerializer(serializers.ModelSerializer):
 class postUserSerial(serializers.ModelSerializer):
     class Meta:
         model = Useraccount
-        fields = ('first_name', 'last_name', 'pic', 'id')
+        fields = ('first_name', 'last_name', 'pic', 'id','isactive')
 
 
 class postSerializer(serializers.ModelSerializer):

@@ -19,6 +19,7 @@ import DialogContent from '@mui/material/DialogContent';
 import jQuery from "jquery";
 
 import PollIcon from '@mui/icons-material/Poll';
+import {useHistory} from "react-router-dom";
 
 
 function getCookie(name) {
@@ -38,6 +39,7 @@ function getCookie(name) {
 
 function Post({poll,group_id}) {
     const [users, setUsers] = useState({})
+       const history = useHistory();
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/get/')
             .then(res => {
@@ -85,7 +87,9 @@ function Post({poll,group_id}) {
                 },
             ).then(res => {
                 setOpen(false);
+                history.push("/home/Home/")
                 console.log(res)
+
             }).catch((err) => console.log(err))
     }
     const sendPostDatagroup = {

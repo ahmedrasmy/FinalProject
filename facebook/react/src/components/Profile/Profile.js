@@ -18,7 +18,7 @@ function Profile() {
                 setUsers(res.data[0]);
         })
             .catch((err) => console.log(err))
-    }, [])
+    }, [id])
     const [posts, setPosts] = useState([])
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/get_one_user_Posts/'+id)
@@ -27,7 +27,7 @@ function Profile() {
                 console.log(res.data);
             })
             .catch((err) => console.log(err))
-    }, [])
+    }, [id])
 
     const [friends, setfriends] = useState([])
     useEffect(() => {
@@ -36,7 +36,7 @@ function Profile() {
                 setfriends(res.data);
             })
             .catch((err) => console.log(err))
-    }, [])
+    }, [id])
 
 
 
@@ -113,7 +113,8 @@ function Profile() {
                                                                         <img src={friend.pic}
                                                                             className="w-24 h-24 rounded-md mt-2 cursor-pointer"
                                                                         />
-                                                                        <Link to={`/home/pro/`+friend.id}
+                                                                          <Link to={`/home/pro/` + friend.id}
+
                                                                             className="font-semibold text-sm">{friend.first_name+" "+friend.last_name}</Link>
                                                                     </div>
                                                                 </>

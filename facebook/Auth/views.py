@@ -48,6 +48,9 @@ def login(request):
             request.session['user_name'] = loguser[0].first_name + \
                 " " + loguser[0].last_name
             request.session['user_id'] = loguser[0].id
+            t = Useraccount.objects.get(id=request.session['user_id'])
+            t.isactive='True'
+            t.save()
             return redirect('/home/Home/')
         else:
             return render(request, 'index.html', {'error': 'Invalid Credientials'})
@@ -56,8 +59,12 @@ def login(request):
 
 def logout(request):
     if request.session.has_key('user_name'):
+        t = Useraccount.objects.get(id=request.session['user_id'])
+        t.isactive = 'False'
+        t.save()
         del request.session['user_name']
         del request.session['user_id']
+
         return redirect('/auth/login/')
     return redirect('/auth/login/')
 

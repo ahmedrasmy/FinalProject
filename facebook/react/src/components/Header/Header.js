@@ -89,7 +89,7 @@ function Header() {
             })
             .catch(error => console.log(error))
     }
-    setInterval(getNotification, 1000)
+    // setInterval(getNotification, 3000)
     console.log(Invisib)
     const [notifications, setNotifications] = useState([])
     console.log(notifications.length)

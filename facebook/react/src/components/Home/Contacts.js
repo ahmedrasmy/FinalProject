@@ -24,10 +24,20 @@ function Contacts() {
                         contacts.map((contact) => {
                             return <>
                                     <a href={"/chats/detail/"+contact.id}>
-                                        <span className="more-hover image">
+                                        {  contact['isactive'] === true ?
+
+
+                                            <span className="more-hover image" >
+                                            <img src={contact.pic} />
+                                            <span >{contact.first_name + " " + contact.last_name} </span>
+                                        </span> :
+                                            <span className="more-hover images">
                                             <img src={contact.pic} />
                                             <span >{contact.first_name + " " + contact.last_name} </span>
                                         </span>
+
+                                        }
+
                                     </a>
                                 </>
                             }

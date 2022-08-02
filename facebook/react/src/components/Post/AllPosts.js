@@ -6,6 +6,12 @@ import emotion4 from '../images/emotion4.webp';
 import emotion5 from '../images/emotion5.webp';
 import emotion6 from '../images/emotion6.webp';
 import emotion7 from '../images/emotion7.webp';
+import love from '../images/loved.PNG';
+import liked from '../images/liked.PNG';
+import haha from '../images/hahaed.PNG';
+import sadded from '../images/saded.PNG';
+import angry from '../images/angred.PNG';
+import wow from '../images/wowed.PNG';
 import './AllPosts.css';
 import axios from "axios";
 import jQuery from "jquery";
@@ -57,6 +63,7 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
     var likeid;
     const [users, setUsers] = useState({})
     const [posts, setPosts] = useState({})
+    const [likes, setLike] = useState([])
     const [userLike, setUserLike] = useState(0)
     const [Icon, setIcon] = useState(0)
     const [dbIcon, setdbIcon] = useState(0)
@@ -156,14 +163,23 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
     //             .catch((err) => console.log(err))
     //     }, [])
     // } else {
-        useEffect(() => {
-            axios.get('http://127.0.0.1:8000/api/get_likee/')
-                .then(res => {
-                    setPosts(res.data);
-                })
-                .catch((err) => console.log(err))
-        }, [])
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/get_likee/')
+            .then(res => {
+                setPosts(res.data);
+            })
+            .catch((err) => console.log(err))
+    }, [])
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/get_likee_user/'+post_id)
+            .then(res => {
+                setLike(res.data);
+            })
+            .catch((err) => console.log(err))
+    }, [])
     // }
+    console.log(likes)
+
 
     useEffect(() => {
         for (let i = 0; i <= posts.length - 1; i++) {
@@ -281,14 +297,79 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
                 <
                     div className="nums-comments-iteractions">
                     <div className="interaction">
-                        <i className="fa-solid fa-thumbs-up icon1"> < /i>
-                        <i className="fa-solid fa-heart icon2"> < /i> <i
-                        className="fa-regular fa-face-grin-beam icon3"> < /i> <
+                        {
+                            likes.map((like) => {
+                        return < >
+
+                            {
+                                like['iconId']===0 ?
+                                    <div style={{display:"inline"}} >
+                                        {like['dcount']} <img src={liked} alt="Img" style={{display:"inline"}} />
+
+                                    </div>:
+                                    null
+
+                            }
+                            {
+                                like['iconId']===1 ?
+                                    <div style={{display:"inline"}} >
+                                       {/*<i className="fa-solid fa-heart icon2"> < /i>*/}
+                                        {like['dcount']}   <img src={love} style={{display:"inline"}} alt="Img" />
+                                    </div>:
+                                    null
+
+                            }
+                             {
+                                like['iconId']===2 ?
+                                    <div style={{display:"inline"}} >
+                                     {like['dcount']}  <img src={care} style={{display:"inline"}} alt="Img" />
+                                    </div>:
+                                    null
+
+                            }
+                             {
+                                like['iconId']===3 ?
+                                    <div style={{display:"inline"}} >
+                                     {like['dcount']}  <img src={haha} style={{display:"inline"}} alt="Img" />
+                                    </div>:
+                                    null
+
+                            }
+                              {
+                                like['iconId']===4 ?
+                                    <div style={{display:"inline"}} >
+                                     {like['dcount']}  <img src={wow} style={{display:"inline"}} alt="Img" />
+                                    </div>:
+                                    null
+
+                            }
+                              {
+                                like['iconId']===5 ?
+                                    <div style={{display:"inline"}} >
+                                     {like['dcount']}  <img src={sadded} style={{display:"inline"}} alt="Img" />
+                                    </div>:
+                                    null
+
+                            }
+                             {
+                                like['iconId']===6 ?
+                                    <div style={{display:"inline"}} >
+                                     {like['dcount']}  <img src={angry} style={{display:"inline"}} alt="Img" />
+                                    </div>:
+                                    null
+
+                            }
+
+                        </>
+                    })
+                        }
+
+                           <
                         a href="#"> < /a></div>
                     <
                         a href="#"
                           class="nums-comments"> {comments.length}
-                        Coments 20 Shares < /a></div>
+                        Coments < /a></div>
                 <
                     div className="like-comment-share">
                     <
@@ -312,13 +393,14 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
                                     <
                                         img src={love3}
                                             class="love icon2"
-                                            alt=""/>
+                                            alt="" style={{height: "50px"}}/>
                                 </IconButton> : null} {Icon === 2 ? <
                             IconButton onClick={handleClose}>
                             <
                                 img src={care}
                                     class="icon3"
-                                    alt=""/>
+                                    alt=""
+                                    style={{height: "50px"}}/>
                         </IconButton> : null
                         } {
                             Icon === 3 ?
@@ -327,21 +409,21 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
                                     <
                                         img src={emotion4}
                                             class="icon4"
-                                            alt=""/>
+                                            alt="" style={{height: "50px"}}/>
                                 <
                                 /IconButton> : null} {Icon === 4 ? <
                             IconButton onClick={handleClose}>
                             <
                                 img src={emotion5}
                                     class="icon5"
-                                    alt=""/>
+                                    alt="" style={{height: "50px"}}/>
                         <
                                 /IconButton> : null} {Icon === 5 ? <
                             IconButton onClick={handleClose}>
                             <
                                 img src={emotion6}
                                     class="icon6"
-                                    alt=""/>
+                                    alt="" style={{height: "50px"}}/>
                         <
                                 /IconButton> : null
                         } {
@@ -351,7 +433,7 @@ function AllPosts({post_id, profilePic, image, username, timestamp, message, com
                                     <
                                         img src={emotion7}
                                             class="icon7"
-                                            alt=""/>
+                                            alt="" style={{height: "50px"}}/>
                                 <
                                 /IconButton> : null
                         }
