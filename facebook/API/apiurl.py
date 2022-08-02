@@ -63,5 +63,6 @@ urlpatterns = [
     path('getpostforgroup/<id>', getpostforgroup, name='getpostforgroup'),
     path('get_like_group/', get_like_group, name='get_like_group'),
     path('get_likee_group/', get_likee_group, name='get_likee_group'),
+    path('requestNotification/', requestNotification, name='requestNotification'),
 ]
 

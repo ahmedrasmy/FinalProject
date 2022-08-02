@@ -47,8 +47,6 @@ function Feed() {
             .catch((err) => console.log(err))
     }, [])
 
-    console.log(posts)
-    console.log(shares)
 
 
     return (<

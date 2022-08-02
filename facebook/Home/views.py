@@ -108,6 +108,12 @@ def send_friend_request(request):
                     friend_request = FriendRequest(
                         sender=user, reciver=receiver)
                     friend_request.save()
+                    print("i am here 1")
+                    notify = NotifyRequest.objects.create(
+                        user=user, body=" Send You Friend Request ",
+                        user_receiver=receiver
+                    )
+                    notify.save()
                     payload['response'] = "Friend request sent."
                 except Exception as e:
                     payload['response'] = str(e)
@@ -116,6 +122,12 @@ def send_friend_request(request):
                 friend_request = FriendRequest(
                     sender=user, reciver=receiver)
                 friend_request.save()
+                print("i am here 2")
+                notify = Notification.objects.create(
+                    user=user, body=" Send You Friend Request ",
+                    user_receiver=receiver
+                )
+                notify.save()
                 payload['response'] = "Friend request sent."
 
             if payload['response'] == None:

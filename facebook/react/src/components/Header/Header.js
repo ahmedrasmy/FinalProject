@@ -89,10 +89,8 @@ function Header() {
             })
             .catch(error => console.log(error))
     }
-    setInterval(getNotification, 1000)
-    console.log(Invisib)
     const [notifications, setNotifications] = useState([])
-    console.log(notifications.length)
+
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/postNotification/')
             .then(res => {
@@ -255,7 +253,7 @@ function Header() {
                     }}
                 >
                     <MenuItem onClick={handleCloseNotify}>
-                        <div className="chat-container">
+                        <div className="chat-container" >
                             <div className="header">Notifications</div>
                             <div className="friends-container">
                                 {
@@ -265,7 +263,7 @@ function Header() {
                                                style={{color: "black", textDecoration: "none"}}>
                                                 <div className="friends">
                                                     <div className="pic">
-                                                        <img src={notify.user.pic} alt=""/>
+                                                        <img  src={notify.user.pic} alt=""/>
                                                     </div>
                                                     <div className="name">
                                                         <h4>{notify.user.first_name + " " + notify.user.last_name}</h4>

@@ -201,7 +201,7 @@ def updateprofile(request):
         user.pic_cover = request.data['pic_cover']
         user.save()
         newPost = Posts.objects.create(
-            user=user, postcontent="update his cover picture" ,post=newPost
+            user=user, postcontent="update his cover picture"
         )
         photo = Photos.objects.create(
             post=newPost,
@@ -214,7 +214,7 @@ def updateprofile(request):
             user_receiver = Useraccount.objects.filter(id=friend.id)[0]
             notify = Notification.objects.create(
                 user=user, body=" Update His Cover Picture ",
-                user_receiver=user_receiver
+                user_receiver=user_receiver , post=newPost,
             )
             notify.save()
     return redirect('/home/pro/'+str(request.session['user_id']))
@@ -227,6 +227,20 @@ def postNotification(request):
         notifications = reversed(Notification.objects.filter(user_receiver=user_receiver , seen=False))
         if notifications:
             data = notifySerializer(notifications, many=True)
+            return Response(data.data)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        return redirect('/auth/login/')
+
+@api_view(['GET'])
+def requestNotification(request):
+    if request.session.has_key('user_name'):
+        user_receiver = Useraccount.objects.filter(
+            id=int(request.session['user_id']))[0]
+        NotifyRequest = reversed(NotifyRequest.objects.filter(user_receiver=user_receiver , seen=False))
+        if NotifyRequest:
+            data = NotifyRequestSerializer(NotifyRequest, many=True)
             return Response(data.data)
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)

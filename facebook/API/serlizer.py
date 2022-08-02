@@ -42,6 +42,12 @@ class notifySerializer(serializers.ModelSerializer):
         fields ='__all__'
     user = postUserSerial(many=False)
 
+class NotifyRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NotifyRequest
+        fields ='__all__'
+    user = postUserSerial(many=False)
+
 class createPostSerializer(serializers.ModelSerializer):
     post_photos = serializers.StringRelatedField(many=True)
 
