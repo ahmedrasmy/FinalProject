@@ -65,5 +65,10 @@ urlpatterns = [
     path('get_likee_group/', get_likee_group, name='get_likee_group'),
     path('delete_like_group/<pk>', delete_like_group, name='delete_like_group'),
     path('addcommentGroup/', addcommentGroup, name='addcommentGroup'),
+    path('joinGroup/', joinGroup, name='joinGroup'),
+    path('joinrequests/<pk>', joinrequests, name='joinrequests'),
+    path('friends_list_group/<pk>', friends_list_group, name='friends_list_group'),
+    path('invite/', invite, name='invite'),
+    path('get_all_users_group/<pk>',get_all_users_group, name='get_all_users_group'),
 ]
 

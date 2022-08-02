@@ -30,28 +30,6 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function renderTimestamp(timestamp) {
-    let prefix = "";
-    const timeDiff = Math.round(
-        (new Date().getTime() - new Date(timestamp).getTime()) / 60000
-    );
-    if (timeDiff < 1) {
-        // less than one minute ago
-        prefix = "just now...";
-    } else if (timeDiff < 60 && timeDiff > 1) {
-        // less than sixty minutes ago
-        prefix = `${timeDiff} minutes ago`;
-    } else if (timeDiff < 24 * 60 && timeDiff > 60) {
-        // less than 24 hours ago
-        prefix = `${Math.round(timeDiff / 60)} hours ago`;
-    } else if (timeDiff < 31 * 24 * 60 && timeDiff > 24 * 60) {
-        // less than 7 days ago
-        prefix = `${Math.round(timeDiff / (60 * 24))} days ago`;
-    } else {
-        prefix = `${new Date(timestamp)}`;
-    }
-    return prefix;
-}
 
 function AllPosts({ post_id, profilePic, image, username, timestamp, message, comments, group_id = 0 }) {
     var likeid;
@@ -101,8 +79,8 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
     }, [])
     const addlike = (e) => {
         const sentmessage = {
-            post: post_id,
-            user: users.id,
+            post: parseInt(post_id),
+            user: parseInt(users.id),
             iconId: parseInt(e),
         }
         if (group_id != 0) {
@@ -147,23 +125,22 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
             }).catch((err) => console.log(err))
         }
     }
-    // if (group_id != 0) {
-    //     useEffect(() => {
-    //         axios.get('http://127.0.0.1:8000/api/get_likee_group/')
-    //             .then(res => {
-    //                 setPosts(res.data);
-    //             })
-    //             .catch((err) => console.log(err))
-    //     }, [])
-    // } else {
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/get_likee/')
-            .then(res => {
-                setPosts(res.data);
-            })
-            .catch((err) => console.log(err))
+        if (group_id != 0) {
+            axios.get('http://127.0.0.1:8000/api/get_likee_group/')
+                .then(res => {
+                    setPosts(res.data);
+                })
+                .catch((err) => console.log(err))
+        }
+        else {
+            axios.get('http://127.0.0.1:8000/api/get_likee/')
+                .then(res => {
+                    setPosts(res.data);
+                })
+                .catch((err) => console.log(err))
+        }
     }, [])
-    // }
 
     useEffect(() => {
         for (let i = 0; i <= posts.length - 1; i++) {
@@ -175,7 +152,6 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
             }
         }
     }, [post_id, users.id, posts]);
-
     const [colors, setColor] = useState('')
     const handleClose = () => {
         setColor('')
@@ -187,18 +163,34 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 likeid = obj.id
             }
         }
-        axios.delete("http://127.0.0.1:8000/api/delete_like/" +
-            likeid, {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-            }
-        },
-        ).then(res => {
-            setColor('')
-            setUserLike(0)
-            setIcon(0)
-        }).catch((err) => console.log(err))
+        if (group_id != 0) {
+            axios.delete("http://127.0.0.1:8000/api/delete_like_group/" +
+                likeid, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            },
+            ).then(res => {
+                setColor('')
+                setUserLike(0)
+                setIcon(0)
+            }).catch((err) => console.log(err))
+        }
+        else {
+            axios.delete("http://127.0.0.1:8000/api/delete_like/" +
+                likeid, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            },
+            ).then(res => {
+                setColor('')
+                setUserLike(0)
+                setIcon(0)
+            }).catch((err) => console.log(err))
+        }
     };
     const [comment, setComment] = useState(null)
     const sendCommentData = {
@@ -207,15 +199,28 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
         commentcontent: comment
     }
     const addNewComment = () => {
-        axios.post("http://127.0.0.1:8000/api/addcomment/",
-            sendCommentData, {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-            }
-        },
-        ).then(res => {
-        }).catch((err) => console.log(err))
+        if (group_id != 0) {
+            axios.post("http://127.0.0.1:8000/api/addcommentGroup/",
+                sendCommentData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            },
+            ).then(res => {
+            }).catch((err) => console.log(err))
+        }
+        else {
+            axios.post("http://127.0.0.1:8000/api/addcomment/",
+                sendCommentData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            },
+            ).then(res => {
+            }).catch((err) => console.log(err))
+        }
     }
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
@@ -265,16 +270,24 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 div className="bottom_section">
                 <
                     p> {message} </p></div>
-            <div className="bottom_section_image row"> {
-                image.map((img) => {
-                    return <>
-                        <
-                            img src={img}
-                            className="col"
-                            alt="" />
+            <div className="bottom_section_image row">
+                {
+                    group_id === 0 ? <>
+                        {
+                            image.map((img) => {
+                                return <>
+                                    <
+                                        img src={img}
+                                        className="col"
+                                        alt="" />
+                                </>
+                            })
+                        }
                     </>
-                })
-            } </div>
+                        : <img src={image} className="col" alt="" />
+                }
+
+            </div>
             <div className="nums-comments-iteractions">
                 <div className="interaction">
                     <i className="fa-solid fa-thumbs-up icon1"> </i>

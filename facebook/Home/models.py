@@ -222,3 +222,12 @@ class Postlikegroup(models.Model):
     post = models.ForeignKey(PostsGroups, on_delete=models.CASCADE)
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
     iconId = models.IntegerField()
+
+
+class NotificationInvite(models.Model):
+    user = models.ForeignKey(Useraccount, on_delete=models.CASCADE,related_name="Invit_user")
+    body = models.TextField(blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    seen = models.BooleanField(default=False)
+    Invit_receiver = models.ForeignKey(Useraccount, on_delete=models.CASCADE,related_name="Invit_reciver")
+    group = models.ForeignKey(Groups, on_delete=models.CASCADE)

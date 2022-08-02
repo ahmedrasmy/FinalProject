@@ -245,3 +245,45 @@ def Bio(request,method='POST'):
 def Post(request, id):
     return render(request, 'index.html')
 
+
+def group_people(request, id):
+    return render(request, 'index.html')
+
+
+
+def member_request_delete(request):
+    if request.session.has_key('user_name'):
+        member_request = MemberRequest.objects.get(
+            id=int(request.POST['request_id']))
+        member_request.delete()
+        return redirect('/home/group/'+request.POST['group_id'])
+    else:
+        return redirect('/auth/login/')
+
+
+
+def member_request_accept(request):
+    if request.session.has_key('user_name'):
+        pk = int(request.POST['group_id'])
+        sender = Useraccount.objects.get(id=request.POST['sender_id'])
+        group = Groups.objects.get(id=pk)
+        members = group.add_member(sender)
+        member_request = MemberRequest.objects.get(
+            id=int(request.POST['request_id']))
+        member_request.delete()
+        return redirect('/home/group/'+request.POST['group_id'])
+    else:
+        return redirect('/auth/login/')
+
+
+def leave_group(request):
+    if request.session.has_key('user_name'):
+        pk = int(request.POST['group_id'])
+        sender = Useraccount.objects.get(id=request.POST['sender_id'])
+        group = Groups.objects.get(id=pk)
+        members = group.remove_member(sender)
+        return redirect('/home/group/'+request.POST['group_id'])
+    else:
+        return redirect('/auth/login/')
+        
+

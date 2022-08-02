@@ -138,7 +138,7 @@ class postShareSerial(serializers.ModelSerializer):
 class ShareUserSerial(serializers.ModelSerializer):
     class Meta:
         model = Useraccount
-        fields = ('first_name', 'last_name', 'pic', 'id')
+        fields = ('first_name', 'last_name', 'pic', 'id', 'email',)
 
 
 class Share(serializers.ModelSerializer):
@@ -158,3 +158,21 @@ class commentSerializergroup(serializers.ModelSerializer):
         model = Commentsgroup
         fields = '__all__'
 
+
+class MemberRequestSerializergroup(serializers.ModelSerializer):
+    class Meta:
+        model = MemberRequest
+        fields = '__all__'
+
+
+class getRequestSerializergroup(serializers.ModelSerializer):
+    class Meta:
+        model = MemberRequest
+        fields = '__all__'
+    sender= ShareUserSerial(many=False)
+
+
+class NotificationInviteGroup(serializers.ModelSerializer):
+    class Meta:
+        model = NotificationInvite
+        fields = '__all__'

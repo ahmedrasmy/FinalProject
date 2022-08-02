@@ -86,10 +86,10 @@ function Post({ poll, group_id }) {
         }).catch((err) => console.log(err))
     }
     const sendPostDatagroup = {
+        group: parseInt(group_id),
         postcontent: post,
         images: image,
-        group: group_id,
-        user: users,
+        user: parseInt(users.id),
     }
     const addNewPostforGroups = () => {
         axios.post("http://127.0.0.1:8000/api/addpostforgroups/",
