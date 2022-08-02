@@ -182,6 +182,7 @@ function Register() {
                 },
             ).then(res => {
                 console.log(res)
+                history.push("/auth/login/" )
 
             }).catch((err) => console.log(err))
 }

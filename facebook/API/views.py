@@ -13,6 +13,7 @@ from .utils import get_friend_request_or_false
 from Home.FriendRequestStatus import FriendRequestStatus
 from django.http import HttpResponse
 from django.db.models import Q
+from django.db.models import Count
 
 # Create your views here.
 @api_view(['GET'])
@@ -45,6 +46,24 @@ def get_Likee(request):
     users = Postlike.objects.all()
     data = LIKE(users, many=True)
     return Response(data.data)
+
+@api_view(['GET'])
+def get_Likeeuser(request,id):
+    arr=[]
+
+    result = (Postlike.objects.filter(post=id)
+            .values('iconId')
+            .annotate(dcount=Count('iconId'))
+            .order_by()
+            )
+
+    for x in  result:
+        arr.append(x)
+    return JsonResponse(arr, safe=False)
+    # # data = LIKE(users, many=True)
+    # return Response(data.data)
+
+
 
 #####################   Add New User   ################
 @api_view(['delete'])

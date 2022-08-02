@@ -89,7 +89,6 @@ function Header() {
             })
             .catch(error => console.log(error))
     }
-    // setInterval(getNotification, 1000)
     const [notifications, setNotifications] = useState([])
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/postNotification/')

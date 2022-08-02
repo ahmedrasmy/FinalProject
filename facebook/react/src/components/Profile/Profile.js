@@ -18,7 +18,7 @@ function Profile() {
                 setUsers(res.data[0]);
             })
             .catch((err) => console.log(err))
-    }, [])
+    }, [id])
     const [posts, setPosts] = useState([])
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/get_one_user_Posts/' + id)
@@ -27,7 +27,7 @@ function Profile() {
                 console.log(res.data);
             })
             .catch((err) => console.log(err))
-    }, [posts])
+    }, [id])
 
     const [friends, setfriends] = useState([])
     useEffect(() => {
@@ -36,7 +36,7 @@ function Profile() {
                 setfriends(res.data);
             })
             .catch((err) => console.log(err))
-    }, [])
+    }, [id])
 
 
 
@@ -114,6 +114,7 @@ function Profile() {
                                                                     className="w-24 h-24 rounded-md mt-2 cursor-pointer"
                                                                 />
                                                                 <Link to={`/home/pro/` + friend.id}
+
                                                                     className="font-semibold text-sm">{friend.first_name + " " + friend.last_name}</Link>
                                                             </div>
                                                         </>
@@ -137,14 +138,12 @@ function Profile() {
                                 {
                                     posts.map((post) => {
                                         return <>
-                                            <AllPosts
-                                                profilePic={post.user.pic}
+                                            <AllPosts profilePic={post.user.pic}
                                                 message={post.postcontent}
                                                 timestamp={post.postdate}
                                                 username={post.user.first_name + ' ' + post.user.last_name}
                                                 image={post.post_photos}
                                                 comments={post.post_comments}
-                                                post_id={post.id}
                                             />
                                         </>
                                     })

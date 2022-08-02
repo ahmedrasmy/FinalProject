@@ -23,6 +23,7 @@ class Useraccount(models.Model):
     address = models.CharField(max_length=100, null=True)
     location = models.CharField(max_length=100, null=True)
     Bio = models.CharField(max_length=300, null=True)
+    isactive=models.BooleanField(default=False)
 
 
 class Posts(models.Model):

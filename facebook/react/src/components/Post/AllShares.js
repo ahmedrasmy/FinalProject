@@ -254,7 +254,7 @@ function AllShares({ post_id, profilePic, image, username, timestamp, post_user_
                         <i className="fa-solid fa-heart icon2"> </i>
                         <i className="fa-regular fa-face-grin-beam icon3"> </i>
                         <a href="#"> </a></div>
-                    <a href="#" className="nums-comments"> 0 Coments 20 Shares </a></div>
+                    <a href="#" className="nums-comments"> </a></div>
                 <div className="like-comment-share">
                     <div className="icon like"> {
                         userLike === 1 ? <>

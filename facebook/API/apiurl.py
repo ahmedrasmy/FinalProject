@@ -45,6 +45,7 @@ urlpatterns = [
     path('addStory/', addStory, name="addStory"),
     path('get_like/', get_Like, name='get_like'),
     path('get_likee/', get_Likee, name='get_like'),
+    path('get_likee_user/<id>/', get_Likeeuser, name='get_like'),
     path('delete_like/<pk>', delete_like, name='del_like'),
     path('addpost/', addpost, name='addpost'),
     path('addcomment/', addcomment, name='addcomment'),
