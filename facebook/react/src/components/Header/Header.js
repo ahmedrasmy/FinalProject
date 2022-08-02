@@ -21,6 +21,7 @@ import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import Logout from '@mui/icons-material/Logout';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import '../chat/Stylechat.css';
+import GroupsIcon from '@mui/icons-material/Groups';
 
 function Header() {
     const history = useHistory();
@@ -97,6 +98,14 @@ function Header() {
             })
             .catch((err) => console.log(err))
     }, [])
+    const [InviteNotive, setInviteNotive] = useState([])
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/inviteNotification/')
+            .then(res => {
+                setInviteNotive(res.data);
+            })
+            .catch((err) => console.log(err))
+    }, [])
     function renderTimestamp(timestamp) {
         let prefix = "";
         const timeDiff = Math.round(
@@ -144,9 +153,11 @@ function Header() {
                     <FlagIcon fontSize="large" />
                 </div>
                 <div className="header-option">
-                    <SubscriptionsIcon fontSize="large" />
+                    <Link to={`/home/groups/`}>
+                        <GroupsIcon fontSize="large" /></Link>
                 </div>
                 <div className="header-option">
+
                     <StoreIcon fontSize="large" />
                 </div>
                 <div className="header-option">
@@ -180,7 +191,7 @@ function Header() {
                     onClick={handleClickNotify}
                     style={{ marginTop: "15px" }}
                 >
-                    <Badge badgeContent={notifications.length} color="primary">
+                    <Badge badgeContent={notifications.length + InviteNotive.length} color="primary">
                         <NotificationsActiveIcon />
                     </Badge>
                 </IconButton>
@@ -257,6 +268,27 @@ function Header() {
                                     notifications.map((notify) => {
                                         return <>
                                             <a href={'/api/unseenNotification/' + notify.id + '/' + notify.post}
+                                                style={{ color: "black", textDecoration: "none" }}>
+                                                <div className="friends">
+                                                    <div className="pic">
+                                                        <img src={notify.user.pic} alt="" />
+                                                    </div>
+                                                    <div className="name">
+                                                        <h4>{notify.user.first_name + " " + notify.user.last_name}</h4>
+                                                        <h5>{notify.body}</h5>
+                                                    </div>
+                                                    <div className="time_new_msg">
+                                                        <p>{renderTimestamp(notify.timestamp)}</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </>
+                                    })
+                                }
+                                {
+                                    InviteNotive.map((notify) => {
+                                        return <>
+                                            <a href={'/api/unseeninviteNotification/' + notify.id + '/' + notify.group}
                                                 style={{ color: "black", textDecoration: "none" }}>
                                                 <div className="friends">
                                                     <div className="pic">

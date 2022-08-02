@@ -200,7 +200,7 @@ class MemberRequest(models.Model):
 
 
 class PostsGroups(models.Model):
-    group = models.ForeignKey(Groups, on_delete=models.CASCADE)
+    group = models.ForeignKey(Groups, on_delete=models.CASCADE,related_name="groupPosts")
     postdate = models.DateTimeField(auto_now_add=True)
     postcontent = models.TextField(blank=True, null=True)
     images = models.ImageField(upload_to="img",blank=True,null=True)

@@ -176,3 +176,16 @@ class NotificationInviteGroup(serializers.ModelSerializer):
     class Meta:
         model = NotificationInvite
         fields = '__all__'
+
+
+class NotificationInviteshow(serializers.ModelSerializer):
+    class Meta:
+        model = NotificationInvite
+        fields = '__all__'
+    user = postUserSerial(many=False)
+
+
+class createGroup(serializers.ModelSerializer):
+    class Meta:
+        model = Groups
+        fields = '__all__'

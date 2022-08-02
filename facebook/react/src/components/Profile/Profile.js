@@ -138,7 +138,9 @@ function Profile() {
                                 {
                                     posts.map((post) => {
                                         return <>
-                                            <AllPosts profilePic={post.user.pic}
+                                            <AllPosts
+                                                profilePic={post.user.pic}
+                                                post_id={post.id}
                                                 message={post.postcontent}
                                                 timestamp={post.postdate}
                                                 username={post.user.first_name + ' ' + post.user.last_name}

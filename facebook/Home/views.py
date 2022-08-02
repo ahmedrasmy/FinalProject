@@ -250,6 +250,8 @@ def group_people(request, id):
     return render(request, 'index.html')
 
 
+def groups(request):
+    return render(request, 'index.html')
 
 def member_request_delete(request):
     if request.session.has_key('user_name'):

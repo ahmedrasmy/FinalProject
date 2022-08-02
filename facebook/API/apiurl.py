@@ -71,5 +71,14 @@ urlpatterns = [
     path('friends_list_group/<pk>', friends_list_group, name='friends_list_group'),
     path('invite/', invite, name='invite'),
     path('get_all_users_group/<pk>',get_all_users_group, name='get_all_users_group'),
+    path('inviteNotification/', inviteNotification, name='inviteNotification'),
+    path('unseeninviteNotification/<pk>/<id>/',unseeninviteNotification, name='unseeninviteNotification'),
+    path('removeGroup/', removeGroup, name='removeGroup'),
+    path('getGroups/', getGroups, name='getGroups'),
+    path('ownGroups/', ownGroups, name='ownGroups'),
+    path('createGroup/', createGroups, name='createGroup'),
+    path('sugustionsGroups/', sugustionsGroups, name='sugustionsGroups'),
+    path('getGroupPost/', getGroupPost, name='getGroupPost'),
+    path('get_likee_user_group/<id>/',get_likee_user_group, name='get_likee_user_group'),
 ]
 

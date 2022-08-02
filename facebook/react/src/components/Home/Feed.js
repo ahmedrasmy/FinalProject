@@ -64,7 +64,6 @@ function Feed() {
                             image={post.post_photos}
                             comments={post.post_comments}
                             user_id={post.user.id}
-
                         /> </>
                 })
             } {
