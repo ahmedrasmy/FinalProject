@@ -79,6 +79,7 @@ function Feed() {
                             timestamp={share.post_org_time}
                             image={share.pic}
                             timestamp_share={share.post_time_share}
+                            comments={share.comments}
                         // user_id={post.user.id}
                         /> </>
                 })

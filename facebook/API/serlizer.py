@@ -127,6 +127,11 @@ class LIKEGroup(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class LIKEshare(serializers.ModelSerializer):
+    class Meta:
+        model = PostlikeShares
+        fields = '__all__'
+
 class postShareSerial(serializers.ModelSerializer):
     post_photos = serializers.StringRelatedField(many=True)
     class Meta:
@@ -142,6 +147,7 @@ class ShareUserSerial(serializers.ModelSerializer):
 
 
 class Share(serializers.ModelSerializer):
+    post_comments_shares = serializers.StringRelatedField(many=True)
     class Meta:
         model = Shares
         fields = '__all__'
@@ -151,6 +157,12 @@ class Share(serializers.ModelSerializer):
 class Share2(serializers.ModelSerializer):
     class Meta:
         model = Shares
+        fields = '__all__'
+
+
+class commentSerializershare(serializers.ModelSerializer):
+    class Meta:
+        model = CommentsShares
         fields = '__all__'
 
 class commentSerializergroup(serializers.ModelSerializer):

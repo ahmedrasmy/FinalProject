@@ -73,6 +73,17 @@ def get_likee_user_group(request, id):
         arr.append(x)
     return JsonResponse(arr, safe=False)
 
+@api_view(['GET'])
+def get_likee_user_share(request, id):
+    arr=[]
+    result = (PostlikeShares.objects.filter(post=id)
+            .values('iconId')
+            .annotate(dcount=Count('iconId'))
+            .order_by()
+            )
+    for x in  result:
+        arr.append(x)
+    return JsonResponse(arr, safe=False)
 
 #####################   Add New User   ################
 @api_view(['delete'])
@@ -121,7 +132,14 @@ def get_share(request):
                     photos = Photos.objects.filter(post=post.post)
                     for photo in photos:
                         arr2.append( str(photo))
-
+                    allcomments = post.post_comments_shares.all()
+                    comments = []
+                    for comment in allcomments:
+                        print(comment)
+                        comm = comment.user.first_name+" "+comment.user.last_name + \
+                            "," + str(comment.user.pic.url) + \
+                            "," + comment.commentcontent
+                        comments.append(comm)
                     arr.append({
                         'post_id_share':post.id,
                         'post_time_share': post.sharedate,
@@ -133,7 +151,8 @@ def get_share(request):
                         'post_org_id':post.post.id,
                         'body_org':post.post.postcontent,
                         'pic':arr2,
-                        'post_org_time':post.post.postdate
+                        'post_org_time':post.post.postdate,
+                        'comments': comments,
                     })
 
 
@@ -144,7 +163,14 @@ def get_share(request):
             photos = Photos.objects.filter(post=post.post)
             for photo in photos:
                 arr2.append(str(photo))
-
+            allcomments = post.post_comments_shares.all()
+            comments = []
+            for comment in allcomments:
+                print(comment)
+                comm = comment.user.first_name+" "+comment.user.last_name + \
+                    "," + str(comment.user.pic.url) + \
+                    "," + comment.commentcontent
+                comments.append(comm)
             arr.append({
                 'post_id_share': post.id,
                 'post_time_share': post.sharedate,
@@ -156,7 +182,8 @@ def get_share(request):
                 'post_org_id': post.post.id,
                 'body_org': post.post.postcontent,
                 'pic': arr2,
-                'post_org_time': post.post.postdate
+                'post_org_time': post.post.postdate,
+                'comments': comments,
             })
 
         return JsonResponse(arr, safe=False)
@@ -875,10 +902,21 @@ def get_likee_group(request):
     data = LIKEGroup(likes, many=True)
     return Response(data.data)
 
+@api_view(['GET'])
+def get_likee_share(request):
+    likes = PostlikeShares.objects.all()
+    data = LIKEshare(likes, many=True)
+    return Response(data.data)
 
 @api_view(['delete'])
 def delete_like_group(request, pk):
     like = Postlikegroup.objects.get(pk=pk)
+    like.delete()
+    return Response(status=status.HTTP_202_ACCEPTED)
+
+@api_view(['delete'])
+def delete_like_share(request, id):
+    like = PostlikeShares.objects.get(id=id)
     like.delete()
     return Response(status=status.HTTP_202_ACCEPTED)
 
@@ -893,6 +931,16 @@ def get_like_group(request):
         return Response(data.data)
     return Response(like.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['Post'])
+def get_like_share(request):
+    like = LIKEshare(data=request.data)
+    if like.is_valid():
+        like.save()
+        likes = PostlikeShares.objects.all()
+        data = LIKEshare(likes, many=True)
+        return Response(data.data)
+    return Response(like.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['Post'])
 def invite(request):
@@ -938,6 +986,19 @@ def addcommentGroup(request):
         return Response(comment.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return redirect('/auth/login/')
+
+
+@api_view(['POST'])
+def addcommentshare(request):
+    if request.session.has_key('user_name'):
+        comment = commentSerializershare(data=request.data)
+        if comment.is_valid():
+            comment.save()
+            return Response(comment.data, status=status.HTTP_201_CREATED)
+        return Response(comment.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return redirect('/auth/login/')
+
 
 ################################# send request to join ############################3
 @api_view(['POST'])

@@ -41,12 +41,6 @@ class Photos(models.Model):
         return (str(self.imagecontent.url))
 
 
-class Shares(models.Model):
-    post = models.ForeignKey(Posts, on_delete=models.CASCADE)
-    user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
-    sharedate = models.DateTimeField(auto_now_add=True)
-
-
 class Postlike(models.Model):
     post = models.ForeignKey(Posts, on_delete=models.CASCADE)
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
@@ -59,14 +53,41 @@ class Comments(models.Model):
     commentdate = models.DateTimeField(auto_now_add=True)
     commentcontent = models.TextField()
 
+
     def __str__(self):
         return (
             str(self.user.first_name + " " + self.user.last_name + " , " + self.user.pic.url + " , " + self.commentcontent))
 
 
+
 class Commentlikes(models.Model):
     comment = models.ForeignKey(Comments, on_delete=models.CASCADE)
     user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
+
+
+class Shares(models.Model):
+    post = models.ForeignKey(Posts, on_delete=models.CASCADE)
+    user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
+    sharedate = models.DateTimeField(auto_now_add=True)
+
+
+class PostlikeShares(models.Model):
+    post = models.ForeignKey(Shares, on_delete=models.CASCADE)
+    user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
+    iconId = models.IntegerField()
+
+
+class CommentsShares(models.Model):
+    post = models.ForeignKey(
+        Shares, on_delete=models.CASCADE, related_name='post_comments_shares')
+    user = models.ForeignKey(Useraccount, on_delete=models.CASCADE)
+    commentdate = models.DateTimeField(auto_now_add=True)
+    commentcontent = models.TextField()
+
+    def __str__(self):
+        return (
+            str(self.user.first_name + " " + self.user.last_name + " , " + self.user.pic.url + " , " + self.commentcontent))
+
 
 
 class Page(models.Model):
