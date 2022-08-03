@@ -236,48 +236,73 @@ def addpost(request):
 @api_view(['POST'])
 def updateprofile(request):
     user = Useraccount.objects.get(id=int(request.session['user_id']))
-    if request.data['pic'] :
-        user.pic = request.data['pic']
-        user.save()
-        newPost = Posts.objects.create(
-            user=user, postcontent="update his profile picture"
-        )
-        photo = Photos.objects.create(
-            post=newPost,
-            imagecontent=user.pic
-        )
-        photo.save()
-        friend_list = FrienList.objects.filter(user=user.id)
-        friends = friend_list[0].friends.all()
-        for friend in friends:
-            user_receiver = Useraccount.objects.filter(id=friend.id)[0]
-            notify = Notification.objects.create(
-                user=user, body=" Update His Profile Picture ",
-                user_receiver=user_receiver ,post=newPost
+    try :
+            if request.data['pic'] :
+                user.pic = request.data['pic']
+                user.save()
+                newPost = Posts.objects.create(
+                    user=user, postcontent="update his profile picture"
+                )
+                photo = Photos.objects.create(
+                    post=newPost,
+                    imagecontent=user.pic
+                )
+                photo.save()
+                friend_list = FrienList.objects.filter(user=user.id)
+                friends = friend_list[0].friends.all()
+                for friend in friends:
+                    user_receiver = Useraccount.objects.filter(id=friend.id)[0]
+                    notify = Notification.objects.create(
+                        user=user, body=" Update His Profile Picture ",
+                        user_receiver=user_receiver ,post=newPost
+                    )
+                    notify.save()
+            try :
+                if request.data['pic_cover']:
+                    user.pic_cover = request.data['pic_cover']
+                    user.save()
+                    newPost = Posts.objects.create(
+                        user=user, postcontent="update his cover picture"
+                    )
+                    photo = Photos.objects.create(
+                        post=newPost,
+                        imagecontent=user.pic_cover
+                    )
+                    photo.save()
+                    friend_list = FrienList.objects.filter(user=user.id)
+                    friends = friend_list[0].friends.all()
+                    for friend in friends:
+                        user_receiver = Useraccount.objects.filter(id=friend.id)[0]
+                        notify = Notification.objects.create(
+                            user=user, body=" Update His Cover Picture ",
+                            user_receiver=user_receiver
+                        )
+                        notify.save()
+                return redirect('/home/pro/'+str(request.session['user_id']))
+            except:
+                return redirect('/home/pro/'+str(request.session['user_id']))
+    except:
+        if request.data['pic_cover']:
+            user.pic_cover = request.data['pic_cover']
+            user.save()
+            newPost = Posts.objects.create(
+                user=user, postcontent="update his cover picture"
             )
-            notify.save()
-
-    if request.data['pic_cover'] :
-        user.pic_cover = request.data['pic_cover']
-        user.save()
-        newPost = Posts.objects.create(
-            user=user, postcontent="update his cover picture" 
-        )
-        photo = Photos.objects.create(
-            post=newPost,
-            imagecontent=user.pic_cover
-        )
-        photo.save()
-        friend_list = FrienList.objects.filter(user=user.id)
-        friends = friend_list[0].friends.all()
-        for friend in friends:
-            user_receiver = Useraccount.objects.filter(id=friend.id)[0]
-            notify = Notification.objects.create(
-                user=user, body=" Update His Cover Picture ",
-                user_receiver=user_receiver
+            photo = Photos.objects.create(
+                post=newPost,
+                imagecontent=user.pic_cover
             )
-            notify.save()
-    return redirect('/home/pro/'+str(request.session['user_id']))
+            photo.save()
+            friend_list = FrienList.objects.filter(user=user.id)
+            friends = friend_list[0].friends.all()
+            for friend in friends:
+                user_receiver = Useraccount.objects.filter(id=friend.id)[0]
+                notify = Notification.objects.create(
+                    user=user, body=" Update His Cover Picture ",
+                    user_receiver=user_receiver
+                )
+                notify.save()
+        return redirect('/home/pro/'+str(request.session['user_id']))
 
 @api_view(['GET'])
 def postNotification(request):

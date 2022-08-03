@@ -22,23 +22,24 @@ import Logout from '@mui/icons-material/Logout';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import '../chat/Stylechat.css';
 import GroupsIcon from '@mui/icons-material/Groups';
+import { useDispatch, useSelector } from 'react-redux';
+import { User } from '../../Store/action/User';
 
 function Header() {
     const history = useHistory();
-    const [users, setUsers] = useState({})
     const [value, setValue] = useState('')
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             history.push("/home/search/" + event.target.value)
         }
     }
+
+    const users = useSelector((state) => state.UserReducer.direc)
+    const dispatch = useDispatch();
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/get/')
-            .then(res => {
-                setUsers(res.data[0]);
-            })
-            .catch((err) => console.log(err))
+        dispatch(User())
     }, [])
+
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {

@@ -20,7 +20,8 @@ import haha from '../images/hahaed.PNG';
 import sadded from '../images/saded.PNG';
 import angry from '../images/angred.PNG';
 import wow from '../images/wowed.PNG';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { User } from '../../Store/action/User';
 
 function getCookie(name) {
     var cookieValue = null;
@@ -62,7 +63,6 @@ function renderTimestamp(timestamp) {
 
 function AllShares({ post_id, profilePic, image, username, timestamp, post_user_org, username_org, message, timestamp_share, comments }) {
     var likeid;
-    const [users, setUsers] = useState({})
     const [posts, setPosts] = useState({})
     const [likes, setLike] = useState([])
     const [userLike, setUserLike] = useState(0)
@@ -100,13 +100,13 @@ function AllShares({ post_id, profilePic, image, username, timestamp, post_user_
     const handleCloseDialog = () => {
         setOpen(false);
     };
+
+    const users = useSelector((state) => state.UserReducer.direc)
+    const dispatch = useDispatch();
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/get/')
-            .then(res => {
-                setUsers(res.data[0]);
-            })
-            .catch((err) => console.log(err))
+        dispatch(User())
     }, [])
+
     const addlike = (e) => {
         const sentmessage = {
             post: parseInt(post_id),

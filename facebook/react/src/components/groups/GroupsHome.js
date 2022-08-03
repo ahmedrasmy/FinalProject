@@ -11,7 +11,8 @@ import Header from '../Header/Header';
 import AllPosts from '../Post/AllPosts';
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import { useDispatch, useSelector } from 'react-redux';
+import { User } from '../../Store/action/User';
 
 
 function getCookie(name) {
@@ -56,14 +57,13 @@ function GroupsHome() {
             })
             .catch((err) => console.log(err))
     }, [])
-    const [user, setUser] = useState([])
+
+    const users = useSelector((state) => state.UserReducer.direc)
+    const dispatch = useDispatch();
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/get/')
-            .then(res => {
-                setUser(res.data[0]);
-            })
-            .catch((err) => console.log(err))
+        dispatch(User())
     }, [])
+
     const [imagecontent, setimagecontent] = useState('')
     const [About, setAbout] = useState(null)
     const [group_name, setgroup_name] = useState(null)

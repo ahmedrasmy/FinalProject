@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom';
 import axios from "axios";
 import Header from '../Header/Header';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { User } from '../../Store/action/User';
 
 function getCookie(name) {
     let cookieValue = null;
@@ -23,14 +24,11 @@ function getCookie(name) {
 }
 
 function Detail() {
-    const [user, setuser] = useState([])
     const [friend, setfriend] = useState([])
+    const user = useSelector((state) => state.UserReducer.direc)
+    const dispatch = useDispatch();
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/get/')
-            .then(res => {
-                setuser(res.data[0]);
-            })
-            .catch((err) => console.log(err))
+        dispatch(User())
     }, [])
     let location = useLocation();
     let id = location.pathname.split('/')[3]

@@ -19,7 +19,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from "@mui/material/DialogContent";
 import theme from "./icons/theme.svg";
 import smile from "./icons/smile.svg";
-
+import { useDispatch, useSelector } from 'react-redux';
+import { User } from '../../Store/action/User';
 
 function getCookie(name) {
     var cookieValue = null;
@@ -39,7 +40,6 @@ function getCookie(name) {
 
 function AllPosts({ post_id, profilePic, image, username, timestamp, message, comments, group_id = 0 }) {
     var likeid;
-    const [users, setUsers] = useState({})
     const [posts, setPosts] = useState({})
     const [likes, setLike] = useState([])
     const [userLike, setUserLike] = useState(0)
@@ -77,13 +77,13 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
     const handleCloseDialog = () => {
         setOpen(false);
     };
+
+    const users = useSelector((state) => state.UserReducer.direc)
+    const dispatch = useDispatch();
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/get/')
-            .then(res => {
-                setUsers(res.data[0]);
-            })
-            .catch((err) => console.log(err))
+        dispatch(User())
     }, [])
+
     const addlike = (e) => {
         const sentmessage = {
             post: parseInt(post_id),

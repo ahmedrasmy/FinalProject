@@ -46,7 +46,10 @@ function Profile() {
             <div className="h-screen">
                 <div className="mt-1 shadow bg-white h-screen" style={{ marginTop: '1rem !important' }}>
                     {/* PROFILE HEADER */}
-                    <ProfileHeader />
+                    <div className="row" style={{ width: '100%' }}>
+                        <ProfileHeader />
+                    </div>
+
                     {/* END PROFILE HEADER */}
                     {/* // CONTENT */}
                     <div className='bg-gray-100 '>

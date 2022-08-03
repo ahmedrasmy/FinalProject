@@ -18,8 +18,8 @@ import './CreatPost.css';
 import DialogContent from '@mui/material/DialogContent';
 import jQuery from "jquery";
 import PollIcon from '@mui/icons-material/Poll';
-import { useHistory } from "react-router-dom";
-
+import { useDispatch, useSelector } from 'react-redux';
+import { User } from '../../Store/action/User';
 
 function getCookie(name) {
     var cookieValue = null;
@@ -37,15 +37,12 @@ function getCookie(name) {
 }
 
 function Post({ poll, group_id }) {
-    const [users, setUsers] = useState({})
-    const history = useHistory();
+    const users = useSelector((state) => state.UserReducer.direc)
+    const dispatch = useDispatch();
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/get/')
-            .then(res => {
-                setUsers(res.data[0]);
-            })
-            .catch((err) => console.log(err))
+        dispatch(User())
     }, [])
+
     const [input, setInput] = useState("")
     const [openPost, setopenPost] = useState(false);
     const handleClickOpen = () => {
