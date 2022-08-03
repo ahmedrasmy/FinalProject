@@ -2,6 +2,7 @@ from dataclasses import dataclass
 import json
 from audioop import reverse
 from lib2to3.pgen2.token import NOTEQUAL
+import re
 from django.shortcuts import render, redirect
 from rest_framework.response import Response
 from rest_framework import status
@@ -211,7 +212,6 @@ def addpost(request):
     if request.session.has_key('user_name'):
         user = Useraccount.objects.filter(
             id=int(request.session['user_id']))[0]
-
         newPost = Posts.objects.create(
             user=user, postcontent=request.data['postcontent'])
         if newPost:
@@ -224,10 +224,14 @@ def addpost(request):
                     user_receiver= user_receiver ,post=newPost,
                 )
                 notify.save()
-            photo = Photos.objects.create(
-                post=newPost, imagecontent=request.data['imagecontent'])
-            photo.save()
-            return Response('successsfully')
+            try :
+                if request.data['imagecontent']:
+                    photo = Photos.objects.create(
+                        post=newPost, imagecontent=request.data['imagecontent'])
+                    photo.save()
+                return Response('successsfully')
+            except:
+                return Response('successsfully')
 
 @api_view(['POST'])
 def updateprofile(request):
@@ -257,7 +261,7 @@ def updateprofile(request):
         user.pic_cover = request.data['pic_cover']
         user.save()
         newPost = Posts.objects.create(
-            user=user, postcontent="update his cover picture" ,post=newPost
+            user=user, postcontent="update his cover picture" 
         )
         photo = Photos.objects.create(
             post=newPost,

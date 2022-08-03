@@ -265,7 +265,7 @@ function AllShares({ post_id, profilePic, image, username, timestamp, post_user_
                                     {
                                         like['iconId'] === 2 ?
                                             <div style={{ display: "inline" }} >
-                                                {like['dcount']}  <img src={care} style={{ display: "inline" }} alt="Img" />
+                                                {like['dcount']}  <img src={care} style={{ display: "inline", maxWidth: "20px" }} alt="Img" />
                                             </div> :
                                             null
 

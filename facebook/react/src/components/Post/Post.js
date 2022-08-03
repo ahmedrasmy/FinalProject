@@ -47,14 +47,14 @@ function Post({ poll, group_id }) {
             .catch((err) => console.log(err))
     }, [])
     const [input, setInput] = useState("")
-    const [open, setOpen] = React.useState(false);
+    const [openPost, setopenPost] = useState(false);
     const handleClickOpen = () => {
-        setOpen(true);
+        setopenPost(true);
     };
     const handleClose = () => {
-        setOpen(false);
+        setopenPost(false);
     };
-    const [ShowImageInput, setShowImageInput] = React.useState(false);
+    const [ShowImageInput, setShowImageInput] = useState(false);
     const handleshowinput = () => {
         if (ShowImageInput === false) {
             setShowImageInput(true)
@@ -84,7 +84,7 @@ function Post({ poll, group_id }) {
                 }
             },
         ).then(res => {
-            setOpen(false);
+            setopenPost(false);
             history.push("/home/Home/")
 
         }).catch((err) => console.log(err))
@@ -105,7 +105,7 @@ function Post({ poll, group_id }) {
                 }
             },
         ).then(res => {
-            setOpen(false);
+            setopenPost(false);
             console.log(res)
         }).catch((err) => console.log(err))
     }
@@ -151,7 +151,7 @@ function Post({ poll, group_id }) {
                 </div>
             </div>
             <Dialog
-                open={open}
+                open={openPost}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
