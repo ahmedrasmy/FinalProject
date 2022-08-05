@@ -186,6 +186,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                     setPosts(res.data);
                 })
                 .catch((err) => console.log(err))
+                
         }
     }, [])
     useEffect(() => {
