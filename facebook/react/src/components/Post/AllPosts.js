@@ -20,7 +20,7 @@ import DialogContent from "@mui/material/DialogContent";
 import theme from "./icons/theme.svg";
 import smile from "./icons/smile.svg";
 import { useDispatch, useSelector } from 'react-redux';
-import { User } from '../../Store/action/User';
+import { commentreducer, deletereducer, likeereducer, sharereducer } from "../../Store/action/Posts";
 
 function getCookie(name) {
     var cookieValue = null;
@@ -38,7 +38,7 @@ function getCookie(name) {
 }
 
 
-function AllPosts({ post_id, profilePic, image, username, timestamp, message, comments, group_id = 0 }) {
+function AllPosts({ post_id, profilePic, image, username, timestamp, message, comments, group_id = 0, users, group_home = 0 }) {
     var likeid;
     const [posts, setPosts] = useState({})
     const [likes, setLike] = useState([])
@@ -49,11 +49,28 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
     const [share, setShare] = useState(null)
     const [scroll, setScroll] = useState('paper');
     const [open, setOpen] = useState(false);
-
+    const likess = useSelector((state) => state.likereducer.LIKES)
+    const dispatch = useDispatch();
     function submit(e) {
-        const shares = {
-            post: post_id,
-            user: users.id,
+        var shares = {}
+        if (group_id != 0) {
+            if (group_home != 0) {
+                shares = {
+                    post: post_id,
+                    user: users.id,
+                }
+            }
+            else {
+                shares = {
+                    post: post_id,
+                    user: users['user_id']
+                }
+            }
+        } else {
+            shares = {
+                post: post_id,
+                user: users.id,
+            }
         }
         e.preventDefault();
         axios.post("http://127.0.0.1:8000/api/addshare/",
@@ -65,7 +82,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
         },
         ).then(res => {
             console.log(res)
-
+            dispatch(sharereducer(1))
             handleCloseDialog()
 
         }).catch((err) => console.log(err))
@@ -78,19 +95,23 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
         setOpen(false);
     };
 
-    const users = useSelector((state) => state.UserReducer.direc)
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(User())
-    }, [])
-
     const addlike = (e) => {
-        const sentmessage = {
-            post: parseInt(post_id),
-            user: parseInt(users.id),
-            iconId: parseInt(e),
-        }
         if (group_id != 0) {
+            var sentmessage = {}
+            if (group_home != 0) {
+                sentmessage = {
+                    post: parseInt(post_id),
+                    user: parseInt(users.id),
+                    iconId: parseInt(e),
+                }
+            }
+            else {
+                sentmessage = {
+                    post: parseInt(post_id),
+                    user: parseInt(users['user_id']),
+                    iconId: parseInt(e),
+                }
+            }
             axios.post("http://127.0.0.1:8000/api/get_like_group/",
                 sentmessage, {
                 headers: {
@@ -99,18 +120,36 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 }
             },
             ).then(res => {
-                for (let i = 0; i <= res.data.length - 1; i++) {
-                    let obj = res.data[i]
-                    if (obj.post === post_id && obj.user === users.id) {
-                        likeid = obj.id
-                        setPosts(res.data)
-                        setIcon(obj.iconId)
-                        setColor('blue')
-                        setUserLike(1)
+                if (group_home != 0) {
+                    for (let i = 0; i <= res.data.length - 1; i++) {
+                        let obj = res.data[i]
+                        if (obj.post === post_id && obj.user === users.id) {
+                            likeid = obj.id
+                            setPosts(res.data)
+                            setIcon(obj.iconId)
+                            setColor('blue')
+                            setUserLike(1)
+                        }
+                    }
+                } else {
+                    for (let i = 0; i <= res.data.length - 1; i++) {
+                        let obj = res.data[i]
+                        if (obj.post === post_id && obj.user === users['user_id']) {
+                            likeid = obj.id
+                            setPosts(res.data)
+                            setIcon(obj.iconId)
+                            setColor('blue')
+                            setUserLike(1)
+                        }
                     }
                 }
             }).catch((err) => console.log(err))
         } else {
+            const sentmessage = {
+                post: parseInt(post_id),
+                user: parseInt(users.id),
+                iconId: parseInt(e),
+            }
             axios.post("http://127.0.0.1:8000/api/get_like/",
                 sentmessage, {
                 headers: {
@@ -127,6 +166,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                         setIcon(obj.iconId)
                         setColor('blue')
                         setUserLike(1)
+                        dispatch(likeereducer(1))
                     }
                 }
             }).catch((err) => console.log(err))
@@ -163,14 +203,38 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 })
                 .catch((err) => console.log(err))
         }
-    }, [])
+    }, [likess])
     useEffect(() => {
-        for (let i = 0; i <= posts.length - 1; i++) {
-            let obj = posts[i]
-            if (obj.post === post_id && obj.user === users.id) {
-                setIcon(obj.iconId)
-                setColor('blue')
-                setUserLike(1)
+        if (group_id != 0) {
+            if (group_home != 0) {
+                for (let i = 0; i <= posts.length - 1; i++) {
+                    let obj = posts[i]
+                    if (obj.post === post_id && obj.user === users.id) {
+                        setIcon(obj.iconId)
+                        setColor('blue')
+                        setUserLike(1)
+                    }
+                }
+            }
+            else {
+                for (let i = 0; i <= posts.length - 1; i++) {
+                    let obj = posts[i]
+                    if (obj.post === post_id && obj.user === users['user_id']) {
+                        setIcon(obj.iconId)
+                        setColor('blue')
+                        setUserLike(1)
+                    }
+                }
+            }
+        }
+        else {
+            for (let i = 0; i <= posts.length - 1; i++) {
+                let obj = posts[i]
+                if (obj.post === post_id && obj.user === users.id) {
+                    setIcon(obj.iconId)
+                    setColor('blue')
+                    setUserLike(1)
+                }
             }
         }
     }, [post_id, users.id, posts]);
@@ -179,13 +243,22 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
         setColor('')
         setUserLike(0)
         setIcon(0)
-        for (let i = 0; i <= posts.length - 1; i++) {
-            let obj = posts[i]
-            if (obj.post === post_id && obj.user === users.id) {
-                likeid = obj.id
-            }
-        }
         if (group_id != 0) {
+            if (group_home != 0) {
+                for (let i = 0; i <= posts.length - 1; i++) {
+                    let obj = posts[i]
+                    if (obj.post === post_id && obj.user === users.id) {
+                        likeid = obj.id
+                    }
+                }
+            } else {
+                for (let i = 0; i <= posts.length - 1; i++) {
+                    let obj = posts[i]
+                    if (obj.post === post_id && obj.user === users['user_id']) {
+                        likeid = obj.id
+                    }
+                }
+            }
             axios.delete("http://127.0.0.1:8000/api/delete_like_group/" +
                 likeid, {
                 headers: {
@@ -200,6 +273,12 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
             }).catch((err) => console.log(err))
         }
         else {
+            for (let i = 0; i <= posts.length - 1; i++) {
+                let obj = posts[i]
+                if (obj.post === post_id && obj.user === users.id) {
+                    likeid = obj.id
+                }
+            }
             axios.delete("http://127.0.0.1:8000/api/delete_like/" +
                 likeid, {
                 headers: {
@@ -211,17 +290,28 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 setColor('')
                 setUserLike(0)
                 setIcon(0)
+                dispatch(deletereducer(1))
             }).catch((err) => console.log(err))
         }
     };
     const [comment, setComment] = useState(null)
-    const sendCommentData = {
-        post: parseInt(post_id),
-        user: parseInt(users.id),
-        commentcontent: comment
-    }
     const addNewComment = () => {
         if (group_id != 0) {
+            var sendCommentData = {}
+            if (group_home != 0) {
+                sendCommentData = {
+                    post: parseInt(post_id),
+                    user: parseInt(users.id),
+                    commentcontent: comment
+                }
+            }
+            else {
+                sendCommentData = {
+                    post: parseInt(post_id),
+                    user: parseInt(users['user_id']),
+                    commentcontent: comment
+                }
+            }
             axios.post("http://127.0.0.1:8000/api/addcommentGroup/",
                 sendCommentData, {
                 headers: {
@@ -233,6 +323,11 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
             }).catch((err) => console.log(err))
         }
         else {
+            const sendCommentData = {
+                post: parseInt(post_id),
+                user: parseInt(users.id),
+                commentcontent: comment
+            }
             axios.post("http://127.0.0.1:8000/api/addcomment/",
                 sendCommentData, {
                 headers: {
@@ -241,6 +336,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 }
             },
             ).then(res => {
+                dispatch(commentreducer(1))
             }).catch((err) => console.log(err))
         }
     }

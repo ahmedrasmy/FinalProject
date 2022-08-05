@@ -85,5 +85,8 @@ urlpatterns = [
     path('get_likee_user_share/<id>/',get_likee_user_share, name='get_likee_user_share'),
     path('get_likee_share/', get_likee_share, name='get_likee_share'),
     path('get_like_share/', get_like_share, name='get_like_share'),
+    path('notifyRequest/', notifyRequest, name='notifyRequest'),
+    path('unseennotifyRequest/<pk>/<id>/',
+        unseennotifyRequest, name='unseennotifyRequest'),
 ]
 

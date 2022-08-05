@@ -3,7 +3,6 @@ import "./Header.css";
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
 import FlagIcon from '@mui/icons-material/Flag';
-import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
 import StoreIcon from '@mui/icons-material/Store';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import { IconButton, Avatar } from '@mui/material';
@@ -24,6 +23,10 @@ import '../chat/Stylechat.css';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { useDispatch, useSelector } from 'react-redux';
 import { User } from '../../Store/action/User';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CSRF from "../Auth/CSRF";
+import Button from '@mui/material/Button';
 
 function Header() {
     const history = useHistory();
@@ -39,7 +42,6 @@ function Header() {
     useEffect(() => {
         dispatch(User())
     }, [])
-
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -104,6 +106,14 @@ function Header() {
         axios.get('http://127.0.0.1:8000/api/inviteNotification/')
             .then(res => {
                 setInviteNotive(res.data);
+            })
+            .catch((err) => console.log(err))
+    }, [])
+    const [notifyRequest, setnotifyRequest] = useState([])
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/notifyRequest/')
+            .then(res => {
+                setnotifyRequest(res.data);
             })
             .catch((err) => console.log(err))
     }, [])
@@ -192,7 +202,7 @@ function Header() {
                     onClick={handleClickNotify}
                     style={{ marginTop: "15px" }}
                 >
-                    <Badge badgeContent={notifications.length + InviteNotive.length} color="primary">
+                    <Badge badgeContent={notifications.length + InviteNotive.length + notifyRequest.length} color="primary">
                         <NotificationsActiveIcon />
                     </Badge>
                 </IconButton>
@@ -304,6 +314,46 @@ function Header() {
                                                     </div>
                                                 </div>
                                             </a>
+                                        </>
+                                    })
+                                }
+                                {
+                                    notifyRequest.map((notify) => {
+                                        return <>
+                                            {/* href={'/api/unseennotifyRequest/' + notify.id + '/' + notify.user.id}
+                                            <a style={{ color: "black", textDecoration: "none" }}> */}
+                                            <div className="friends ">
+                                                <a href={'/api/unseennotifyRequest/' + notify.id + '/' + notify.user.id} style={{ color: "black", textDecoration: "none" }}>
+                                                    <div className="pic">
+                                                        <img src={notify.user.pic} alt="" />
+                                                    </div>
+                                                </a>
+                                                <div className="name">
+                                                    <h4>{notify.user.first_name + " " + notify.user.last_name}</h4>
+                                                    <h5>{notify.body}</h5>
+                                                    <div className="d-flex flex-row align-items-center px-3 py-1 ">
+                                                        <span className="friend-text align-items-center mr-2">Friend Request</span>
+                                                        <form action={'/home/frined_request_delete_notify/'} method="post">
+                                                            <CSRF />
+                                                            <input type="hidden" name="notify_id" value={notify.id} />
+                                                            <input type="hidden" name="reciver_id" value={users.id} />
+                                                            <input type="hidden" name="sender_id" value={notify.user.id} />
+                                                            <Button type="submit"><CancelIcon /></Button>
+                                                        </form>
+                                                        <form action={'/home/frined_request_accept_notify/'} method="post">
+                                                            <CSRF />
+                                                            <input type="hidden" name="notify_id" value={notify.id} />
+                                                            <input type="hidden" name="reciver_id" value={users.id} />
+                                                            <input type="hidden" name="sender_id" value={notify.user.id} />
+                                                            <Button type="submit"><CheckCircleIcon /></Button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <div className="time_new_msg">
+                                                    <p>{renderTimestamp(notify.timestamp)}</p>
+                                                </div>
+                                            </div>
+                                            {/* </a> */}
                                         </>
                                     })
                                 }

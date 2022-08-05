@@ -5,9 +5,11 @@ import Post from '../Post/Post';
 import StoryReel from './StoryReel';
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import { useDispatch, useSelector } from 'react-redux';
+import { User } from '../../Store/action/User';
 import jQuery from "jquery";
 import AllShares from "../Post/AllShares";
+import { Likee } from "../../Store/action/LIkee";
 
 function getCookie(name) {
     var cookieValue = null;
@@ -28,23 +30,31 @@ function getCookie(name) {
 function Feed() {
     const [posts, setPosts] = useState([])
     const [shares, setShare] = useState([])
-
+    const users = useSelector((state) => state.UserReducer.direc)
+    const comment = useSelector((state) => state.commentreducer.Comment)
+    const Shares = useSelector((state) => state.sharereducer.Share)
+    const postall = useSelector((state) => state.PostReducer.Posts)
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/getAllPosts/')
             .then(res => {
                 setPosts(res.data);
             })
             .catch((err) => console.log(err))
-    }, [])
-
+    }, [postall, comment])
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/getshare/')
             .then(res => {
                 setShare(res.data);
             })
             .catch((err) => console.log(err))
+    }, [Shares])
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(User())
     }, [])
-
+    useEffect(() => {
+        dispatch(Likee())
+    }, [])
     return (
         <div className="feed">
             <StoryReel />
@@ -59,7 +69,7 @@ function Feed() {
                             username={post.user.first_name + ' ' + post.user.last_name}
                             image={post.post_photos}
                             comments={post.post_comments}
-                            user_id={post.user.id}
+                            users={users}
                         /> </>
                 })
             } {
@@ -68,7 +78,7 @@ function Feed() {
                         <AllShares
                             profilePic={share.user_pic_share}
                             username={share.username_share}
-                            post_id={share.post_org_id}
+                            post_id={share.post_id_share}
                             post_user_org={share.user_org_pic}
                             username_org={share.post_username}
                             message={share.body_org}

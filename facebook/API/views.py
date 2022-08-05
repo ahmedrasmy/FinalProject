@@ -875,9 +875,9 @@ def get_user_for_group(request,id):
     if request.session.has_key('user_name'):
         user_id = int(request.session['user_id'])
         user = Useraccount.objects.get(id=user_id)
-        group = Groups.objects.filter(id=id)
-        print(group[0].owner)
-        members = group[0].members.all()
+        group = Groups.objects.get(id=id)
+        print(group.owner)
+        members = group.members.all()
         arr=[]
         is_member = False
         is_owner = False
@@ -885,7 +885,7 @@ def get_user_for_group(request,id):
             is_member = True
         else:
             is_member = False
-        if user == group[0].owner:
+        if user == group.owner:
             is_owner = True
         else :
             is_owner = False
@@ -1262,5 +1262,34 @@ def getGroupPost(request):
                         'comments': comments,
                     })
         return JsonResponse(arr, safe=False)
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['GET'])
+def notifyRequest(request):
+    if request.session.has_key('user_name'):
+        user_receiver = Useraccount.objects.filter(
+            id=int(request.session['user_id']))[0]
+        notifications = reversed(NotifyRequest.objects.filter(
+            user_receiver=user_receiver, seen=False))
+        if notifications:
+            data = NotifyRequestshow(notifications, many=True)
+            return Response(data.data)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['GET'])
+def unseennotifyRequest(request, pk, id):
+    if request.session.has_key('user_name'):
+        notify = NotifyRequest.objects.get(id=pk)
+        if notify:
+            notify.delete()
+            return redirect('/home/pro/'+id)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
     else:
         return redirect('/auth/login/')

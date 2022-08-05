@@ -58,7 +58,7 @@ function GroupsHome() {
             .catch((err) => console.log(err))
     }, [])
 
-    const users = useSelector((state) => state.UserReducer.direc)
+    const user = useSelector((state) => state.UserReducer.direc)
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(User())
@@ -167,6 +167,8 @@ function GroupsHome() {
                                             image={post['post_pic']}
                                             group_id={post['group_id']}
                                             comments={post['comments']}
+                                            users={user}
+                                            group_home={1}
                                         />
                                     </div>
                                 </>

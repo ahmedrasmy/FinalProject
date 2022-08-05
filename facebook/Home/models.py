@@ -170,6 +170,16 @@ class Notification(models.Model):
     user_receiver = models.ForeignKey(Useraccount, on_delete=models.CASCADE , related_name="user_receiver")
     post = models.ForeignKey(Posts, on_delete=models.CASCADE, related_name='post_notifications')
 
+
+class NotifyRequest(models.Model):
+    user = models.ForeignKey(
+        Useraccount, on_delete=models.CASCADE, related_name="user_sender_NotifyRequest")
+    body = models.TextField(blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    seen = models.BooleanField(default=False)
+    user_receiver = models.ForeignKey(
+        Useraccount, on_delete=models.CASCADE, related_name="user_receiver_NotifyRequest")
+        
 ###################################### groups #############################
 class Groups(models.Model):
     owner=models.ForeignKey(Useraccount, on_delete=models.CASCADE)

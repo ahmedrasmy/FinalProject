@@ -113,6 +113,7 @@ function AllShares({ post_id, profilePic, image, username, timestamp, post_user_
             user: parseInt(users.id),
             iconId: parseInt(e),
         }
+        console.log(sentmessage)
         axios.post("http://127.0.0.1:8000/api/get_like_share/",
             sentmessage, {
             headers: {

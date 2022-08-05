@@ -245,7 +245,7 @@ function Groups() {
                                                                 username={post.user.first_name + ' ' + post.user.last_name}
                                                                 image={post.images}
                                                                 comments={post.post_comments_group}
-                                                                user_id={post.user.id}
+                                                                users={user}
                                                                 group_id={id}
                                                             />
                                                         </>

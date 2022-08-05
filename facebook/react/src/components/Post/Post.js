@@ -20,6 +20,7 @@ import jQuery from "jquery";
 import PollIcon from '@mui/icons-material/Poll';
 import { useDispatch, useSelector } from 'react-redux';
 import { User } from '../../Store/action/User';
+import { postReducer } from "../../Store/action/Posts";
 
 function getCookie(name) {
     var cookieValue = null;
@@ -82,8 +83,7 @@ function Post({ poll, group_id }) {
             },
         ).then(res => {
             setopenPost(false);
-            history.push("/home/Home/")
-
+            dispatch(postReducer(1))
         }).catch((err) => console.log(err))
     }
     const sendPostDatagroup = {

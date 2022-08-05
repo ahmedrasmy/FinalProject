@@ -137,6 +137,7 @@ function Profile() {
                                                 username={post.user.first_name + ' ' + post.user.last_name}
                                                 image={post.post_photos}
                                                 comments={post.post_comments}
+                                                users={users}
                                             />
                                         </>
                                     })

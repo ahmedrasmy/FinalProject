@@ -29,4 +29,6 @@ urlpatterns = [
     path('member_request_accept/', member_request_accept,name='member_request_accept'),
     path('leave_group/', leave_group, name='leave_group'),
     path('groups/', groups, name='groups'),
+    path('frined_request_delete_notify/', frined_request_delete_notify,name='frined_request_delete_notify'),
+    path('frined_request_accept_notify/', frined_request_accept_notify,name='frined_request_accept_notify'),
 ]
