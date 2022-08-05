@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import CSRF from "../Auth/CSRF";
 import axios from "axios";
 import './Stylechat.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { User } from '../../Store/action/User';
 
 function getNotification() {
     let url = "http://127.0.0.1:8000/api/chatNotification/"
@@ -19,23 +21,11 @@ function getNotification() {
 }
 
 function Index() {
-    const [user, setuser] = useState([])
-    // const [friends,setfriends]=useState([])
+    const user = useSelector((state) => state.UserReducer.direc)
+    const dispatch = useDispatch();
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/get/')
-            .then(res => {
-                setuser(res.data[0]);
-            })
-            .catch((err) => console.log(err))
+        dispatch(User())
     }, [])
-    // useEffect(() => {
-    //     axios.get('http://127.0.0.1:8000/api/chatIndex/')
-    //         .then(res => {
-    //             setfriends(res.data);
-    //             console.log(res.data);
-    //         })
-    //         .catch((err) => console.log(err))
-    // }, [])
     const [friends, setfriends] = useState([])
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/friends_list_chat/')

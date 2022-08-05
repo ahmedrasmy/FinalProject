@@ -11,7 +11,6 @@ import CSRF from "../Auth/CSRF";
 import axios from "axios";
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import ChatIcon from '@mui/icons-material/Chat';
 import { useLocation } from 'react-router-dom';
 import { Avatar } from '@mui/material';
 import '../Post/CreatPost.css';
@@ -108,7 +107,6 @@ function ProfileHeader() {
         ).then(res => {
             setOpen(false);
             console.log(res)
-
         }).catch((err) => console.log(err))
     }
     return (

@@ -13,6 +13,7 @@ import Sugustions_List from './components/Home/Sugustions_List';
 import Groups from './components/groups/Groups';
 import Post2 from './components/Home/Post2';
 import GroupPeople from './components/groups/GroupPeople';
+import GroupsHome from './components/groups/GroupsHome';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
             <Route exact path={"/home/group/:id/"} component={Groups} />
             <Route exact path={"/home/group/people/:id/"} component={GroupPeople} />
             <Route exact path={"/home/Post/:post_id/"} component={Post2} />
+            <Route exact path={"/home/groups"} component={GroupsHome} />
           </Switch>
         </BrowserRouter>
       </div>

@@ -46,44 +46,38 @@ function Profile() {
             <div className="h-screen">
                 <div className="mt-1 shadow bg-white h-screen" style={{ marginTop: '1rem !important' }}>
                     {/* PROFILE HEADER */}
-                    <ProfileHeader />
-                    {/* END PROFILE HEADER */}
+                    <div className="row" style={{ width: '100%' }}>
+                        <ProfileHeader />
+                    </div>
 
+                    {/* END PROFILE HEADER */}
                     {/* // CONTENT */}
                     <div className='bg-gray-100 '>
                         <div className="flex justify-center h-screen">
                             {/* LEFT */}
                             <div>
-                                {/* // INTRO */}
-                                <div className="mr-12 mt-4">
-                                    <div className="p-4 shadow rounded-lg bg-white w-80" id="intro">
-                                        <h1 className="font-bold text-xl">Intro</h1>
-                                    </div>
-                                </div>
-                                {/* // END INTRO */}
                                 {/* // PHOTOS */}
                                 <div className="mr-12 mt-4">
                                     <div className="p-4 shadow rounded-lg bg-white w-80" id="intro">
                                         <div className="flex justify-between">
                                             <h1 className="font-bold text-xl">Photos</h1>
-                                            <a href="#" className="text-lg text-blue-700">See All Photos</a>
-                                            <div className="" style={{ maxHeight: '500px' }}>
-                                                <div className="grid grid-cols-3 gap-1">
-                                                    {
-                                                        posts.slice(0, 7).map((post, index) => {
-                                                            return <>
-                                                                {post.post_photos.slice(0, 2).map((img) => {
-                                                                    return <>
-                                                                        <div className="bg-white p-0.5">
-                                                                            <img src={img} className="w-24 h-24 rounded-md mt-2 cursor-pointer" />
-                                                                        </div>
-                                                                    </>
-                                                                }
-                                                                )}
-                                                            </>
-                                                        })
-                                                    }
-                                                </div>
+                                        </div>
+                                        <div className="" style={{ maxHeight: '500px' }}>
+                                            <div className="grid grid-cols-3 gap-1">
+                                                {
+                                                    posts.slice(0, 7).map((post, index) => {
+                                                        return <>
+                                                            {post.post_photos.slice(0, 2).map((img) => {
+                                                                return <>
+                                                                    <div className="bg-white p-0.5">
+                                                                        <img src={img} className="w-24 h-24 rounded-md mt-2 cursor-pointer" />
+                                                                    </div>
+                                                                </>
+                                                            }
+                                                            )}
+                                                        </>
+                                                    })
+                                                }
                                             </div>
                                         </div>
                                     </div>
@@ -96,9 +90,6 @@ function Profile() {
                                         {/* Header */}
                                         <div className="flex justify-between">
                                             <h1 className="font-bold text-xl">Friends</h1>
-                                            <Link to="/friends/myId"
-                                                className="text-lg text-blue-700 hover:bg-blue-200">See All
-                                                Friends</Link>
                                         </div>
                                         {/* List */}
                                         <div className="" style={{ maxHeight: '500px' }}>
@@ -138,7 +129,9 @@ function Profile() {
                                 {
                                     posts.map((post) => {
                                         return <>
-                                            <AllPosts profilePic={post.user.pic}
+                                            <AllPosts
+                                                profilePic={post.user.pic}
+                                                post_id={post.id}
                                                 message={post.postcontent}
                                                 timestamp={post.postdate}
                                                 username={post.user.first_name + ' ' + post.user.last_name}

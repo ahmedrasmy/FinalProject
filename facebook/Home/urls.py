@@ -28,5 +28,5 @@ urlpatterns = [
     path('member_request_delete/', member_request_delete,name='member_request_delete'),
     path('member_request_accept/', member_request_accept,name='member_request_accept'),
     path('leave_group/', leave_group, name='leave_group'),
-
+    path('groups/', groups, name='groups'),
 ]

@@ -41,12 +41,9 @@ function Feed() {
         axios.get('http://127.0.0.1:8000/api/getshare/')
             .then(res => {
                 setShare(res.data);
-                console.log(res.data)
             })
             .catch((err) => console.log(err))
     }, [])
-
-
     return (
         <div className="feed">
             <StoryReel />
@@ -62,7 +59,6 @@ function Feed() {
                             image={post.post_photos}
                             comments={post.post_comments}
                             user_id={post.user.id}
-
                         /> </>
                 })
             } {
@@ -78,7 +74,7 @@ function Feed() {
                             timestamp={share.post_org_time}
                             image={share.pic}
                             timestamp_share={share.post_time_share}
-                        // user_id={post.user.id}
+                            comments={share.comments}
                         /> </>
                 })
             }</div>

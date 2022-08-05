@@ -2,7 +2,9 @@ from dataclasses import dataclass
 import json
 from audioop import reverse
 from lib2to3.pgen2.token import NOTEQUAL
+import re
 from django.shortcuts import render, redirect
+from requests import post
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -60,10 +62,30 @@ def get_Likeeuser(request,id):
     for x in  result:
         arr.append(x)
     return JsonResponse(arr, safe=False)
-    # # data = LIKE(users, many=True)
-    # return Response(data.data)
+    
+@api_view(['GET'])
+def get_likee_user_group(request, id):
+    arr=[]
+    result = (Postlikegroup.objects.filter(post=id)
+            .values('iconId')
+            .annotate(dcount=Count('iconId'))
+            .order_by()
+            )
+    for x in  result:
+        arr.append(x)
+    return JsonResponse(arr, safe=False)
 
-
+@api_view(['GET'])
+def get_likee_user_share(request, id):
+    arr=[]
+    result = (PostlikeShares.objects.filter(post=id)
+            .values('iconId')
+            .annotate(dcount=Count('iconId'))
+            .order_by()
+            )
+    for x in  result:
+        arr.append(x)
+    return JsonResponse(arr, safe=False)
 
 #####################   Add New User   ################
 @api_view(['delete'])
@@ -112,7 +134,14 @@ def get_share(request):
                     photos = Photos.objects.filter(post=post.post)
                     for photo in photos:
                         arr2.append( str(photo))
-
+                    allcomments = post.post_comments_shares.all()
+                    comments = []
+                    for comment in allcomments:
+                        print(comment)
+                        comm = comment.user.first_name+" "+comment.user.last_name + \
+                            "," + str(comment.user.pic.url) + \
+                            "," + comment.commentcontent
+                        comments.append(comm)
                     arr.append({
                         'post_id_share':post.id,
                         'post_time_share': post.sharedate,
@@ -124,7 +153,8 @@ def get_share(request):
                         'post_org_id':post.post.id,
                         'body_org':post.post.postcontent,
                         'pic':arr2,
-                        'post_org_time':post.post.postdate
+                        'post_org_time':post.post.postdate,
+                        'comments': comments,
                     })
 
 
@@ -135,7 +165,14 @@ def get_share(request):
             photos = Photos.objects.filter(post=post.post)
             for photo in photos:
                 arr2.append(str(photo))
-
+            allcomments = post.post_comments_shares.all()
+            comments = []
+            for comment in allcomments:
+                print(comment)
+                comm = comment.user.first_name+" "+comment.user.last_name + \
+                    "," + str(comment.user.pic.url) + \
+                    "," + comment.commentcontent
+                comments.append(comm)
             arr.append({
                 'post_id_share': post.id,
                 'post_time_share': post.sharedate,
@@ -147,7 +184,8 @@ def get_share(request):
                 'post_org_id': post.post.id,
                 'body_org': post.post.postcontent,
                 'pic': arr2,
-                'post_org_time': post.post.postdate
+                'post_org_time': post.post.postdate,
+                'comments': comments,
             })
 
         return JsonResponse(arr, safe=False)
@@ -175,7 +213,6 @@ def addpost(request):
     if request.session.has_key('user_name'):
         user = Useraccount.objects.filter(
             id=int(request.session['user_id']))[0]
-
         newPost = Posts.objects.create(
             user=user, postcontent=request.data['postcontent'])
         if newPost:
@@ -188,56 +225,86 @@ def addpost(request):
                     user_receiver= user_receiver ,post=newPost,
                 )
                 notify.save()
-            photo = Photos.objects.create(
-                post=newPost, imagecontent=request.data['imagecontent'])
-            photo.save()
-            return Response('successsfully')
+            try :
+                if request.data['imagecontent']:
+                    photo = Photos.objects.create(
+                        post=newPost, imagecontent=request.data['imagecontent'])
+                    photo.save()
+                return Response('successsfully')
+            except:
+                return Response('successsfully')
 
 @api_view(['POST'])
 def updateprofile(request):
     user = Useraccount.objects.get(id=int(request.session['user_id']))
-    if request.data['pic'] :
-        user.pic = request.data['pic']
-        user.save()
-        newPost = Posts.objects.create(
-            user=user, postcontent="update his profile picture"
-        )
-        photo = Photos.objects.create(
-            post=newPost,
-            imagecontent=user.pic
-        )
-        photo.save()
-        friend_list = FrienList.objects.filter(user=user.id)
-        friends = friend_list[0].friends.all()
-        for friend in friends:
-            user_receiver = Useraccount.objects.filter(id=friend.id)[0]
-            notify = Notification.objects.create(
-                user=user, body=" Update His Profile Picture ",
-                user_receiver=user_receiver ,post=newPost
+    try :
+            if request.data['pic'] :
+                user.pic = request.data['pic']
+                user.save()
+                newPost = Posts.objects.create(
+                    user=user, postcontent="update his profile picture"
+                )
+                photo = Photos.objects.create(
+                    post=newPost,
+                    imagecontent=user.pic
+                )
+                photo.save()
+                friend_list = FrienList.objects.filter(user=user.id)
+                friends = friend_list[0].friends.all()
+                for friend in friends:
+                    user_receiver = Useraccount.objects.filter(id=friend.id)[0]
+                    notify = Notification.objects.create(
+                        user=user, body=" Update His Profile Picture ",
+                        user_receiver=user_receiver ,post=newPost
+                    )
+                    notify.save()
+            try :
+                if request.data['pic_cover']:
+                    user.pic_cover = request.data['pic_cover']
+                    user.save()
+                    newPost = Posts.objects.create(
+                        user=user, postcontent="update his cover picture"
+                    )
+                    photo = Photos.objects.create(
+                        post=newPost,
+                        imagecontent=user.pic_cover
+                    )
+                    photo.save()
+                    friend_list = FrienList.objects.filter(user=user.id)
+                    friends = friend_list[0].friends.all()
+                    for friend in friends:
+                        user_receiver = Useraccount.objects.filter(id=friend.id)[0]
+                        notify = Notification.objects.create(
+                            user=user, body=" Update His Cover Picture ",
+                            user_receiver=user_receiver , post = newPost
+                        )
+                        notify.save()
+                return redirect('/home/pro/'+str(request.session['user_id']))
+            except:
+                return redirect('/home/pro/'+str(request.session['user_id']))
+    except:
+   
+        if request.data['pic_cover'] :
+            user.pic_cover = request.data['pic_cover']
+            user.save()
+            newPost = Posts.objects.create(
+                user=user, postcontent="update his cover picture"
             )
-            notify.save()
-
-    if request.data['pic_cover'] :
-        user.pic_cover = request.data['pic_cover']
-        user.save()
-        newPost = Posts.objects.create(
-            user=user, postcontent="update his cover picture"
-        )
-        photo = Photos.objects.create(
-            post=newPost,
-            imagecontent=user.pic_cover
-        )
-        photo.save()
-        friend_list = FrienList.objects.filter(user=user.id)
-        friends = friend_list[0].friends.all()
-        for friend in friends:
-            user_receiver = Useraccount.objects.filter(id=friend.id)[0]
-            notify = Notification.objects.create(
-                user=user, body=" Update His Cover Picture ",
-                user_receiver=user_receiver , post=newPost,
+            photo = Photos.objects.create(
+                post=newPost,
+                imagecontent=user.pic_cover
             )
-            notify.save()
-    return redirect('/home/pro/'+str(request.session['user_id']))
+            photo.save()
+            friend_list = FrienList.objects.filter(user=user.id)
+            friends = friend_list[0].friends.all()
+            for friend in friends:
+                user_receiver = Useraccount.objects.filter(id=friend.id)[0]
+                notify = Notification.objects.create(
+                    user=user, body=" Update His Cover Picture ",
+                    user_receiver=user_receiver , post=newPost,
+                )
+                notify.save()
+            return redirect('/home/pro/'+str(request.session['user_id']))
 
 @api_view(['GET'])
 def postNotification(request):
@@ -880,10 +947,21 @@ def get_likee_group(request):
     data = LIKEGroup(likes, many=True)
     return Response(data.data)
 
+@api_view(['GET'])
+def get_likee_share(request):
+    likes = PostlikeShares.objects.all()
+    data = LIKEshare(likes, many=True)
+    return Response(data.data)
 
 @api_view(['delete'])
 def delete_like_group(request, pk):
     like = Postlikegroup.objects.get(pk=pk)
+    like.delete()
+    return Response(status=status.HTTP_202_ACCEPTED)
+
+@api_view(['delete'])
+def delete_like_share(request, id):
+    like = PostlikeShares.objects.get(id=id)
     like.delete()
     return Response(status=status.HTTP_202_ACCEPTED)
 
@@ -900,12 +978,43 @@ def get_like_group(request):
 
 
 @api_view(['Post'])
+def get_like_share(request):
+    like = LIKEshare(data=request.data)
+    if like.is_valid():
+        like.save()
+        likes = PostlikeShares.objects.all()
+        data = LIKEshare(likes, many=True)
+        return Response(data.data)
+    return Response(like.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['Post'])
 def invite(request):
     if request.session.has_key('user_name'):
-        invite = NotificationInviteGroup(data=request.data)
-        if invite.is_valid():
-            invite.save()
-            return Response(invite.data, status=status.HTTP_201_CREATED)
+        payload = []
+        try:
+            # Get any friend requests (active and not-active)
+            invite_requests = NotificationInvite.objects.filter(
+                user=request.data['user'], Invit_receiver=request.data['Invit_receiver'])
+            # print(request.data.reciver,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+            # find if any of them are active (pending)
+            try:
+                    for request in invite_requests:
+                        if request.seen == False :
+                            raise Exception(
+                                "You already sent them a friend request.")
+                    # If none are active create a new friend request
+                    invite = NotificationInviteGroup(data=request.data)
+                    if invite.is_valid():
+                        invite.save()
+                        return Response(invite.data, status=status.HTTP_201_CREATED)
+                    
+            except Exception as e:
+                    payload['response'] = str(e)
+        except NotificationInvite.DoesNotExist:
+            invite = NotificationInviteGroup(data=request.data)
+            if invite.is_valid():
+                invite.save()
+                return Response(invite.data, status=status.HTTP_201_CREATED)
         return Response(invite.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return redirect('/auth/login/')
@@ -923,6 +1032,19 @@ def addcommentGroup(request):
     else:
         return redirect('/auth/login/')
 
+
+@api_view(['POST'])
+def addcommentshare(request):
+    if request.session.has_key('user_name'):
+        comment = commentSerializershare(data=request.data)
+        if comment.is_valid():
+            comment.save()
+            return Response(comment.data, status=status.HTTP_201_CREATED)
+        return Response(comment.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return redirect('/auth/login/')
+
+
 ################################# send request to join ############################3
 @api_view(['POST'])
 def joinGroup(request):
@@ -932,8 +1054,6 @@ def joinGroup(request):
                 # Get any friend requests (active and not-active)
                 member_requests = MemberRequest.objects.filter(
                     sender=request.data['sender'], reciver=request.data['reciver'])
-                print(request.data)
-                print(request.data['sender'])
                 # print(request.data.reciver,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
                 # find if any of them are active (pending)
                 try:
@@ -983,7 +1103,7 @@ def friends_list_group(request, pk):
         friends = friend_list[0].friends.all()
         data = []
         for friend in friends:
-            if group.is_mutual_member(friend):
+            if group.is_mutual_member(friend) or group.owner == friend:
                 print("yes")
             else :
                 data.append(
@@ -1005,5 +1125,158 @@ def get_all_users_group(request, pk):
         members=group.members.all()
         data = ShareUserSerial(members, many=True)
         return Response(data.data)
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['GET'])
+def inviteNotification(request):
+    if request.session.has_key('user_name'):
+        user_receiver = Useraccount.objects.filter(
+            id=int(request.session['user_id']))[0]
+        notifications = reversed(NotificationInvite.objects.filter(
+            Invit_receiver=user_receiver, seen=False))
+        if notifications:
+            data = NotificationInviteshow(notifications, many=True)
+            return Response(data.data)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['GET'])
+def unseeninviteNotification(request, pk, id):
+    if request.session.has_key('user_name'):
+        notify = NotificationInvite.objects.get(id=pk)
+        if notify:
+            notify.delete()
+            return redirect('/home/group/'+id)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['POST'])
+def createGroups(request):
+    if request.session.has_key('user_name'):
+        group = createGroup(data=request.data)
+        if group.is_valid():
+            group.save()
+            return Response(group.data, status=status.HTTP_201_CREATED)
+        return Response(group.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['POST'])
+def removeGroup(request):
+    if request.session.has_key('user_name'):
+        group = Groups.objects.get(id=request.data['id'])
+        if group:
+            group.delete()
+            return redirect('/home/Home/')
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['GET'])
+def getGroups(request):
+    if request.session.has_key('user_name'):
+        user = Useraccount.objects.get(id=int(request.session['user_id']))
+        arr=[]
+        groups = Groups.objects.all()
+        for group in groups:
+            if group.is_mutual_member(user):
+                arr.append(
+                    {
+                        'group_id' :group.id,
+                        'group_name': group.group_name,
+                        'group_pic': str(group.group_pic.url),
+                    }
+                )
+        return JsonResponse(arr, safe=False)
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['GET'])
+def ownGroups(request):
+    if request.session.has_key('user_name'):
+        user = Useraccount.objects.get(id=int(request.session['user_id']))
+        arr = []
+        groups = Groups.objects.all()
+        for group in groups:
+            if group.owner == user:
+                arr.append(
+                    {
+                        'group_id': group.id,
+                        'group_name': group.group_name,
+                        'group_pic': str(group.group_pic.url),
+                    }
+                )
+        return JsonResponse(arr, safe=False)
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['GET'])
+def sugustionsGroups(request):
+    if request.session.has_key('user_name'):
+        user = Useraccount.objects.get(id=int(request.session['user_id']))
+        arr = []
+        groups = Groups.objects.all()
+        for group in groups:
+            if group.is_mutual_member(user) or group.owner == user:
+                print("yes")
+            else:
+                arr.append(
+                    {
+                        'group_id': group.id,
+                        'group_name': group.group_name,
+                        'group_pic': str(group.group_pic.url),
+                    }
+                )
+        return JsonResponse(arr, safe=False)
+    else:
+        return redirect('/auth/login/')
+
+
+
+@api_view(['GET'])
+def getGroupPost(request):
+    if request.session.has_key('user_name'):
+        user = Useraccount.objects.get(id=int(request.session['user_id']))
+        arr = []
+        groups = Groups.objects.all()
+        for group in groups:
+            if group.is_mutual_member(user) or group.owner == user:
+                posts = group.groupPosts.all()[:2]
+                for post in posts:
+                    allcomments = post.post_comments_group.all()
+                    print(allcomments)
+                    comments = []
+                    for comment in allcomments :
+                        print(comment)
+                        comm=comment.user.first_name+" "+comment.user.last_name+"," + str(comment.user.pic.url)+","+ comment.commentcontent
+                        comments.append(comm)
+
+                    arr.append({
+                        'user_pic': str(post.user.pic.url),
+                        'username': post.user.first_name + ' ' + post.user.last_name,
+                        'post_id': post.id,
+                        'post_timestamp': post.postdate,
+                        'postcontent': post.postcontent,
+                        'post_pic': str(post.images.url),
+                        'group_id': group.id,
+                        'user_id': post.user.id,
+                        'group_pic': str(group.group_pic.url),
+                        'group_name': group.group_name,
+                        'comments': comments,
+                    })
+        return JsonResponse(arr, safe=False)
     else:
         return redirect('/auth/login/')

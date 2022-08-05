@@ -19,7 +19,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from "@mui/material/DialogContent";
 import theme from "./icons/theme.svg";
 import smile from "./icons/smile.svg";
-
+import { useDispatch, useSelector } from 'react-redux';
+import { User } from '../../Store/action/User';
 
 function getCookie(name) {
     var cookieValue = null;
@@ -39,7 +40,6 @@ function getCookie(name) {
 
 function AllPosts({ post_id, profilePic, image, username, timestamp, message, comments, group_id = 0 }) {
     var likeid;
-    const [users, setUsers] = useState({})
     const [posts, setPosts] = useState({})
     const [likes, setLike] = useState([])
     const [userLike, setUserLike] = useState(0)
@@ -77,13 +77,13 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
     const handleCloseDialog = () => {
         setOpen(false);
     };
+
+    const users = useSelector((state) => state.UserReducer.direc)
+    const dispatch = useDispatch();
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/get/')
-            .then(res => {
-                setUsers(res.data[0]);
-            })
-            .catch((err) => console.log(err))
+        dispatch(User())
     }, [])
+
     const addlike = (e) => {
         const sentmessage = {
             post: parseInt(post_id),
@@ -150,11 +150,20 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
         }
     }, [])
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/get_likee_user/' + post_id)
-            .then(res => {
-                setLike(res.data);
-            })
-            .catch((err) => console.log(err))
+        if (group_id != 0) {
+            axios.get('http://127.0.0.1:8000/api/get_likee_user_group/' + post_id)
+                .then(res => {
+                    setLike(res.data);
+                })
+                .catch((err) => console.log(err))
+        }
+        else {
+            axios.get('http://127.0.0.1:8000/api/get_likee_user/' + post_id)
+                .then(res => {
+                    setLike(res.data);
+                })
+                .catch((err) => console.log(err))
+        }
     }, [])
     useEffect(() => {
         for (let i = 0; i <= posts.length - 1; i++) {
@@ -269,8 +278,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
     return (< >
         <
             div className="all_posts">
-            <
-                div className="Top_section">
+            <div className="Top_section">
                 <
                     Avatar src={profilePic}
                     className="Posts_avatar" />
@@ -284,16 +292,30 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 div className="bottom_section">
                 <
                     p> {message} </p></div>
-            <div className="bottom_section_image row"> {
-                image.map((img) => {
-                    return <>
-                        <
-                            img src={img}
-                            className="col"
-                            alt="" />
-                    </>
-                })
-            } </div>
+            <div className="bottom_section_image row">
+                {
+                    group_id === 0 ?
+                        <>
+                            {
+                                image.map((img) => {
+                                    return <>
+                                        <
+                                            img src={img}
+                                            className="col"
+                                            alt="" />
+                                    </>
+                                })
+                            }
+                        </>
+                        :
+                        <>
+                            <
+                                img src={image}
+                                className="col"
+                                alt="" />
+                        </>
+                }
+            </div>
             <
                 div className="nums-comments-iteractions">
                 <div className="interaction">
@@ -440,47 +462,46 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                                     i className="fa-regular fa-thumbs-up"> </i>Like </IconButton>
                             <
                                 div class="emoji">
-                                <
-                                    i id="0"
+                                <i id="0"
                                     onClick={
                                         (e) => addlike(0)}
-                                    class="fa-solid fa-thumbs-up icon1"> </i> <
-                                        IconButton id="1"
-                                        onClick={
-                                            (e) => addlike(1)
-                                        }> < img src={love3}
-                                            class="love icon2"
-                                            alt="" /> </IconButton> <
-                                                IconButton id="2"
-                                                onClick={
-                                                    (e) => addlike(2)
-                                                }> < img src={care}
-                                                    class="icon3"
-                                                    alt="" /> </IconButton> <
-                                                        IconButton id="3"
-                                                        onClick={
-                                                            (e) => addlike(3)
-                                                        }> < img src={emotion4}
-                                                            class="icon4"
-                                                            alt="" /> </IconButton> <
-                                                                IconButton id="4"
-                                                                onClick={
-                                                                    (e) => addlike(4)
-                                                                }> < img src={emotion5}
-                                                                    class="icon5"
-                                                                    alt="" /> </IconButton> <
-                                                                        IconButton id="5"
-                                                                        onClick={
-                                                                            (e) => addlike(5)
-                                                                        }> < img src={emotion6}
-                                                                            class="icon6"
-                                                                            alt="" /> </IconButton> <
-                                                                                IconButton id="6"
-                                                                                onClick={
-                                                                                    (e) => addlike(6)
-                                                                                }> < img src={emotion7}
-                                                                                    class="icon7"
-                                                                                    alt="" /> </IconButton></div>
+                                    class="fa-solid fa-thumbs-up icon1"></i>
+                                <i id="1"
+                                    onClick={
+                                        (e) => addlike(1)
+                                    }> < img src={love3}
+                                        class="love icon2"
+                                        alt="" /> </i> <
+                                            i id="2"
+                                            onClick={
+                                                (e) => addlike(2)
+                                            }> < img src={care}
+                                                class="icon3"
+                                                alt="" /> </i> <
+                                                    i id="3"
+                                                    onClick={
+                                                        (e) => addlike(3)
+                                                    }> < img src={emotion4}
+                                                        class="icon4"
+                                                        alt="" /> </i> <
+                                                            i id="4"
+                                                            onClick={
+                                                                (e) => addlike(4)
+                                                            }> < img src={emotion5}
+                                                                class="icon5"
+                                                                alt="" /> </i> <
+                                                                    i id="5"
+                                                                    onClick={
+                                                                        (e) => addlike(5)
+                                                                    }> < img src={emotion6}
+                                                                        class="icon6"
+                                                                        alt="" /> </i> <
+                                                                            i id="6"
+                                                                            onClick={
+                                                                                (e) => addlike(6)
+                                                                            }> < img src={emotion7}
+                                                                                class="icon7"
+                                                                                alt="" /> </i></div>
                         </>
                     } </div>
                 <
