@@ -82,7 +82,6 @@ function Post({ poll, group_id }) {
             },
         ).then(res => {
             setopenPost(false);
-            history.push("/home/Home/")
 
         }).catch((err) => console.log(err))
     }

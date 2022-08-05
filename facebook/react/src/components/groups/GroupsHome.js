@@ -58,7 +58,7 @@ function GroupsHome() {
             .catch((err) => console.log(err))
     }, [])
 
-    const users = useSelector((state) => state.UserReducer.direc)
+    const user = useSelector((state) => state.UserReducer.direc)
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(User())

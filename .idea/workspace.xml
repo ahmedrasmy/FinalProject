@@ -2,55 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="92c29cac-eb8b-4020-9621-6108588696e6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/facebook/Home/migrations/0002_alter_postsgroups_group.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/Home/migrations/0003_postlikeshares_commentsshares.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/Home/migrations/0004_alter_commentsshares_post.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/Store/Reducers/compReducers.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/Store/Reducers/userReducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/Store/action/User.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/Store/store.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/react/src/components/groups/GroupsHome.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/2_QSGPkZA.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/cool-avatar-icon-25_6oz7KDE.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/cool-avatar-icon-25_WrUo3Ab.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/cool-avatar-icon-25_djsAydy.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/cool-avatar-icon-25_hdWJZoR.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/food_3_JA00Hf2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/img_Ay9ubuP.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/img_GzdCUsq.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/img_cemlNo2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/img_mukDeOg.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/img_wqC51Ly.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/th_1_ZVCERup.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/th_1_o16Gexc.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/th_3ghYAph.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/th_8in5GpI.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/th_9I3xdAW.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/th_KWo3FpG.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facebook/static/img/th_gnr71is.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/API/apiurl.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/apiurl.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/API/serlizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/serlizer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/API/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/API/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/Home/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/Home/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Header/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Header/Header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Feed.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Feed.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Home/Sidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Home/Sidebar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Post/AllPosts.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Post/AllPosts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Post/AllShares.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Post/AllShares.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Post/Post.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Post/Post.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Profile/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Profile/Profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/Profile/ProfileHeader.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/Profile/ProfileHeader.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/chat/Detail.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/chat/Detail.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/chat/Index.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/chat/Index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/groups/Groups.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/groups/Groups.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/facebook/react/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facebook/react/src/components/groups/GroupsHome.js" beforeDir="false" afterPath="$PROJECT_DIR$/facebook/react/src/components/groups/GroupsHome.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
