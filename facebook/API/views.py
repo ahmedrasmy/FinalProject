@@ -290,10 +290,7 @@ def updateprofile(request):
             newPost = Posts.objects.create(
                 user=user, postcontent="update his cover picture"
             )
-<<<<<<< HEAD
 
-=======
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
             photo = Photos.objects.create(
                 post=newPost,
                 imagecontent=user.pic_cover
@@ -309,10 +306,6 @@ def updateprofile(request):
                 )
                 notify.save()
             return redirect('/home/pro/'+str(request.session['user_id']))
-<<<<<<< HEAD
-
-=======
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
 
 @api_view(['GET'])
 def postNotification(request):
