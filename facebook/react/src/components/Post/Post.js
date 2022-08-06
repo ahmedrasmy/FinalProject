@@ -20,13 +20,9 @@ import jQuery from "jquery";
 import PollIcon from '@mui/icons-material/Poll';
 import { useDispatch, useSelector } from 'react-redux';
 import { User } from '../../Store/action/User';
-<<<<<<< HEAD
-
 import {postReducer} from "../../Store/action/Posts";
 
-=======
-import { postReducer } from "../../Store/action/Posts";
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
 
 function getCookie(name) {
     var cookieValue = null;
@@ -89,7 +85,7 @@ function Post({ poll, group_id }) {
             },
         ).then(res => {
             setopenPost(false);
-<<<<<<< HEAD
+
 
 
             dispatch(postReducer(1))
@@ -117,31 +113,7 @@ function Post({ poll, group_id }) {
             console.log(res)
         }).catch((err) => console.log(err))
     }
-=======
-            dispatch(postReducer(1))
-        }).catch((err) => console.log(err))
-    }
-    const sendPostDatagroup = {
-        group: parseInt(group_id),
-        postcontent: post,
-        images: image,
-        user: parseInt(users.id),
-    }
-    const addNewPostforGroups = () => {
-        axios.post("http://127.0.0.1:8000/api/addpostforgroups/",
-            sendPostDatagroup,
-            {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    'X-CSRFToken': getCookie('csrftoken')
-                }
-            },
-        ).then(res => {
-            setopenPost(false);
-            console.log(res)
-        }).catch((err) => console.log(err))
-    }
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
     return (
         <>
             <div className="post ">

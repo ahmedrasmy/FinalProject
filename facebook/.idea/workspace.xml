@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="91878282-2da0-407c-86f9-c1a37442228d" name="Changes" comment="dont need">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Home/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Home/migrations/0002_alter_postsgroups_group.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Home/migrations/0003_postlikeshares_commentsshares.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Home/migrations/0004_alter_commentsshares_post.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Home/migrations/0005_notifyrequest.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/facesetting/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/facesetting/settings.py" afterDir="false" />
-    </list>
+    <list default="true" id="91878282-2da0-407c-86f9-c1a37442228d" name="Changes" comment="Last isa" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -72,7 +63,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1659764045390</updated>
-      <workItem from="1659764050156" duration="3631000" />
+      <workItem from="1659764050156" duration="3775000" />
     </task>
     <task id="LOCAL-00001" summary="Last">
       <created>1659765465244</created>
@@ -88,7 +79,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659765697796</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Last isa">
+      <created>1659767837215</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1659767837215</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -108,6 +106,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Last" />
     <MESSAGE value="dont need" />
-    <option name="LAST_COMMIT_MESSAGE" value="dont need" />
+    <MESSAGE value="Last isa" />
+    <option name="LAST_COMMIT_MESSAGE" value="Last isa" />
   </component>
 </project>

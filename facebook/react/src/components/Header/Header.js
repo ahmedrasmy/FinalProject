@@ -21,22 +21,18 @@ import Logout from '@mui/icons-material/Logout';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import '../chat/Stylechat.css';
 import GroupsIcon from '@mui/icons-material/Groups';
-<<<<<<< HEAD
-import {useDispatch, useSelector} from 'react-redux';
-import {User} from '../../Store/action/User';
-=======
-import { useDispatch, useSelector } from 'react-redux';
-import { User } from '../../Store/action/User';
-import CancelIcon from '@mui/icons-material/Cancel';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CSRF from "../Auth/CSRF";
 import Button from '@mui/material/Button';
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import {useDispatch, useSelector} from 'react-redux';
+import {User} from '../../Store/action/User';
+
 
 function Header() {
     const history = useHistory();
     const [value, setValue] = useState('')
-    const [users, setUsers] = useState({})
+
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             history.push("/home/search/" + event.target.value)
@@ -103,10 +99,7 @@ function Header() {
             .catch(error => console.log(error))
     }
     const [notifications, setNotifications] = useState([])
-<<<<<<< HEAD
-=======
 
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/postNotification/')
             .then(res => {
@@ -122,9 +115,7 @@ function Header() {
             })
             .catch((err) => console.log(err))
     }, [])
-<<<<<<< HEAD
 
-=======
     const [notifyRequest, setnotifyRequest] = useState([])
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/notifyRequest/')
@@ -133,7 +124,7 @@ function Header() {
             })
             .catch((err) => console.log(err))
     }, [])
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
     function renderTimestamp(timestamp) {
         let prefix = "";
         const timeDiff = Math.round(
@@ -182,19 +173,13 @@ function Header() {
                 </div>
                 <div className="header-option">
                     <Link to={`/home/groups/`}>
-<<<<<<< HEAD
-                        <GroupsIcon fontSize="large"/></Link>
-                </div>
-                <div className="header-option">
 
-                    <StoreIcon fontSize="large"/>
-=======
                         <GroupsIcon fontSize="large" /></Link>
                 </div>
                 <div className="header-option">
 
                     <StoreIcon fontSize="large" />
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
                 </div>
                 <div className="header-option">
                     <Link to={"/home/sugistions_list/"}>
@@ -227,25 +212,19 @@ function Header() {
                     onClick={handleClickNotify}
                     style={{ marginTop: "15px" }}
                 >
-<<<<<<< HEAD
-                    <Badge badgeContent={notifications.length + InviteNotive.length} color="primary">
-                        <NotificationsActiveIcon/>
-=======
+
                     <Badge badgeContent={notifications.length + InviteNotive.length + notifyRequest.length} color="primary">
                         <NotificationsActiveIcon />
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
                     </Badge>
                 </IconButton>
                 <PopupState variant="popover" popupId="demo-popup-menu">
                     {(popupState) => (
                         <React.Fragment>
-<<<<<<< HEAD
-                            <IconButton variant="contained" {...bindTrigger(popupState)} style={{marginTop: "15px"}}>
-                                <ExpandMoreIcon/>
-=======
+
                             <IconButton variant="contained" {...bindTrigger(popupState)} style={{ marginTop: "15px" }}>
                                 <ExpandMoreIcon />
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
                             </IconButton>
                             <Menu {...bindMenu(popupState)}>
                                 <MenuItem onClick={popupState.close}> <a href={"/home/pro/" + users.id}><Avatar
@@ -325,7 +304,7 @@ function Header() {
                                                     </div>
                                                     <div className="time_new_msg">
                                                         <p>{renderTimestamp(notify.timestamp)}</p>
-<<<<<<< HEAD
+
                                                     </div>
                                                 </div>
                                             </a>
@@ -347,8 +326,7 @@ function Header() {
                                                     </div>
                                                     <div className="time_new_msg">
                                                         <p>{renderTimestamp(notify.timestamp)}</p>
-=======
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
                                                     </div>
                                                 </div>
                                             </a>

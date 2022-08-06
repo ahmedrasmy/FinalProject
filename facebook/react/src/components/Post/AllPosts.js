@@ -19,7 +19,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from "@mui/material/DialogContent";
 import theme from "./icons/theme.svg";
 import smile from "./icons/smile.svg";
-<<<<<<< HEAD
+
 
 import {useDispatch, useSelector} from 'react-redux';
 import {User} from '../../Store/action/User';
@@ -27,10 +27,6 @@ import {User} from '../../Store/action/User';
 
 import {commentreducer, deletereducer, likeereducer, sharereducer} from "../../Store/action/Posts";
 
-=======
-import { useDispatch, useSelector } from 'react-redux';
-import { commentreducer, deletereducer, likeereducer, sharereducer } from "../../Store/action/Posts";
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
 
 function getCookie(name) {
     var cookieValue = null;
@@ -48,13 +44,9 @@ function getCookie(name) {
 }
 
 
-<<<<<<< HEAD
 
 function AllPosts({ post_id, profilePic, image, username, timestamp, message, comments, group_id = 0, users, group_home = 0 }) {
 
-=======
-function AllPosts({ post_id, profilePic, image, username, timestamp, message, comments, group_id = 0, users, group_home = 0 }) {
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
     var likeid;
     const [posts, setPosts] = useState({})
     const [likes, setLike] = useState([])
@@ -99,13 +91,11 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
         },
         ).then(res => {
             console.log(res)
-<<<<<<< HEAD
+
 
             dispatch(sharereducer(1))
 
-=======
-            dispatch(sharereducer(1))
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
             handleCloseDialog()
 
         }).catch((err) => console.log(err))
@@ -118,11 +108,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
         setOpen(false);
     };
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
     const addlike = (e) => {
         if (group_id != 0) {
             var sentmessage = {}
@@ -131,24 +117,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                     post: parseInt(post_id),
                     user: parseInt(users.id),
                     iconId: parseInt(e),
-<<<<<<< HEAD
-                }
-            }
-            else {
-                sentmessage = {
-                    post: parseInt(post_id),
-                    user: parseInt(users['user_id']),
-                    iconId: parseInt(e),
-                }
-            }
-            axios.post("http://127.0.0.1:8000/api/get_like_group/",
-                sentmessage, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    }
-                },
-=======
+
                 }
             }
             else {
@@ -165,7 +134,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                     'X-CSRFToken': getCookie('csrftoken')
                 }
             },
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
             ).then(res => {
                 if (group_home != 0) {
                     for (let i = 0; i <= res.data.length - 1; i++) {
@@ -199,19 +168,13 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
             }
             axios.post("http://127.0.0.1:8000/api/get_like/",
                 sentmessage, {
-<<<<<<< HEAD
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    }
-                },
-=======
+
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': getCookie('csrftoken')
                 }
             },
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
             ).then(res => {
                 for (let i = 0; i <= res.data.length - 1; i++) {
                     let obj = res.data[i]
@@ -234,12 +197,10 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                     setPosts(res.data);
                 })
                 .catch((err) => console.log(err))
-<<<<<<< HEAD
-        } else {
-=======
+
         }
         else {
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
             axios.get('http://127.0.0.1:8000/api/get_likee/')
                 .then(res => {
                     setPosts(res.data);
@@ -247,11 +208,9 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 .catch((err) => console.log(err))
                 
         }
-<<<<<<< HEAD
+
     }, [likess])
-=======
-    }, [])
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
     useEffect(() => {
         if (group_id != 0) {
             axios.get('http://127.0.0.1:8000/api/get_likee_user_group/' + post_id)
@@ -259,12 +218,11 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                     setLike(res.data);
                 })
                 .catch((err) => console.log(err))
-<<<<<<< HEAD
-        } else {
-=======
+
+
         }
         else {
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
             axios.get('http://127.0.0.1:8000/api/get_likee_user/' + post_id)
                 .then(res => {
                     setLike(res.data);
@@ -318,24 +276,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                     if (obj.post === post_id && obj.user === users.id) {
                         likeid = obj.id
                     }
-<<<<<<< HEAD
-                }
-            } else {
-                for (let i = 0; i <= posts.length - 1; i++) {
-                    let obj = posts[i]
-                    if (obj.post === post_id && obj.user === users['user_id']) {
-                        likeid = obj.id
-                    }
-                }
-            }
-            axios.delete("http://127.0.0.1:8000/api/delete_like_group/" +
-                likeid, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    }
-                },
-=======
+
                 }
             } else {
                 for (let i = 0; i <= posts.length - 1; i++) {
@@ -352,16 +293,13 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                     'X-CSRFToken': getCookie('csrftoken')
                 }
             },
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
             ).then(res => {
                 setColor('')
                 setUserLike(0)
                 setIcon(0)
             }).catch((err) => console.log(err))
-<<<<<<< HEAD
 
-=======
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
         }
         else {
             for (let i = 0; i <= posts.length - 1; i++) {
@@ -370,7 +308,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                     likeid = obj.id
                 }
             }
-<<<<<<< HEAD
+
 
             axios.delete("http://127.0.0.1:8000/api/delete_like/" +
                 likeid, {
@@ -379,15 +317,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                         'X-CSRFToken': getCookie('csrftoken')
                     }
                 },
-=======
-            axios.delete("http://127.0.0.1:8000/api/delete_like/" +
-                likeid, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                }
-            },
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
             ).then(res => {
                 setColor('')
                 setUserLike(0)
@@ -405,27 +335,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                     post: parseInt(post_id),
                     user: parseInt(users.id),
                     commentcontent: comment
-<<<<<<< HEAD
-                }
-            }
-            else {
-                sendCommentData = {
-                    post: parseInt(post_id),
-                    user: parseInt(users['user_id']),
-                    commentcontent: comment
-                }
-            }
-            axios.post("http://127.0.0.1:8000/api/addcommentGroup/",
-                sendCommentData, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    }
-                },
-            ).then(res => {
-            }).catch((err) => console.log(err))
 
-=======
                 }
             }
             else {
@@ -444,7 +354,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
             },
             ).then(res => {
             }).catch((err) => console.log(err))
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
         }
         else {
             const sendCommentData = {
@@ -452,7 +362,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 user: parseInt(users.id),
                 commentcontent: comment
             }
-<<<<<<< HEAD
+
 
             axios.post("http://127.0.0.1:8000/api/addcomment/",
                 sendCommentData, {
@@ -465,17 +375,8 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
 
                 dispatch(commentreducer(1))
 
-=======
-            axios.post("http://127.0.0.1:8000/api/addcomment/",
-                sendCommentData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                }
-            },
-            ).then(res => {
-                dispatch(commentreducer(1))
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
+
             }).catch((err) => console.log(err))
         }
     }
@@ -510,131 +411,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
     }
 
     return (< >
-<<<<<<< HEAD
-            <
-                div className="all_posts">
-                <div className="Top_section">
-                    <
-                        Avatar src={profilePic}
-                               className="Posts_avatar"/>
-                    <
-                        div className="Top_section_info">
-                        <
-                            h3 style={
-                            {paddingLeft: "0px"}}> {username} </h3> <p> {renderTimestamp(timestamp)} </p></div>
-                </div>
-                <
-                    div className="bottom_section">
-                    <
-                        p> {message} </p></div>
-                <div className="bottom_section_image row">
-                    {
-                        group_id === 0 ?
-                            <>
-                                {
-                                    image.map((img) => {
-                                        return <>
-                                            <
-                                                img src={img}
-                                                    className="col"
-                                                    alt=""/>
-                                        </>
-                                    })
-                                }
-                            </>
-                            :
-                            <>
-                                <
-                                    img src={image}
-                                        className="col"
-                                        alt=""/>
-                            </>
-                    }
-                </div>
-                <
-                    div className="nums-comments-iteractions">
-                    <div className="interaction">
-                        {
-                            likes.map((like) => {
-                                return < >
 
-                                    {
-                                        like['iconId'] === 0 ?
-                                            <div style={{display: "inline"}}>
-                                                {like['dcount']} <img src={liked} alt="Img"
-                                                                      style={{display: "inline"}}/>
-
-                                            </div> :
-                                            null
-
-                                    }
-                                    {
-                                        like['iconId'] === 1 ?
-                                            <div style={{display: "inline"}}>
-                                                {/*<i className="fa-solid fa-heart icon2"> < /i>*/}
-                                                {like['dcount']} <img src={love} style={{display: "inline"}} alt="Img"/>
-                                            </div> :
-                                            null
-
-                                    }
-                                    {
-                                        like['iconId'] === 2 ?
-                                            <div style={{display: "inline"}}>
-                                                {like['dcount']} <img src={care} style={{display: "inline"}} alt="Img"/>
-                                            </div> :
-                                            null
-
-                                    }
-                                    {
-                                        like['iconId'] === 3 ?
-                                            <div style={{display: "inline"}}>
-                                                {like['dcount']} <img src={haha} style={{display: "inline"}} alt="Img"/>
-                                            </div> :
-                                            null
-
-                                    }
-                                    {
-                                        like['iconId'] === 4 ?
-                                            <div style={{display: "inline"}}>
-                                                {like['dcount']} <img src={wow} style={{display: "inline"}} alt="Img"/>
-                                            </div> :
-                                            null
-
-                                    }
-                                    {
-                                        like['iconId'] === 5 ?
-                                            <div style={{display: "inline"}}>
-                                                {like['dcount']} <img src={sadded} style={{display: "inline"}}
-                                                                      alt="Img"/>
-                                            </div> :
-                                            null
-
-                                    }
-                                    {
-                                        like['iconId'] === 6 ?
-                                            <div style={{display: "inline"}}>
-                                                {like['dcount']} <img src={angry} style={{display: "inline"}}
-                                                                      alt="Img"/>
-                                            </div> :
-                                            null
-
-                                    }
-
-                                </>
-                            })
-                        }
-
-                        <
-                            a href="#"> </a></div>
-                    <
-                        a href="#"
-                          class="nums-comments"> {comments.length}
-                        Coments </a></div>
-                <
-                    div className="like-comment-share">
-                    <
-                        div className="icon like"> {
-=======
         <
             div className="all_posts">
             <div className="Top_section">
@@ -755,25 +532,22 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 div className="like-comment-share">
                 <
                     div className="icon like"> {
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
                         userLike === 1 ? <> {
                             Icon === 0 ?
                                 <
                                     IconButton onClick={handleClose}>
                                     <
                                         i className="fa-regular fa-thumbs-up"
-<<<<<<< HEAD
+
                                           style={
                                               {color: colors}}>
-=======
-                                        style={
-                                            { color: colors }}>
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
                                     </i>
                                     Like </IconButton> :
                                 null
                         } {
-<<<<<<< HEAD
+
                             Icon === 1 ?
                                 <
                                     IconButton onClick={handleClose}>
@@ -821,55 +595,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                                             alt="" style={{height: "50px"}}/>
                                 </IconButton> : null
                         }
-=======
-                                Icon === 1 ?
-                                    <
-                                        IconButton onClick={handleClose}>
-                                        <
-                                            img src={love3}
-                                            class="love icon2"
-                                            alt="" style={{ height: "50px" }} />
-                                    </IconButton> : null} {Icon === 2 ? <
-                                        IconButton onClick={handleClose}>
-                                        <
-                                            img src={care}
-                                            class="icon3"
-                                            alt=""
-                                            style={{ height: "50px" }} />
-                                    </IconButton> : null
-                            } {
-                                Icon === 3 ?
-                                    <
-                                        IconButton onClick={handleClose}>
-                                        <
-                                            img src={emotion4}
-                                            class="icon4"
-                                            alt="" style={{ height: "50px" }} />
-                                    </IconButton> : null} {Icon === 4 ? <
-                                        IconButton onClick={handleClose}>
-                                        <
-                                            img src={emotion5}
-                                            class="icon5"
-                                            alt="" style={{ height: "50px" }} />
-                                    </IconButton> : null} {Icon === 5 ? <
-                                        IconButton onClick={handleClose}>
-                                        <
-                                            img src={emotion6}
-                                            class="icon6"
-                                            alt="" style={{ height: "50px" }} />
-                                    </IconButton> : null
-                            } {
-                                Icon === 6 ?
 
-                                    <
-                                        IconButton onClick={handleClose}>
-                                        <
-                                            img src={emotion7}
-                                            class="icon7"
-                                            alt="" style={{ height: "50px" }} />
-                                    </IconButton> : null
-                            }
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
                         </> : <>
                             <
                                 IconButton id="0">
@@ -878,7 +604,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                             <
                                 div class="emoji">
                                 <i id="0"
-<<<<<<< HEAD
+
                                    onClick={
                                        (e) => addlike(0)}
                                    class="fa-solid fa-thumbs-up icon1"></i>
@@ -931,135 +657,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                                                  onClick={handleClickOpenDialog}> </i> Share
                     </div>
 
-=======
-                                    onClick={
-                                        (e) => addlike(0)}
-                                    class="fa-solid fa-thumbs-up icon1"></i>
-                                <i id="1"
-                                    onClick={
-                                        (e) => addlike(1)
-                                    }> < img src={love3}
-                                        class="love icon2"
-                                        alt="" /> </i> <
-                                            i id="2"
-                                            onClick={
-                                                (e) => addlike(2)
-                                            }> < img src={care}
-                                                class="icon3"
-                                                alt="" /> </i> <
-                                                    i id="3"
-                                                    onClick={
-                                                        (e) => addlike(3)
-                                                    }> < img src={emotion4}
-                                                        class="icon4"
-                                                        alt="" /> </i> <
-                                                            i id="4"
-                                                            onClick={
-                                                                (e) => addlike(4)
-                                                            }> < img src={emotion5}
-                                                                class="icon5"
-                                                                alt="" /> </i> <
-                                                                    i id="5"
-                                                                    onClick={
-                                                                        (e) => addlike(5)
-                                                                    }> < img src={emotion6}
-                                                                        class="icon6"
-                                                                        alt="" /> </i> <
-                                                                            i id="6"
-                                                                            onClick={
-                                                                                (e) => addlike(6)
-                                                                            }> < img src={emotion7}
-                                                                                class="icon7"
-                                                                                alt="" /> </i></div>
-                        </>
-                    } </div>
-                <
-                    div className="icon icon-comment">
-                    <
-                        i className="fa-regular fa-comment"> </i>
-                    Comment
-                </div>
-                <
-                    div className="icon">< i className="fa-solid fa-share"
-                        onClick={handleClickOpenDialog}> </i> Share
-                </div>
 
-
-            </div>
-            <div class="comments"> {
-                comments.map((comment) => {
-                    return <>
-                        <div className="comment">
-                            <img src={comment.split(',')[1]}
-                                alt="" />
-                            <div className="comment-body">
-                                <
-                                    p className="name"> {comment.split(',')[0]} </p>
-                                <p> {comment.split(',')[2]} </p></div>
-                        </div>
-                    </>
-                })
-            }
-
-            </div>
-            <div className="create-comment">
-                <Avatar src={users.pic}
-                    className="Posts_avatar" />
-                <
-                    input type="text"
-                    placeholder="Write A comment"
-                    className="commentInput"
-                    name="commentcontent"
-                    onChange={
-                        (e) => setComment(e.target.value)
-                    }
-                    onKeyDown={
-                        (e) => handleKeyDown(e)
-                    } /></div>
-        </div>
-
-        <Dialog open={open}
-            onClose={handleCloseDialog}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-            scroll={scroll}>
-            <
-                DialogContent dividers>
-
-                <
-                    div className="container"
-                    style={
-                        { overflowY: "auto" }
-                    }>
-                    <
-                        div className="wrapper">
-                        <
-                            section className="post">
-                            <
-                                header> Share Post
-                            </header>
-                            <
-                                form onSubmit={
-                                    (e) => submit(e)
-                                }
-                                enctype="multipart/form-data">
-
-                                <
-                                    div className="content">
-                                    <
-                                        img src={users.pic}
-                                        alt="logo" />
-                                    <
-                                        div className="details">
-                                        <
-                                            p> {users.first_name + ' ' + users.last_name} </p>
-                                        <
-                                            div className="privacy">
-                                            <
-                                                i className="fas fa-user-friends"> </i> <
-                                                    span> Friends </span> <
-                                                        i className="fas fa-caret-down"> </i></div>
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
 
                 </div>
                 <div class="comments"> {
@@ -1158,35 +756,13 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                                             img src={smile}
                                                 alt="smile"/>
                                     </div>
-<<<<<<< HEAD
+
 
 
                                 </form>
 
                             </section>
-=======
-                                </div>
-                                <
-                                    img src={image}
-                                    className="col"
-                                    alt=""
-                                    style={
-                                        { marginTop: "10px", marginRight: "20px" }}
-                                />
-                                <button type="submit"
-                                    className="bg-blue-600  rounded-lg text-white font-semibold">
-                                    Share
-                                </button>
-                                <
-                                    div className="theme-emoji">
-                                    <
-                                        img src={theme}
-                                        alt="theme" />
-                                    <
-                                        img src={smile}
-                                        alt="smile" />
-                                </div>
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
 
                         </div>
 
@@ -1194,13 +770,9 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
 
                 </DialogContent> </Dialog>
 
-<<<<<<< HEAD
-        </ >
-=======
-            </DialogContent> </Dialog>
 
-    </ >
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+        </ >
+
 
 
     )

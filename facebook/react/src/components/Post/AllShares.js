@@ -22,7 +22,7 @@ import angry from '../images/angred.PNG';
 import wow from '../images/wowed.PNG';
 import { useDispatch, useSelector } from 'react-redux';
 import { User } from '../../Store/action/User';
-<<<<<<< HEAD
+
 import {
     deletelikereducer,
     deletereducer,
@@ -31,8 +31,7 @@ import {
     sharelikereducer,
     sharereducer
 } from "../../Store/action/Posts";
-=======
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
 
 function getCookie(name) {
     var cookieValue = null;
@@ -72,11 +71,10 @@ function renderTimestamp(timestamp) {
 }
 
 
-<<<<<<< HEAD
+
 function AllShares({ post_id, profilePic, image, username, timestamp, post_user_org, username_org, message, timestamp_share, comments,users,orpost_id }) {
-=======
-function AllShares({ post_id, profilePic, image, username, timestamp, post_user_org, username_org, message, timestamp_share, comments }) {
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
+
     var likeid;
     const [posts, setPosts] = useState({})
     const [likes, setLike] = useState([])
@@ -87,10 +85,10 @@ function AllShares({ post_id, profilePic, image, username, timestamp, post_user_
     const [share, setShare] = useState(null)
     const [scroll, setScroll] = useState('paper');
     const [open, setOpen] = useState(false);
-<<<<<<< HEAD
+
      const likess = useSelector((state) => state.likereducer.LIKES_SHARE)
-=======
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
+
 
     function submit(e) {
         const shares = {
@@ -107,11 +105,9 @@ function AllShares({ post_id, profilePic, image, username, timestamp, post_user_
         },
         ).then(res => {
             console.log(res)
-<<<<<<< HEAD
-            dispatch(sharereducer(1))
-=======
 
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+            dispatch(sharereducer(1))
+
             handleCloseDialog()
 
         }).catch((err) => console.log(err))
@@ -123,23 +119,9 @@ function AllShares({ post_id, profilePic, image, username, timestamp, post_user_
     const handleCloseDialog = () => {
         setOpen(false);
     };
-<<<<<<< HEAD
 
-    // const users = useSelector((state) => state.UserReducer.direc)
     const dispatch = useDispatch();
-    // useEffect(() => {
-    //     dispatch(User())
-    // }, [])
 
-=======
-
-    const users = useSelector((state) => state.UserReducer.direc)
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(User())
-    }, [])
-
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
     const addlike = (e) => {
         const sentmessage = {
             post: parseInt(post_id),
@@ -163,10 +145,9 @@ function AllShares({ post_id, profilePic, image, username, timestamp, post_user_
                     setIcon(obj.iconId)
                     setColor('blue')
                     setUserLike(1)
-<<<<<<< HEAD
+
                      dispatch(sharelikereducer(1))
-=======
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
                 }
             }
         }).catch((err) => console.log(err))
@@ -177,22 +158,19 @@ function AllShares({ post_id, profilePic, image, username, timestamp, post_user_
                 setPosts(res.data);
             })
             .catch((err) => console.log(err))
-<<<<<<< HEAD
+
     }, [likess])
-=======
-    }, [])
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/get_likee_user_share/' + post_id)
             .then(res => {
                 setLike(res.data);
             })
             .catch((err) => console.log(err))
-<<<<<<< HEAD
+
     }, [likess])
-=======
-    }, [])
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
+
     useEffect(() => {
         for (let i = 0; i <= posts.length - 1; i++) {
             let obj = posts[i]
@@ -225,10 +203,9 @@ function AllShares({ post_id, profilePic, image, username, timestamp, post_user_
             setColor('')
             setUserLike(0)
             setIcon(0)
-<<<<<<< HEAD
+
             dispatch(deletelikereducer(1))
-=======
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
         }).catch((err) => console.log(err))
     };
     const [comment, setComment] = useState(null)
@@ -246,10 +223,9 @@ function AllShares({ post_id, profilePic, image, username, timestamp, post_user_
             }
         },
         ).then(res => {
-<<<<<<< HEAD
+
               dispatch(sharecommentreducer(1))
-=======
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
         }).catch((err) => console.log(err))
     }
     const handleKeyDown = (e) => {
@@ -282,11 +258,9 @@ function AllShares({ post_id, profilePic, image, username, timestamp, post_user_
                     </div>
                 </div>
                 <div className="bottom_section">
-<<<<<<< HEAD
+
                     <p style={{marginLeft:"40px"}}> {message} </p>
-=======
-                    <p> {message} </p>
->>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
+
                 </div>
                 <div className="bottom_section_image row"> {
                     image.map((img) => {
