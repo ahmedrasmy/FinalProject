@@ -24,6 +24,7 @@ export const commentreducer = (payload) => {
         type: "COMMENT"
     }
 }
+<<<<<<< HEAD
 
 export const sharecommentreducer = (payload) => {
     return {
@@ -44,6 +45,8 @@ export const deletelikereducer = (payload) => {
     }
 }
 
+=======
+>>>>>>> 396daafe6695eefafbe1b17d9014f72a37432860
 export const sharereducer = (payload) => {
     return {
         payload,
