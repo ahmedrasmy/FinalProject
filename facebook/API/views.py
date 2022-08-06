@@ -672,15 +672,26 @@ def story(request):
         mystorys = Story.objects.filter(user=user)
         arr = []
         for st in mystorys:
-            arr.append({
-                "story_id": st.id,
-                "story_pic": str(st.pic.url),
-                "story_body": st.body,
-                "user_pic": str(st.user.pic.url),
-                "user_name": st.user.first_name+" "+st.user.last_name,
-                "user_id": st.user.id,
-                "is_mine":True,
-            })
+
+            if st.pic:
+                arr.append({
+                    "story_id": st.id,
+                    "story_pic": str(st.pic.url),
+                    "story_body": st.body,
+                    "user_pic": str(st.user.pic.url),
+                    "user_name": st.user.first_name + " " + st.user.last_name,
+                    "user_id": st.user.id,
+                    "is_mine": True,
+                })
+            else:
+                arr.append({
+                    "story_id": st.id,
+                    "story_body": st.body,
+                    "user_pic": str(st.user.pic.url),
+                    "user_name": st.user.first_name + " " + st.user.last_name,
+                    "user_id": st.user.id,
+                    "is_mine": True,
+                })
         try:
             friend_list = FrienList.objects.filter(user=user)
         except FrienList.DoesNotExist:
@@ -817,9 +828,9 @@ def sugistions_list(request):
         user = Useraccount.objects.get(id=request.session['user_id'])
         arr=[]
         try:
-            friend_list = FrienList.objects.filter(user=user)
+            friend_list = FrienList.objects.get(user=user)
             print("iam heree")
-            friends = friend_list[0].friends.all()
+            friends = friend_list.friends.all()
             users = Useraccount.objects.filter(~Q(id=user.id))
             for use in users:
                 if friends.filter(id=use.id).exists():

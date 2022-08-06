@@ -126,7 +126,7 @@ function Detail() {
                 <div className="chat-container2">
                     <div className="identity">
                         <div>
-                            <a href="/chats/index/">
+                            <a href="/home/Home/">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     width="26"
                                     height="26"
@@ -146,7 +146,7 @@ function Detail() {
                             </a>
                         </div>
 
-                        <h3 style={{ color: "black" }}>{friend.first_name}</h3>
+                        <h3 style={{ color: "black" }}>{friend.user_name}</h3>
                         <div className="pro-pic">
                             <img src={friend.pic} alt="profile-picture" />
                         </div>
