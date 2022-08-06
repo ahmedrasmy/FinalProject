@@ -83,6 +83,10 @@ def search(request):
     return render(request, 'index.html')
 
 
+def group(request,id):
+    return render(request, 'index.html')
+
+
 def send_friend_request(request):
     pk = int(request.session['user_id'])
     user = Useraccount.objects.get(id=pk)
@@ -99,11 +103,18 @@ def send_friend_request(request):
                 try:
                     for request in friend_requests:
                         if request.is_active:
-                            raise Exception("You already sent them a friend request.")
+                            raise Exception(
+                                "You already sent them a friend request.")
                     # If none are active create a new friend request
                     friend_request = FriendRequest(
                         sender=user, reciver=receiver)
                     friend_request.save()
+                    print("i am here 1")
+                    notify = NotifyRequest.objects.create(
+                        user=user, body=" Send You Friend Request ",
+                        user_receiver=receiver
+                    )
+                    notify.save()
                     payload['response'] = "Friend request sent."
                 except Exception as e:
                     payload['response'] = str(e)
@@ -112,6 +123,12 @@ def send_friend_request(request):
                 friend_request = FriendRequest(
                     sender=user, reciver=receiver)
                 friend_request.save()
+                print("i am here 2")
+                notify = Notification.objects.create(
+                    user=user, body=" Send You Friend Request ",
+                    user_receiver=receiver
+                )
+                notify.save()
                 payload['response'] = "Friend request sent."
 
             if payload['response'] == None:
@@ -127,6 +144,7 @@ def send_friend_request(request):
     # return HttpResponse(json.dumps(payload), content_type="application/json")
 
 
+
 def friendRequests(request):
     return render(request, 'index.html')
 
@@ -137,6 +155,19 @@ def frined_request_delete(request):
             id=int(request.POST['request_id']))
         friend_request.delete()
         return redirect('friendRequests')
+    else:
+        return redirect('/auth/login/')
+
+
+def frined_request_delete_notify(request):
+    if request.session.has_key('user_name'):
+        friend_request = FriendRequest.objects.get(
+            sender=request.POST['sender_id'], reciver=request.POST['reciver_id'])
+        friend_request.delete()
+        notify = NotifyRequest.objects.get(id=request.POST['notify_id'])
+        if notify:
+            notify.delete()
+        return redirect('/home/Home')
     else:
         return redirect('/auth/login/')
 
@@ -167,6 +198,25 @@ def frined_request_accept(request):
     else:
         return redirect('/auth/login/')
 
+
+def frined_request_accept_notify(request):
+    if request.session.has_key('user_name'):
+        pk = int(request.session['user_id'])
+        user = Useraccount.objects.get(id=pk)
+        user_friend_list = FrienList.objects.get(user=user)
+        sender = Useraccount.objects.get(id=request.POST['sender_id'])
+        sender_friend_list = FrienList.objects.get(user=sender)
+        sender_friend_list.add_friend(user)
+        user_friend_list.add_friend(sender)
+        friend_request = FriendRequest.objects.get(
+            sender=request.POST['sender_id'], reciver=request.POST['reciver_id'])
+        friend_request.delete()
+        notify = NotifyRequest.objects.get(id=request.POST['notify_id'])
+        if notify:
+            notify.delete()
+        return redirect('/home/Home')
+    else:
+        return redirect('/auth/login/')
 
 def frined_request_accept_sugustions(request):
     if request.session.has_key('user_name'):
@@ -240,4 +290,48 @@ def Bio(request,method='POST'):
 
 def Post(request, id):
     return render(request, 'index.html')
+
+
+def group_people(request, id):
+    return render(request, 'index.html')
+
+
+def groups(request):
+    return render(request, 'index.html')
+
+def member_request_delete(request):
+    if request.session.has_key('user_name'):
+        member_request = MemberRequest.objects.get(
+            id=int(request.POST['request_id']))
+        member_request.delete()
+        return redirect('/home/group/'+request.POST['group_id'])
+    else:
+        return redirect('/auth/login/')
+
+
+
+def member_request_accept(request):
+    if request.session.has_key('user_name'):
+        pk = int(request.POST['group_id'])
+        sender = Useraccount.objects.get(id=request.POST['sender_id'])
+        group = Groups.objects.get(id=pk)
+        members = group.add_member(sender)
+        member_request = MemberRequest.objects.get(
+            id=int(request.POST['request_id']))
+        member_request.delete()
+        return redirect('/home/group/'+request.POST['group_id'])
+    else:
+        return redirect('/auth/login/')
+
+
+def leave_group(request):
+    if request.session.has_key('user_name'):
+        pk = int(request.POST['group_id'])
+        sender = Useraccount.objects.get(id=request.POST['sender_id'])
+        group = Groups.objects.get(id=pk)
+        members = group.remove_member(sender)
+        return redirect('/home/group/'+request.POST['group_id'])
+    else:
+        return redirect('/auth/login/')
+        
 

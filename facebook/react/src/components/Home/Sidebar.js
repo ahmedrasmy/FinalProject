@@ -14,18 +14,17 @@ import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 function Sidebar() {
     return (
         <>
-        <div className="sidebar">
-            {/*<SidebarRow title='som3a' src="https://images.pexels.com/photos/12389754/pexels-photo-12389754.jpeg?auto=compress&cs=tinysrgb&h=627&fit=crop&w=1200"/>*/}
-            <SidebarRow Icon={GroupsIcon} title="Groups"/>
-            <SidebarRow Icon={EmojiFlagsIcon} title="Pages"/>
-            <SidebarRow title="Friends" Icon={PeopleIcon}/>
-            <SidebarRow Icon={StarIcon} title="Favorites" style={{color:"yellow !important"}} />
-            <SidebarRow title="Messenger" Icon={ChatIcon}/>
-            <SidebarRow title="Marketplace" Icon={StorefrontIcon}/>
-            <SidebarRow title="videos" Icon={VideoLibraryIcon}/>
-            <SidebarRow title="Events" Icon={LocalActivityIcon}/>
-            <SidebarRow title="See more" Icon={ExpandMoreIcon}/>
-        </div>
+            <div className="sidebar">
+                <a href="/home/groups" style={{ textDecoration: 'none' }}><SidebarRow Icon={GroupsIcon} title="Groups" /></a>
+                <SidebarRow Icon={EmojiFlagsIcon} title="Pages" />
+                <SidebarRow title="Friends" Icon={PeopleIcon} />
+                <SidebarRow Icon={StarIcon} title="Favorites" style={{ color: "yellow !important" }} />
+                <SidebarRow title="Messenger" Icon={ChatIcon} />
+                <SidebarRow title="Marketplace" Icon={StorefrontIcon} />
+                <SidebarRow title="videos" Icon={VideoLibraryIcon} />
+                <SidebarRow title="Events" Icon={LocalActivityIcon} />
+                <SidebarRow title="See more" Icon={ExpandMoreIcon} />
+            </div>
         </>
     )
 }
