@@ -24,6 +24,8 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import Check from './Check';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
+import {useDispatch, useSelector} from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 function getCookie(name) {
     let cookieValue = null;
@@ -43,6 +45,9 @@ function getCookie(name) {
 
 
 function Groups() {
+    
+    let history = useHistory();
+    const Gro = useSelector((state) => state.sharereducer.GROUPC)
     let location = useLocation();
     let id = location.pathname.split('/')[3]
     const [group, setgroup] = useState([])
@@ -70,7 +75,7 @@ function Groups() {
                 setPosts(res.data);
             })
             .catch((err) => console.log(err))
-    }, [])
+    }, [Gro])
     const [requests, setrequests] = useState([])
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/joinrequests/' + id)
@@ -105,7 +110,9 @@ function Groups() {
                 'X-CSRFToken': getCookie('csrftoken')
             }
         },
-        ).then(res => { }).catch((err) => console.log(err))
+        ).then(res => { 
+            history.push("/home/Home/")
+        }).catch((err) => console.log(err))
     }
     const [open, setOpen] = React.useState(false);
     const handleClickOpen = () => {
@@ -123,9 +130,69 @@ function Groups() {
             .catch((err) => console.log(err))
     }, [])
     const [OpenPhotos, setOpenPhotos] = useState(false)
+    const delete_request = (request_id,user_id) => {
+        const datarequest = {
+            request_id: parseInt(request_id),
+            user_id: parseInt(user_id),
+            group_id:parseInt(id),
+        }
+        axios.post("http://127.0.0.1:8000/api/delete_request/",
+        datarequest, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        },
+        ).then(res => {
+            history.push("/home/group/" +id)
+            axios.get('http://127.0.0.1:8000/api/joinrequests/' + id)
+            .then(res => {
+                setrequests(res.data);
+            })
+            .catch((err) => console.log(err))
+        }).catch((err) => console.log(err))
+    }
+    const accept_request = (request_id,user_id) => {
+        const datarequest = {
+            request_id: parseInt(request_id),
+            user_id: parseInt(user_id),
+            group_id:parseInt(id),
+        }
+        axios.post("http://127.0.0.1:8000/api/accept_request/",
+        datarequest, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        },
+        ).then(res => {
+            history.push("/home/group/" +id)
+            axios.get('http://127.0.0.1:8000/api/joinrequests/' + id)
+            .then(res => {
+                setrequests(res.data);
+            })
+            .catch((err) => console.log(err))
+        }).catch((err) => console.log(err))
+    }
+    const dataleave = {
+        user_id: parseInt(user['user_id']),
+        group_id:parseInt(id),
+    }
+    const leave_group = () => {
+        axios.post("http://127.0.0.1:8000/api/leave_group/",
+            dataleave, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        },
+        ).then(res => {
+            history.push("/home/Home/" )
+        }).catch((err) => console.log(err))
+    }
     return (
         <>
-            <Header />
+            {/* <Header /> */}
             <div className="modal fade" id="myModal" role="dialog">
                 <div className="modal-dialog modal-lg">
                 </div>
@@ -177,13 +244,8 @@ function Groups() {
                                                     join
                                                 </a>
                                                 <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" href="#">
-                                                        <form action={'/home/leave_group/'} method="post">
-                                                            <CSRF />
-                                                            <input type="hidden" name="sender_id" value={user['user_id']} />
-                                                            <input type="hidden" name="group_id" value={id} />
-                                                            <IconButton type="submit"><span style={{ fontSize: "15px" }}>leave group</span></IconButton>
-                                                        </form>
+                                                <li><a class="dropdown-item" href="#">
+                                                        <IconButton type="submit" onClick={leave_group}><span style={{ fontSize: "15px" }}>leave group</span></IconButton>
                                                     </a></li>
                                                     {/* <li><a class="dropdown-item" href="#">Something else here</a></li> */}
                                                 </ul>
@@ -293,22 +355,10 @@ function Groups() {
                                                                             </div>
                                                                             <div className="row" >
                                                                                 <div className="col">
-                                                                                    <form action={'/home/member_request_delete/'} method="post">
-                                                                                        <CSRF />
-                                                                                        <input type="hidden" name="request_id" value={request.id} />
-                                                                                        <input type="hidden" name="sender_id" value={request.sender.id} />
-                                                                                        <input type="hidden" name="group_id" value={id} />
-                                                                                        <IconButton type="submit" style={{ color: "blue" }}> <CancelIcon /></IconButton>
-                                                                                    </form>
+                                                                                    <Button onClick={(request_id,user_id)=>{delete_request(request.id,request.sender.id)}} style={{ color: "blue" }}> <CancelIcon /></Button>
                                                                                 </div>
                                                                                 <div className="col">
-                                                                                    <form action={'/home/member_request_accept/'} method="post">
-                                                                                        <CSRF />
-                                                                                        <input type="hidden" name="request_id" value={request.id} />
-                                                                                        <input type="hidden" name="sender_id" value={request.sender.id} />
-                                                                                        <input type="hidden" name="group_id" value={id} />
-                                                                                        <IconButton type="submit" style={{ color: "blue" }}> <CheckCircleIcon /></IconButton>
-                                                                                    </form>
+                                                                                    <Button onClick={(request_id,user_id)=>{accept_request(request.id,request.sender.id)}} style={{ color: "blue" }}> <CheckCircleIcon /></Button>
                                                                                 </div>
                                                                             </div>
                                                                         </div>

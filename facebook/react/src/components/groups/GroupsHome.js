@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { User } from '../../Store/action/User';
 
 
+
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -35,6 +36,8 @@ function getCookie(name) {
 
 function GroupsHome() {
     const [open, setOpen] = React.useState(false);
+    const Gro = useSelector((state) => state.sharereducer.GRO)
+   
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -99,12 +102,13 @@ function GroupsHome() {
         axios.get('http://127.0.0.1:8000/api/getGroupPost/')
             .then(res => {
                 setGroupPost(res.data);
+                console.log(Gro)
             })
             .catch((err) => console.log(err))
-    }, [])
+    }, [Gro])
     return (
         <>
-            <Header />
+            {/* <Header /> */}
             <div className='row ' style={{ marginTop: "10px" }}>
                 <div className='col-3 ' style={{ backgroundColor: "white", minHeight: "600px", paddingTop: "5px", paddingLeft: "25px", position: "-webkit-sticky" }}>
                     <h4 style={{ marginBottom: "20px" }}>Groups : </h4>

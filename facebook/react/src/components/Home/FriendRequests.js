@@ -2,21 +2,79 @@ import React from 'react';
 import '../css/FriendRequests.css';
 import {useEffect, useState} from "react";
 import axios from "axios";
-import CSRF from '../Auth/CSRF';
 import Button from '@mui/material/Button';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useHistory } from "react-router-dom";
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 
 function FriendRequests() {
+    const history = useHistory();
     const [users, setUsers] = useState([])
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/friend_requests/')
             .then(res => {
                 setUsers(res.data);
-                console.log(res.data)
         })
             .catch((err) => console.log(err))
     }, [])
+    const frined_request_delete = (request_id,sender_id) => {
+        const datarequest = {
+            request_id: parseInt(request_id),
+            sender_id: parseInt(sender_id),
+        }
+        axios.post("http://127.0.0.1:8000/api/frined_request_delete/",
+        datarequest, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        },
+        ).then(res => {
+            history.push("/home/friendRequests/")
+            axios.get('http://127.0.0.1:8000/api/friend_requests/')
+            .then(res => {
+                setUsers(res.data)
+        })
+            .catch((err) => console.log(err))
+        }).catch((err) => console.log(err))
+    }
+    const frined_request_accept = (request_id,sender_id) => {
+        const datarequest = {
+            request_id: parseInt(request_id),
+            sender_id: parseInt(sender_id),
+        }
+        axios.post("http://127.0.0.1:8000/api/frined_request_accept/",
+        datarequest, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        },
+        ).then(res => {
+            history.push("/home/friendRequests/")
+            axios.get('http://127.0.0.1:8000/api/friend_requests/')
+            .then(res => {
+                setUsers(res.data)
+        })
+            .catch((err) => console.log(err))
+        }).catch((err) => console.log(err))
+    }
     return (
         <div className="container">
             <div className="card p-2">
@@ -37,18 +95,12 @@ function FriendRequests() {
                                         </div>
                                     </a>
                                     <div className="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
-                                        <form action={'/home/frined_request_delete/'} method="post">
-                                            <CSRF/>
-                                            <input type="hidden" name="request_id" value={account.id}/>
-                                            <input type="hidden" name="sender_id" value={account.sender.id}/>
-                                            <Button type="submit" ><CancelIcon/></Button>
-                                        </form>
-                                        <form action={'/home/frined_request_accept/'} method="post">
-                                            <CSRF/>
-                                            <input type="hidden" name="request_id" value={account.id}/>
-                                            <input type="hidden" name="sender_id" value={account.sender.id}/>
-                                            <Button type="submit" ><CheckCircleIcon/></Button>
-                                        </form>
+                                        <Button onClick={(request_id,sender_id)=>{frined_request_delete(account.id,account.sender.id)}} >
+                                            <CancelIcon />
+                                        </Button>
+                                        <Button onClick={(request_id,sender_id)=>{frined_request_accept(account.id,account.sender.id)}}>
+                                            <CheckCircleIcon />
+                                        </Button>
                                     </div>
                                 </div>
                                 </>

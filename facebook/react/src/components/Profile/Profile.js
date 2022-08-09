@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import AllPosts from '../Post/AllPosts';
 import ProfileHeader from './ProfileHeader';
-import Header from '../Header/Header';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -48,7 +47,7 @@ function Profile() {
 
     return (
         <>
-            <Header/>
+            
             <div className="h-screen">
                 <div className="mt-1 shadow bg-white h-screen" style={{ marginTop: '1rem !important' }}>
                     {/* PROFILE HEADER */}

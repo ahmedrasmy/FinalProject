@@ -14,12 +14,15 @@ import Groups from './components/groups/Groups';
 import Post2 from './components/Home/Post2';
 import GroupPeople from './components/groups/GroupPeople';
 import GroupsHome from './components/groups/GroupsHome';
+import Header from './components/Header/Header';
+import React from 'react';
 
 function App() {
   return (
     <Router>
       <div className='app'>
-        <BrowserRouter>
+        <BrowserRouter> 
+        <Header/> 
           <Switch>
             <Route exact path={"/auth/register"} component={Register} />
             <Route exact path={"/auth/login"} component={Login} />

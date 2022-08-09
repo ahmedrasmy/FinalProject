@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 import json
 from audioop import reverse
 from lib2to3.pgen2.token import NOTEQUAL
@@ -206,6 +205,27 @@ def register_user(request):
             return Response(user.data, status=status.HTTP_201_CREATED)
         return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['POST'])
+def login_user(request):
+    if request.method == 'POST':
+        loguser = Useraccount.objects.filter(
+            email=request.data['email'], password=request.data['password'])
+        arr=[]
+        if len(loguser) > 0:
+            request.session['user_name'] = loguser[0].first_name + \
+                " " + loguser[0].last_name
+            request.session['user_id'] = loguser[0].id
+            t = Useraccount.objects.get(id=request.session['user_id'])
+            t.isactive='True'
+            t.save()
+            return redirect('/home/Home/')
+        else:
+            arr.append("invalid login")
+            return JsonResponse(arr,safe=False)
+            # return redirect('/auth/login/')
+    else:
+        return render(request, 'index.html')
 
 
 @api_view(['POST'])
@@ -540,6 +560,7 @@ def friend_requests(request):
     else:
         return redirect('/auth/login/')
 
+
 @api_view(['GET'])
 def friends_list(request, id):
     if request.session.has_key('user_name'):
@@ -578,18 +599,20 @@ def chatIndex(request):
 @api_view(['GET'])
 def chatNotification(request):
     if request.session.has_key('user_name'):
-        user = Useraccount.objects.filter(
-            id=int(request.session['user_id']))[0]
-        friend_list = FrienList.objects.filter(user=user.id)
-        friends = friend_list[0].friends.all()
+        user = Useraccount.objects.filter(id=int(request.session['user_id']))[0]
         arr = []
-        for friend in friends:
-            chats = ChatMessage.objects.filter(msg_sender__id=friend.user.id, msg_receiver=user, seen=False)
-            if chats.count() > 0 :
-                arr.append(chats.count())
-            else : 
-                arr.append(0)
-        return JsonResponse(arr, safe=False)
+        try :
+            friend_list = FrienList.objects.filter(user=user.id)
+            friends = friend_list[0].friends.all()
+            for friend in friends:
+                chats = ChatMessage.objects.filter(msg_sender__id=friend.user.id, msg_receiver=user, seen=False)
+                if chats.count() > 0 :
+                    arr.append(chats.count())
+                else : 
+                    arr.append(0)
+            return JsonResponse(arr, safe=False)
+        except:
+            return JsonResponse(arr, safe=False)
     else:
         return redirect('/auth/login/')
 
@@ -1044,6 +1067,271 @@ def addcommentGroup(request):
     else:
         return redirect('/auth/login/')
 
+@api_view(['POST'])
+def leave_group(request):
+    if request.session.has_key('user_name'):
+        pk = int(request.data['group_id'])
+        sender = Useraccount.objects.get(id=request.data['user_id'])
+        group = Groups.objects.get(id=pk)
+        members = group.remove_member(sender)
+        return redirect('/home/Home/')
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['POST'])
+def delete_request(request):
+    if request.session.has_key('user_name'):
+        member_request = MemberRequest.objects.get(
+            id=int(request.data['request_id']))
+        member_request.delete()
+        return redirect('/home/group/'+str(request.data['group_id']))
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['POST'])
+def accept_request(request):
+    if request.session.has_key('user_name'):
+        pk = int(request.data['group_id'])
+        sender = Useraccount.objects.get(id=request.data['user_id'])
+        group = Groups.objects.get(id=pk)
+        members = group.add_member(sender)
+        member_request = MemberRequest.objects.get(
+            id=int(request.data['request_id']))
+        member_request.delete()
+        return redirect('/home/group/'+str(request.data['group_id']))
+    else:
+        return redirect('/auth/login/')
+
+@api_view(['POST'])
+def frined_request_delete_notify(request):
+    if request.session.has_key('user_name'):
+        friend_request = FriendRequest.objects.get(
+            sender=request.data['sender_id'], reciver=request.data['user_id'])
+        friend_request.delete()
+        notify = NotifyRequest.objects.get(id=request.data['notify_id'])
+        if notify:
+            notify.delete()
+        return redirect('/home/Home')
+    else:
+        return redirect('/auth/login/')
+
+@api_view(['POST'])
+def frined_request_accept_notify(request):
+    if request.session.has_key('user_name'):
+        user = Useraccount.objects.get(id=int(request.session['user_id']))
+        user_friend_list = FrienList.objects.get(user=user)
+        sender = Useraccount.objects.get(id=request.data['sender_id'])
+        sender_friend_list = FrienList.objects.get(user=sender)
+        sender_friend_list.add_friend(user)
+        user_friend_list.add_friend(sender)
+        friend_request = FriendRequest.objects.get(
+            sender=request.data['sender_id'], reciver=request.data['user_id'])
+        friend_request.delete()
+        notify = NotifyRequest.objects.get(id=request.data['notify_id'])
+        if notify:
+            notify.delete()
+        return redirect('/home/Home')
+    else:
+        return redirect('/auth/login/')
+
+@api_view(['POST'])
+def frined_request_delete(request):
+    if request.session.has_key('user_name'):
+        friend_request = FriendRequest.objects.get(
+            id=int(request.data['request_id']))
+        friend_request.delete()
+        notify = NotifyRequest.objects.get(user=request.data['user_id'],user_receiver=int(request.data['request_id']))
+        if notify:
+            notify.delete()
+        return redirect('/home/friendRequests')
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['POST'])
+def send_friend_request(request):
+    user = Useraccount.objects.get(id=int(request.session['user_id']))
+    payload = {}
+    if request.session.has_key('user_name'):
+        user_id = request.data['reciver_id']
+        if user_id:
+            receiver = Useraccount.objects.get(pk=user_id)
+            try:
+                # Get any friend requests (active and not-active)
+                friend_requests = FriendRequest.objects.filter(
+                    sender=user, reciver=receiver)
+                # find if any of them are active (pending)
+                try:
+                    for request in friend_requests:
+                        if request.is_active:
+                            raise Exception(
+                                "You already sent them a friend request.")
+                    # If none are active create a new friend request
+                    friend_request = FriendRequest(
+                        sender=user, reciver=receiver)
+                    friend_request.save()
+                    notify = NotifyRequest.objects.create(
+                        user=user, body=" Send You Friend Request ",
+                        user_receiver=receiver
+                    )
+                    notify.save()
+                    payload['response'] = "Friend request sent."
+                    return redirect('/home/pro/'+str(request.data['reciver_id']))
+                except Exception as e:
+                    payload['response'] = str(e)
+                    return redirect('/home/pro/'+str(request.data['reciver_id']))
+            except FriendRequest.DoesNotExist:
+                # There are no friend requests so create one.
+                friend_request = FriendRequest(
+                    sender=user, reciver=receiver)
+                friend_request.save()
+                notify = Notification.objects.create(
+                    user=user, body=" Send You Friend Request ",
+                    user_receiver=receiver
+                )
+                notify.save()
+                payload['response'] = "Friend request sent."
+                return redirect('/home/pro/'+str(request.data['reciver_id']))
+        else:
+            # this return need to change to
+            return redirect('/auth/login/')
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['POST'])
+def cancel_friend_request(request):
+    if request.session.has_key('user_name'):
+        user = Useraccount.objects.get(id=int(request.session['user_id']))
+        receiver = Useraccount.objects.get(id=request.data['reciver_id'])
+        friend_requests = FriendRequest.objects.filter(
+            sender=user,reciver=receiver, is_active=True)
+        if len(friend_requests) > 1:
+            for request in friend_requests:
+                request.cancel()
+        friend_requests.delete()
+        try :
+            notify = NotifyRequest.objects.get(user=user,user_receiver=receiver)
+            if notify:
+                notify.delete()
+        except:
+            pass
+        return redirect('/home/pro/'+str(request.data['reciver_id']))
+    else:
+        return redirect('/auth/login/')
+
+@api_view(['POST'])
+def cancel_friend_request_sugestions(request):
+    if request.session.has_key('user_name'):
+        user = Useraccount.objects.get(id=int(request.session['user_id']))
+        receiver = Useraccount.objects.get(id=request.data['reciver_id'])
+        friend_requests = FriendRequest.objects.filter(
+            sender=user,reciver=receiver, is_active=True)
+        if len(friend_requests) > 1:
+            for request in friend_requests:
+                request.cancel()
+        friend_requests.delete()
+        try :
+            notify = NotifyRequest.objects.get(user=user,user_receiver=receiver)
+            if notify:
+                notify.delete()
+        except:
+            pass
+        return redirect('/home/sugistions_list/')
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['POST'])
+def frined_request_delete_sugustions(request):
+    if request.session.has_key('user_name'):
+        user = Useraccount.objects.get(id=int(request.session['user_id']))
+        friend_request = FriendRequest.objects.get(
+            id=int(request.data['request_id']))
+        friend_request.delete()
+        try :
+            notify = NotifyRequest.objects.get(user=request.data['sender_id'],user_receiver=user)
+            if notify:
+                notify.delete()
+        except:
+            pass
+        try:
+            if request.data['pro'] == 1 :
+                return redirect('/home/pro/'+str(request.data['sender_id']))
+        except:
+            return redirect('/home/sugistions_list/')
+    else:
+        return redirect('/auth/login/')
+
+        
+@api_view(['POST'])
+def frined_request_accept_sugustions(request):
+    if request.session.has_key('user_name'):
+        user = Useraccount.objects.get(id=int(request.session['user_id']))
+        user_friend_list = FrienList.objects.get(user=user)
+        sender = Useraccount.objects.get(id=request.data['sender_id'])
+        sender_friend_list = FrienList.objects.get(user=sender)
+        sender_friend_list.add_friend(user)
+        user_friend_list.add_friend(sender)
+        friend_request = FriendRequest.objects.get(
+            id=request.data['request_id'])
+        friend_request.delete()
+        try :
+            notify = NotifyRequest.objects.get(user=request.data['sender_id'],user_receiver=user)
+            if notify:
+                notify.delete()
+        except:
+            pass
+        try:
+            if request.data['pro'] == 1 :
+                return redirect('/home/pro/'+str(request.data['sender_id']))
+        except:
+            return redirect('/home/sugistions_list/')
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['POST'])
+def frined_request_accept(request):
+    if request.session.has_key('user_name'):
+        user = Useraccount.objects.get(id=int(request.session['user_id']))
+        user_friend_list = FrienList.objects.get(user=user)
+        sender = Useraccount.objects.get(id=request.data['sender_id'])
+        sender_friend_list = FrienList.objects.get(user=sender)
+        sender_friend_list.add_friend(user)
+        user_friend_list.add_friend(sender)
+        friend_request = FriendRequest.objects.get(
+            id=request.data['request_id'])
+        friend_request.delete()
+        return redirect('/home/friendRequests')
+    else:
+        return redirect('/auth/login/')
+
+
+@api_view(['POST'])
+def unfriend(request):
+    if request.session.has_key('user_name'):
+        pk = int(request.session['user_id'])
+        user = Useraccount.objects.get(id=pk)
+        removee = Useraccount.objects.get(id=request.data['unfriend'])
+        friend_list = FrienList.objects.get(user=user)
+        friend_list.unfriend(removee)
+        return redirect('/home/pro/' + str(request.data['unfriend']))
+    else:
+        return redirect('/auth/login/')
+
+@api_view(['POST'])
+def AddBio(request):
+    if request.session.has_key('user_name'):
+        user = Useraccount.objects.get(id=int(request.session['user_id']))
+        user.Bio = request.data['BioInput']
+        user.save()
+        return redirect('/home/pro/'+str(request.session['user_id']))
+    else:
+        return redirect('/auth/login/')
+
 
 @api_view(['POST'])
 def addcommentshare(request):
@@ -1180,6 +1468,17 @@ def createGroups(request):
         return Response(group.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return redirect('/auth/login/')
+
+
+@api_view(['GET'])
+def checkheader(request):
+    arr =[]
+    if request.session.has_key('user_name'):
+        arr.append(True)
+        return JsonResponse(arr,safe=False)
+    else:
+        arr.append(False)
+        return JsonResponse(arr,safe=False)
 
 
 @api_view(['POST'])

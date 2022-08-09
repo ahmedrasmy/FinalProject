@@ -11,7 +11,7 @@ import {useLocation} from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { User } from '../../Store/action/User';
 function Post2() {
-    let location = useLocation();
+    const location = useLocation();
     let id = location.pathname.split('/')[3]
     console.log(id)
     const [post, setPost] = useState([])
@@ -29,7 +29,7 @@ function Post2() {
     }, [])
     return (
         <div className="home">
-            <Header/>
+            {/* <Header/> */}
             <div className="home_body">
                 <Sidebar/>
                 <div className="feed">
@@ -38,8 +38,7 @@ function Post2() {
                     {
                         post.id  ? 
 
-                                <
-                                    AllPosts profilePic={post.user.pic}
+                                <AllPosts profilePic={post.user.pic}
                                             post_id={post.id}
                                             message={post.postcontent}
                                             timestamp={post.postdate}

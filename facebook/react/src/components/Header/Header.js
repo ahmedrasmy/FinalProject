@@ -9,7 +9,7 @@ import { IconButton, Avatar } from '@mui/material';
 import ForumIcon from '@mui/icons-material/Forum';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Link, useLocation } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import { useEffect, useState } from "react";
 import Badge from '@mui/material/Badge';
 import axios from "axios";
@@ -21,15 +21,41 @@ import Logout from '@mui/icons-material/Logout';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import '../chat/Stylechat.css';
 import GroupsIcon from '@mui/icons-material/Groups';
-import CSRF from "../Auth/CSRF";
 import Button from '@mui/material/Button';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {useDispatch, useSelector} from 'react-redux';
 import {User} from '../../Store/action/User';
+import {useLocation} from "react-router-dom";
 
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 
 function Header() {
+    let location = useLocation();
+    let  checkheader= location.pathname.split('/')[1]
+    const [checkheaderu,setcheckheaderu]=useState(false)
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/checkheader/')
+            .then(res => {
+                setcheckheaderu(res.data[0]);
+            })
+            .catch((err) => console.log(err))
+    }, [checkheader])
     const history = useHistory();
     const [value, setValue] = useState('')
 
@@ -38,15 +64,11 @@ function Header() {
             history.push("/home/search/" + event.target.value)
         }
     }
-
     const users = useSelector((state) => state.UserReducer.direc)
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(User())
-    }, [])
-
-
-
+    },[checkheader])
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -70,7 +92,7 @@ function Header() {
                 setfriends(res.data);
             })
             .catch((err) => console.log(err))
-    }, [])
+    }, [checkheader])
     let [Invisib, setInvisib] = useState(true)
     const getNotification = () => {
         let url = "http://127.0.0.1:8000/api/chatNotification/"
@@ -99,14 +121,13 @@ function Header() {
             .catch(error => console.log(error))
     }
     const [notifications, setNotifications] = useState([])
-
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/postNotification/')
             .then(res => {
                 setNotifications(res.data);
             })
             .catch((err) => console.log(err))
-    }, [])
+    }, [checkheader])
     const [InviteNotive, setInviteNotive] = useState([])
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/inviteNotification/')
@@ -114,7 +135,7 @@ function Header() {
                 setInviteNotive(res.data);
             })
             .catch((err) => console.log(err))
-    }, [])
+    }, [checkheader])
 
     const [notifyRequest, setnotifyRequest] = useState([])
     useEffect(() => {
@@ -123,7 +144,7 @@ function Header() {
                 setnotifyRequest(res.data);
             })
             .catch((err) => console.log(err))
-    }, [])
+    }, [checkheader])
 
     function renderTimestamp(timestamp) {
         let prefix = "";
@@ -147,8 +168,55 @@ function Header() {
         }
         return prefix;
     }
-    return (
-        <div className="header">
+    const frined_request_delete_notify = (notify_id,sender_id) => {
+        const datarequest = {
+            notify_id: parseInt(notify_id),
+            sender_id: parseInt(sender_id),
+            user_id:parseInt(users.id),
+        }
+        axios.post("http://127.0.0.1:8000/api/frined_request_delete_notify/",
+        datarequest, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        },
+        ).then(res => {
+            history.push("/home/Home/")
+            axios.get('http://127.0.0.1:8000/api/notifyRequest/')
+            .then(res => {
+                setnotifyRequest(res.data);
+            })
+            .catch((err) => console.log(err))
+        }).catch((err) => console.log(err))
+    }
+    const frined_request_accept_notify = (notify_id,sender_id) => {
+        const datarequest = {
+            notify_id: parseInt(notify_id),
+            sender_id: parseInt(sender_id),
+            user_id:parseInt(users.id),
+        }
+        axios.post("http://127.0.0.1:8000/api/frined_request_accept_notify/",
+        datarequest, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        },
+        ).then(res => {
+            history.push("/home/Home/")
+            axios.get('http://127.0.0.1:8000/api/notifyRequest/')
+            .then(res => {
+                setnotifyRequest(res.data);
+            })
+            .catch((err) => console.log(err))
+        }).catch((err) => console.log(err))
+    }
+    // setInterval(getNotification, 1000)
+    return (<>
+        {
+            checkheader !== "auth"  && checkheaderu === true ?
+            <div className="header">
             <div className="header-left">
                 <img
                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/1024px-Facebook_f_logo_%282019%29.svg.png"
@@ -159,7 +227,6 @@ function Header() {
                         <SearchIcon />
                         <input placeholder="Search Facebook" style={{ color: 'black' }} value={value}
                             onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} type="text" />
-
                     </div>
                 </>
             </div>
@@ -370,20 +437,12 @@ function Header() {
                                                     <h5>{notify.body}</h5>
                                                     <div className="d-flex flex-row align-items-center px-3 py-1 ">
                                                         <span className="friend-text align-items-center mr-2">Friend Request</span>
-                                                        <form action={'/home/frined_request_delete_notify/'} method="post">
-                                                            <CSRF />
-                                                            <input type="hidden" name="notify_id" value={notify.id} />
-                                                            <input type="hidden" name="reciver_id" value={users.id} />
-                                                            <input type="hidden" name="sender_id" value={notify.user.id} />
-                                                            <Button type="submit"><CancelIcon /></Button>
-                                                        </form>
-                                                        <form action={'/home/frined_request_accept_notify/'} method="post">
-                                                            <CSRF />
-                                                            <input type="hidden" name="notify_id" value={notify.id} />
-                                                            <input type="hidden" name="reciver_id" value={users.id} />
-                                                            <input type="hidden" name="sender_id" value={notify.user.id} />
-                                                            <Button type="submit"><CheckCircleIcon /></Button>
-                                                        </form>
+                                                            <Button onClick={(notify_id,sender_id)=>{frined_request_delete_notify(notify.id,notify.user.id)}} >
+                                                                <CancelIcon />
+                                                            </Button>
+                                                        <Button onClick={(notify_id,sender_id)=>{frined_request_accept_notify(notify.id,notify.user.id)}}>
+                                                            <CheckCircleIcon />
+                                                        </Button>
                                                     </div>
                                                 </div>
                                                 <div className="time_new_msg">
@@ -400,6 +459,9 @@ function Header() {
                 </Menu>
             </div>
         </div>
+            : <></>
+        }
+    </>
     )
 }
 

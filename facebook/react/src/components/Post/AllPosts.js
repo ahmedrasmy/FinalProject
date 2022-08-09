@@ -25,7 +25,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {User} from '../../Store/action/User';
 
 
-import {commentreducer, deletereducer, likeereducer, sharereducer} from "../../Store/action/Posts";
+import {commentreducer, deletereducer, likeereducer, sharereducer,grouplikereducer,groupunlikereducer,groupcommentreducer} from "../../Store/action/Posts";
 
 
 function getCookie(name) {
@@ -59,6 +59,8 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
     const [scroll, setScroll] = useState('paper');
     const [open, setOpen] = useState(false);
     const likess = useSelector((state) => state.likereducer.LIKES)
+    const likesgroup = useSelector((state) => state.likereducer.LIKES_GROUP)
+
     const dispatch = useDispatch();
     function submit(e) {
         var shares = {}
@@ -145,6 +147,8 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                             setIcon(obj.iconId)
                             setColor('blue')
                             setUserLike(1)
+                            dispatch(grouplikereducer(1))
+
                         }
                     }
                 } else {
@@ -156,6 +160,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                             setIcon(obj.iconId)
                             setColor('blue')
                             setUserLike(1)
+                            dispatch(grouplikereducer(1))
                         }
                     }
                 }
@@ -209,7 +214,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 
         }
 
-    }, [likess])
+    }, [likess,likesgroup])
 
     useEffect(() => {
         if (group_id != 0) {
@@ -229,7 +234,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 })
                 .catch((err) => console.log(err))
         }
-    }, [likess])
+    }, [likess,likesgroup])
     useEffect(() => {
         if (group_id != 0) {
             if (group_home != 0) {
@@ -298,6 +303,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 setColor('')
                 setUserLike(0)
                 setIcon(0)
+                dispatch(groupunlikereducer(1))
             }).catch((err) => console.log(err))
 
         }
@@ -353,6 +359,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                 }
             },
             ).then(res => {
+                dispatch(groupcommentreducer(1))
             }).catch((err) => console.log(err))
 
         }
@@ -677,8 +684,22 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
 
                 </div>
                 <div className="create-comment">
-                    <Avatar src={users.pic}
-                            className="Posts_avatar"/>
+                    {
+                        group_id === 0 ?
+                            <Avatar src={users.pic}
+                                className="Posts_avatar"/>
+                        :
+                        <>
+                        {
+                            group_home === 0 ?
+                                <Avatar src={users.pic}
+                                    className="Posts_avatar"/>
+                            :
+                                <Avatar src={users.user_pic}
+                                className="Posts_avatar"/>
+                        }
+                        </>
+                    }
                     <
                         input type="text"
                               placeholder="Write A comment"

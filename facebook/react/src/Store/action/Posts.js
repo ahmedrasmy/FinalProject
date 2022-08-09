@@ -32,10 +32,22 @@ export const sharecommentreducer = (payload) => {
         type: "SHARE_COMMENT"
     }
 }
+export const groupcommentreducer = (payload) => {
+    return {
+        payload,
+        type: "GROUP_COMMENT"
+    }
+}
 export const sharelikereducer = (payload) => {
     return {
         payload,
         type: "GET_LIKE_SHARE"
+    }
+}
+export const grouplikereducer = (payload) => {
+    return {
+        payload,
+        type: "GET_LIKE_GROUP"
     }
 }
 export const deletelikereducer = (payload) => {
@@ -44,11 +56,23 @@ export const deletelikereducer = (payload) => {
         type: "DELETE_LIKE_SHARE"
     }
 }
+export const groupunlikereducer = (payload) => {
+    return {
+        payload,
+        type: "DELETE_LIKE_GROUP"
+    }
+}
 
 
 export const sharereducer = (payload) => {
     return {
         payload,
         type: "SHARE"
+    }
+}
+export const postgroupreducer = (payload) => {
+    return {
+        payload,
+        type: "POST_GROUP"
     }
 }

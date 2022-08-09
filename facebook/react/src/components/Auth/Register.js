@@ -335,7 +335,7 @@ function Register() {
                                             <div className="form-outline">
                                                 <label className="form-label" htmlFor="emailAddress">Date of
                                                     birth</label>
-                                                <input type="date" id="emailAddress"
+                                                <input type="date" 
                                                        className="form-control form-control-lg"
                                                       id="birthdate"  name="birthdate"
                                                       onChange={(e) =>

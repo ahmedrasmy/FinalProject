@@ -21,6 +21,7 @@ import PollIcon from '@mui/icons-material/Poll';
 import { useDispatch, useSelector } from 'react-redux';
 import { User } from '../../Store/action/User';
 import {postReducer} from "../../Store/action/Posts";
+import {postgroupreducer} from "../../Store/action/Posts";
 
 
 
@@ -110,7 +111,8 @@ function Post({ poll, group_id }) {
             },
         ).then(res => {
             setopenPost(false);
-            console.log(res)
+            dispatch(postgroupreducer(1))
+            
         }).catch((err) => console.log(err))
     }
 

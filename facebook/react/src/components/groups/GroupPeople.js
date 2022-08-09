@@ -1,11 +1,9 @@
 import '../css/SearchResults.css';
 import axios from 'axios';
 import { useEffect, useState } from "react";
-import CSRF from "../Auth/CSRF";
 import Header from "../Header/Header";
 import Sidebar from "../Home/Sidebar";
-import { Avatar, IconButton } from "@mui/material";
-import ForumIcon from "@mui/icons-material/Forum";
+import { Avatar, } from "@mui/material";
 import { useLocation } from "react-router-dom";
 
 function GroupPeople() {
@@ -22,7 +20,7 @@ function GroupPeople() {
     }, [id])
     return (
         <>
-            <Header />
+            {/* <Header /> */}
             <div className="home_body">
                 <Sidebar />
                 {users ?

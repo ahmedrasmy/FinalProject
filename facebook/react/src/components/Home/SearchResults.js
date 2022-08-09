@@ -1,16 +1,32 @@
 import '../css/SearchResults.css';
 import axios from 'axios';
 import {useEffect, useState} from "react";
-import CSRF from "../Auth/CSRF";
 import Header from "../Header/Header";
 import Sidebar from "./Sidebar";
 import {Avatar, IconButton} from "@mui/material";
 import ForumIcon from "@mui/icons-material/Forum";
 import {useLocation} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 
 
 function SearchResults() {
+    const history = useHistory();
     let location = useLocation();
     let id = location.pathname.split('/')[3]
     const [users, setUsers] = useState([])
@@ -22,9 +38,39 @@ function SearchResults() {
             })
             .catch((err) => console.log(err))
     }, [id])
+    const send_friend_request = (reciver_id) => {
+        const datarequest = {
+            reciver_id: parseInt(reciver_id),
+        }
+        axios.post("http://127.0.0.1:8000/api/send_friend_request/",
+        datarequest, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        },
+        ).then(res => {
+            history.push("/home/pro/"+reciver_id)
+        }).catch((err) => console.log(err))
+    }
+    const cancel_friend_request = (reciver_id) => {
+        const datarequest = {
+            reciver_id: parseInt(reciver_id),
+        }
+        axios.post("http://127.0.0.1:8000/api/cancel_friend_request/",
+        datarequest, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        },
+        ).then(res => {
+            history.push("/home/pro/"+reciver_id)
+        }).catch((err) => console.log(err))
+    }
     return (
         <>
-            <Header/>
+            {/* <Header/> */}
             <div className="home_body">
                 <Sidebar/>
 
@@ -39,49 +85,39 @@ function SearchResults() {
                                 return <>
 
                                     <div className="Top_section">
+                                    <a href={'/home/pro/'+account['id']}>
                                         <Avatar src={account['pic']} className="Posts_avatar"/>
                                         {account['user_name']}
+                                        </a>
                                         <br/>
 
                                         {account['email']}
                                         <div style={{marginLeft: "500px"}}></div>
                                         {
-                                            account['is_self'] ? <div>Ana</div> : <div>
+                                            account['is_self'] ? <div>This is you</div> : <div>
                                                 {
                                                     account['is_friend'] === true ? 
-                                                        <button>
-                                                            <IconButton>
-                                                                <ForumIcon/>
-                                                            </IconButton>
-                                                        </button> :
+                                                    <a href={'/chats/detail/'+account['id']}>
+                                                    <button>
+                                                        <IconButton>
+                                                            <ForumIcon/>
+                                                        </IconButton>
+                                                    </button></a> :
                                                         <>
                                                             {account['request_sent'] === 1 ?
                                                                 <div className="d-flex flex-column align-items-center">
-                                                                    <form action={'/home/cancel_friend_request/'}
-                                                                        method="post">
-                                                                        <CSRF/>
-                                                                        <input type="hidden" name="cancel_request"
-                                                                            value={account['id']}/>
-                                                                        <button type="submit"
-                                                                                className="btn btn-danger">
+                                                                    <button  className="bg-red-600 rounded-lg text-white font-semibold"
+                                                                    style={{ marginRight: "15px", height: "40px", width: "250px" }} onClick={(reciver_id)=>{cancel_friend_request(account['id'])}} >
                                                                             Cancel Friend Request
-                                                                        </button>
-                                                                    </form>
+                                                                    </button>
                                                                 </div>
                                                                 : null}
-
                                                             {account['request_sent'] === -1 ?
                                                                 <div className="d-flex flex-column align-items-center">
-                                                                    <form action={'/home/send_friend_request/'}
-                                                                        method="post">
-                                                                        <CSRF/>
-                                                                        <input type="hidden" name="send_friend_request"
-                                                                            value={account['id']}/>
-                                                                        <button type="submit"
-                                                                                className="btn btn-primary">
-                                                                            Send Friend Request
-                                                                        </button>
-                                                                    </form>
+                                                                    <button onClick={(reciver_id)=>{send_friend_request(account['id'])}} className="bg-blue-600 rounded-lg text-white font-semibold"
+                                                                        style={{ marginRight: "15px", height: "40px", width: "250px" }}>
+                                                                        Send Friend Request
+                                                                    </button>
                                                                 </div>
                                                                 : null}
                                                         </>

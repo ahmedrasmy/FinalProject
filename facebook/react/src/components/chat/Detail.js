@@ -121,7 +121,7 @@ function Detail() {
     }, []);
     return (
         <>
-            <Header />
+            {/* <Header /> */}
             <div className="d-flex justify-content-center align-content-center">
                 <div className="chat-container2">
                     <div className="identity">

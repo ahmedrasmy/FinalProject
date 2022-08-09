@@ -1,8 +1,7 @@
 const INITIAL_VALUE = {
     LIKES: 0,
-
-
     LIKES_SHARE: 0,
+    LIKES_GROUP: 0,
 
 
 }
@@ -26,11 +25,22 @@ export default function LikeReducer(state = INITIAL_VALUE, action) {
                 ...state,
                 LIKES_SHARE: state.LIKES_SHARE + 1,
             }
+        case "GET_LIKE_GROUP":
+                return {
+                    ...state,
+                    LIKES_GROUP: state.LIKES_GROUP + 1,
+                }
         case "DELETE_LIKE_SHARE":
             return {
                 ...state,
                 LIKES_SHARE: state.LIKES_SHARE - 1,
             }
+        case "DELETE_LIKE_GROUP":
+                return {
+                    ...state,
+                    LIKES_GROUP: state.LIKES_GROUP - 1,
+                }
+        
 
 
         default:

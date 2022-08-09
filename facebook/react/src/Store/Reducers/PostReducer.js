@@ -1,5 +1,7 @@
 const INITIAL_VALUE = {
+    
     Posts: 0,
+    
 }
 
 export default function postReducer(state = INITIAL_VALUE, action) {
@@ -9,6 +11,7 @@ export default function postReducer(state = INITIAL_VALUE, action) {
                 ...state,
                 Posts: state.Posts + 1,
             }
+        
         default:
             return state;
     }

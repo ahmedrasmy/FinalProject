@@ -1,6 +1,7 @@
 const INITIAL_VALUE = {
     Comment: 0,
     Share:0,
+   
 
 
 }
@@ -19,7 +20,7 @@ export default function commentReducer(state = INITIAL_VALUE, action) {
                 ...state,
                 Share: state.Share + 1,
             }
-
+       
 
 
         default:

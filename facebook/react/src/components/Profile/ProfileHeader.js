@@ -7,13 +7,13 @@ import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useState, useEffect } from "react";
-import CSRF from "../Auth/CSRF";
 import axios from "axios";
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useLocation } from 'react-router-dom';
 import { Avatar } from '@mui/material';
 import '../Post/CreatPost.css';
+import { useHistory } from "react-router-dom";
 
 function getCookie(name) {
     let cookieValue = null;
@@ -32,6 +32,7 @@ function getCookie(name) {
 }
 
 function ProfileHeader() {
+    const history = useHistory();
     let location = useLocation();
     let id = location.pathname.split('/')[3]
     const [users, setUsers] = useState({})
@@ -90,7 +91,6 @@ function ProfileHeader() {
     function submit(e) {
         e.preventDefault();
     }
-
     const sendpicsData = {
         pic: pic,
         pic_cover: picCover,
@@ -107,6 +107,132 @@ function ProfileHeader() {
         ).then(res => {
             setOpen(false);
             console.log(res)
+        }).catch((err) => console.log(err))
+    }
+    const send_friend_request = (reciver_id) => {
+        const datarequest = {
+            reciver_id: parseInt(reciver_id),
+        }
+        axios.post("http://127.0.0.1:8000/api/send_friend_request/",
+        datarequest, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        },
+        ).then(res => {
+            history.push("/home/pro/"+reciver_id)
+            axios.get('http://127.0.0.1:8000/api/get_one_user/' + id)
+            .then(res => {
+                setUsers(res.data[0]);
+            })
+            .catch((err) => console.log(err))
+        }).catch((err) => console.log(err))
+    }
+    const cancel_friend_request = (reciver_id) => {
+        const datarequest = {
+            reciver_id: parseInt(reciver_id),
+        }
+        axios.post("http://127.0.0.1:8000/api/cancel_friend_request/",
+        datarequest, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        },
+        ).then(res => {
+            history.push("/home/pro/"+reciver_id)
+            axios.get('http://127.0.0.1:8000/api/get_one_user/' + id)
+            .then(res => {
+                setUsers(res.data[0]);
+            })
+            .catch((err) => console.log(err))
+        }).catch((err) => console.log(err))
+    }
+    const frined_request_delete_sugustions = (request_id,sender_id) => {
+        const datarequest = {
+            request_id: parseInt(request_id),
+            sender_id: parseInt(sender_id),
+            pro:1
+        }
+        axios.post("http://127.0.0.1:8000/api/frined_request_delete_sugustions/",
+        datarequest, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        },
+        ).then(res => {
+            history.push("/home/pro/"+id)
+            axios.get('http://127.0.0.1:8000/api/get_one_user/' + id)
+            .then(res => {
+                setUsers(res.data[0]);
+            })
+            .catch((err) => console.log(err))
+        }).catch((err) => console.log(err))
+    }
+    const frined_request_accept_sugustions = (request_id,sender_id) => {
+        const datarequest = {
+            request_id: parseInt(request_id),
+            sender_id: parseInt(sender_id),
+            pro:1
+        }
+        axios.post("http://127.0.0.1:8000/api/frined_request_accept_sugustions/",
+        datarequest, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        },
+        ).then(res => {
+            history.push("/home/pro/"+id)
+            axios.get('http://127.0.0.1:8000/api/get_one_user/' + id)
+            .then(res => {
+                setUsers(res.data[0]);
+            })
+            .catch((err) => console.log(err))
+        }).catch((err) => console.log(err))
+    }
+    const unfriend_pro = (unfriend) => {
+        const datarequest = {
+            unfriend: parseInt(unfriend),
+        }
+        axios.post("http://127.0.0.1:8000/api/unfriend/",
+        datarequest, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        },
+        ).then(res => {
+            history.push("/home/pro/"+id)
+            axios.get('http://127.0.0.1:8000/api/get_one_user/' + id)
+            .then(res => {
+                setUsers(res.data[0]);
+            })
+            .catch((err) => console.log(err))
+        }).catch((err) => console.log(err))
+    }
+    const [BioInput,setBioInput]=useState('')
+    const AddBio = () => {
+        const datarequest = {
+            BioInput: BioInput,
+        }
+        axios.post("http://127.0.0.1:8000/api/AddBio/",
+        datarequest, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        },
+        ).then(res => {
+            setOpenBio(false)
+            history.push("/home/pro/"+id)
+            axios.get('http://127.0.0.1:8000/api/get_one_user/' + id)
+            .then(res => {
+                setUsers(res.data[0]);
+            })
+            .catch((err) => console.log(err))
         }).catch((err) => console.log(err))
     }
     return (
@@ -199,10 +325,10 @@ function ProfileHeader() {
                 <div className="w-full flex justify-center">
                     <div className="flex justify-between mb-2.5">
                         <ul className="flex px-5 py-1.5">
-                            <li className="px-3 font-semibold text-gray-600" style={{ marginTop: "12px" }}><a
-                                href="#">Posts</a></li>
-                            <li className="px-3 font-semibold text-gray-600" style={{ marginTop: "12px" }}><a
-                                href="#">About</a></li>
+                            <li className="px-3 font-semibold text-gray-600" style={{ marginTop: "12px" }}>
+                                Posts</li>
+                            <li className="px-3 font-semibold text-gray-600" style={{ marginTop: "12px" }}>
+                                About</li>
                             <li className="px-3 font-semibold text-gray-600" style={{ marginTop: "12px" }}>
                                 {/*<!-- Friend list link -->*/}
                                 {users['is_self'] ?
@@ -252,20 +378,16 @@ function ProfileHeader() {
                                             <li className="px-2 font-semibold">
                                                 <div className="d-flex flex-row align-items-center px-5 py-1 ">
                                                     <span className="friend-text align-items-center mr-2">Accept Friend Request</span>
-                                                    <form action={'/home/frined_request_delete/'} method="post">
-                                                        <CSRF />
-                                                        <input type="hidden" name="request_id"
-                                                            value={users['pending_friend_request_id']} />
-                                                        <input type="hidden" name="sender_id" value={users['id']} />
-                                                        <Button type="submit"><CancelIcon /></Button>
-                                                    </form>
-                                                    <form action={'/home/frined_request_accept/'} method="post">
-                                                        <CSRF />
-                                                        <input type="hidden" name="request_id"
-                                                            value={users['pending_friend_request_id']} />
-                                                        <input type="hidden" name="sender_id" value={users['id']} />
-                                                        <Button type="submit"><CheckCircleIcon /></Button>
-                                                    </form>
+                                                    <Button onClick={(request_id,sender_id)=>{
+                                                            frined_request_delete_sugustions(users['pending_friend_request_id'],users['id'])}
+                                                        } >
+                                                        <CancelIcon/>
+                                                    </Button>
+                                                    <Button onClick={(request_id,sender_id)=>{
+                                                            frined_request_accept_sugustions(users['pending_friend_request_id'],users['id'])}
+                                                        } >
+                                                        <CheckCircleIcon />
+                                                    </Button>
                                                 </div>
                                             </li>
                                             : null}
@@ -276,20 +398,12 @@ function ProfileHeader() {
                                                 {users['request_sent'] === 1 ?
                                                     <li className="px-2 font-semibold">
                                                         <div className="d-flex flex-column align-items-center">
-                                                            <form action={'/home/cancel_friend_request/'} method="post">
-                                                                <CSRF />
-                                                                <input type="hidden" name="cancel_request"
-                                                                    value={users['id']} />
-                                                                {/*<button type="submit" className="btn btn-danger">*/}
-                                                                {/*   */}
-                                                                {/*</button>*/}
-                                                                <button
-                                                                    className="bg-red-600 rounded-lg text-white font-semibold"
-                                                                    type="submit"
-                                                                    style={{ marginRight: "15px", height: "40px", width: "250px" }}>
-                                                                    Cancel Friend Request
+                                                        <li className="px-2">
+                                                            <button  className="bg-red-600 rounded-lg text-white font-semibold"
+                                                                    style={{ marginRight: "15px", height: "40px", width: "250px" }} onClick={(reciver_id)=>{cancel_friend_request(users['id'])}} >
+                                                                            Cancel Friend Request
                                                                 </button>
-                                                            </form>
+                                                                </li>
                                                         </div>
                                                     </li>
                                                     : null}
@@ -297,20 +411,13 @@ function ProfileHeader() {
                                                 {users['request_sent'] === -1 ?
                                                     <li className="px-2 font-semibold">
                                                         <div className="d-flex flex-column align-items-center">
-                                                            <form action={'/home/send_friend_request/'} method="post">
-                                                                <CSRF />
-                                                                <input type="hidden" name="send_friend_request"
-                                                                    value={users['id']} />
                                                                 <li className="px-2">
-                                                                    <button
-                                                                        className="bg-blue-600 rounded-lg text-white font-semibold"
-                                                                        type="submit"
+                                                                <button onClick={(reciver_id)=>{send_friend_request(users['id'])}} className="bg-blue-600 rounded-lg text-white font-semibold"
                                                                         style={{ marginRight: "15px", height: "40px", width: "250px" }}>
                                                                         Send Friend Request
                                                                     </button>
 
                                                                 </li>
-                                                            </form>
                                                         </div>
                                                     </li>
                                                     : null}
@@ -319,41 +426,22 @@ function ProfileHeader() {
                                         {users['is_friend'] ?
                                             <>
                                                 <ul className="flex mb:pl-14">
-
-                                                    <form action={'/home/unfriend/'} method="post">
-                                                        <CSRF />
-                                                        <input type="hidden" name="unfriend" value={users['id']} />
-                                                        {/*<input type="submit" className="btn btn-primary"*/}
-                                                        {/*       id="sendFriendRequestBtn" value="unfriend"/>*/}
                                                         <li className="px-2">
                                                             <button
                                                                 className="bg-blue-600 rounded-lg text-white font-semibold"
-                                                                type="submit"
+                                                                onClick={(unfriend)=>{unfriend_pro(users['id'])}}
                                                                 style={{ marginRight: "15px", height: "40px" }}>
                                                                 Unfriend
                                                             </button>
-
                                                         </li>
-
-
-                                                    </form>
-
                                                     <li className="px-2 font-semibold">
+                                                        <a href={'/chats/detail/'+ users['id']}>
                                                         <button
                                                             className="bg-blue-600 rounded-lg text-white font-semibold"
-
                                                             style={{ marginRight: "15px" }}>
                                                             Message
-                                                        </button>
-
+                                                        </button></a>
                                                     </li>
-
-
-                                                    {/*<button*/}
-                                                    {/*    className="d-flex flex-row align-items-center btn btn-primary m-2 px-4"*/}
-                                                    {/*    onclick="createOrReturnPrivateChat('{{id}}')">*/}
-                                                    {/* */}
-                                                    {/*</button>*/}
                                                 </ul>
                                             </>
                                             : null}
@@ -380,8 +468,7 @@ function ProfileHeader() {
                         <div className="wrapper">
                             <section className="post">
                                 <header>Add Bio</header>
-                                <form action="/home/Bio/" method="post">
-                                    < CSRF />
+                                <form onSubmit={(e) => submit(e)}>
                                     <div className="content">
                                         <img src={users['pic']} alt="logo" />
                                         <div className="details">
@@ -393,8 +480,9 @@ function ProfileHeader() {
                                         spellcheck="false"
                                         required
                                         name="BioInput"
+                                        onChange={(e)=>setBioInput(e.target.value)}
                                     ></textarea>
-                                    <button type='submit'>Post</button>
+                                    <button type='submit' onClick={AddBio}>Post</button>
                                 </form>
                             </section>
                         </div>
