@@ -14,7 +14,7 @@ import Groups from './components/groups/Groups';
 import Post2 from './components/Home/Post2';
 import GroupPeople from './components/groups/GroupPeople';
 import GroupsHome from './components/groups/GroupsHome';
-import Header from './components/Header/Header';
+import HeaderCheck from './components/Header/HeaderCheck';
 import React from 'react';
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
     <Router>
       <div className='app'>
         <BrowserRouter> 
-        <Header/> 
+        <HeaderCheck/> 
           <Switch>
             <Route exact path={"/auth/register"} component={Register} />
             <Route exact path={"/auth/login"} component={Login} />

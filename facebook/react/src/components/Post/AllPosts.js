@@ -487,7 +487,7 @@ function AllPosts({ post_id, profilePic, image, username, timestamp, message, co
                                 {
                                     like['iconId'] === 2 ?
                                         <div style={{ display: "inline" }} >
-                                            {like['dcount']}  <img src={care} style={{ display: "inline" }} alt="Img" />
+                                            {like['dcount']}  <img src={care} style={{ display: "inline" ,width:"25px"}} alt="Img" />
                                         </div> :
                                         null
 

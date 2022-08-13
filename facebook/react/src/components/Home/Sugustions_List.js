@@ -1,7 +1,6 @@
 import '../css/SearchResults.css';
 import axios from 'axios';
 import {useEffect, useState} from "react";
-import Header from "../Header/Header";
 import Sidebar from "./Sidebar";
 import {Avatar} from "@mui/material";
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -114,7 +113,6 @@ function Sugustions_List() {
     }
     return (
         <>
-            {/* <Header/> */}
             <div className="home_body">
                 <Sidebar/>
                 {users ?
@@ -127,13 +125,11 @@ function Sugustions_List() {
                                     {
                                         account['request_sent'] === 0 ?
                                         <div className="Top_section">
-                                            <a href={'/home/pro'+account['user_id']} style={{}}>
-                                                <Avatar src={account['user_pic']} className="Posts_avatar"/>
-                                                {account['user_name']}</a>
-                                                <br/>
-                                                <a href={'/home/pro'+account['user_id']}>
-                                                {account['user_email']}</a>
-                                                <div style={{marginLeft: "300px"}}></div>
+                                            <Avatar src={account['user_pic']} className="Posts_avatar"/>
+                                            {account['user_name']}
+                                            <br/>
+                                                {account['user_email']}
+                                                <div style={{marginLeft: "400px"}}></div>
                                                 <div className="card m-2 ">
                                                     <div className="d-flex flex-row align-items-center">
                                                         <span className="friend-text align-items-center mr-2">Accept Friend Request</span>
@@ -158,11 +154,14 @@ function Sugustions_List() {
                                     {
                                         account['request_sent'] === 1 || account['request_sent'] === -1 ? 
                                             <div className="Top_section">
+                                                <a href={'/home/pro'+account['user_id']} style={{}}>
                                                 <Avatar src={account['user_pic']} className="Posts_avatar"/>
                                                 {account['user_name']}
+                                                <p>{account['user_email']}</p>
+                                                </a>
                                                 <br/>
-                                                {account['user_email']}
-                                                <div style={{marginLeft: "500px"}}></div>
+                                                
+                                                <div style={{marginLeft: "400px"}}></div>
                                                     {
                                                         account['request_sent'] === 1 ?
                                                             <div className="d-flex flex-column align-items-center">

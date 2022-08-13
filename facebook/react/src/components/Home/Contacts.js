@@ -10,7 +10,7 @@ function Contacts() {
                 setContacts(res.data);
             })
             .catch((err) => console.log(err))
-    }, [])
+    }, [contacts])
     return (<div className="contacts">
         <div className="head">
             <h3>Contacts</h3>

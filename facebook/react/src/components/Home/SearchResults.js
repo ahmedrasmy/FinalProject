@@ -1,7 +1,6 @@
 import '../css/SearchResults.css';
 import axios from 'axios';
 import {useEffect, useState} from "react";
-import Header from "../Header/Header";
 import Sidebar from "./Sidebar";
 import {Avatar, IconButton} from "@mui/material";
 import ForumIcon from "@mui/icons-material/Forum";
@@ -70,14 +69,13 @@ function SearchResults() {
     }
     return (
         <>
-            {/* <Header/> */}
             <div className="home_body">
                 <Sidebar/>
 
                 {users ?
                     <div className="all_posts"
                         style={{width: "1000px", height: "auto", marginRight: "250px"}}>
-                        <header style={{fontWeight: "bold", marginLeft: "20px", marginTop: "20px"}}> People</header>
+                        <header style={{fontWeight: "bold", marginLeft: "20px", marginTop: "20px"}}> search results</header>
 
                         {
 
@@ -85,14 +83,13 @@ function SearchResults() {
                                 return <>
 
                                     <div className="Top_section">
-                                    <a href={'/home/pro/'+account['id']}>
+                                        <a href={'/home/pro/'+account['id']}>
                                         <Avatar src={account['pic']} className="Posts_avatar"/>
-                                        {account['user_name']}
+                                        <p>{account['user_name']}</p>
+                                        <p>{account['email']}</p>
                                         </a>
                                         <br/>
-
-                                        {account['email']}
-                                        <div style={{marginLeft: "500px"}}></div>
+                                        <div style={{marginLeft: "400px"}}></div>
                                         {
                                             account['is_self'] ? <div>This is you</div> : <div>
                                                 {

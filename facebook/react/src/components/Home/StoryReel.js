@@ -57,7 +57,7 @@ function StoryReel() {
                 setstories(res.data);
             })
             .catch((err) => console.log(err))
-    }, [])
+    }, [stories])
     const [imagecontent, setimagecontent] = useState('')
     const data =
     {
@@ -125,11 +125,11 @@ function StoryReel() {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogContent dividers>
-                    <DialogContent dividers style={{ height: '250px' }}>
+                    <DialogContent dividers style={{ height: '300px' ,overflow:"hidden"}}>
                         <div className="container">
                             <div className="wrapper">
                                 <section className="post">
-                                    <header>Create Post</header>
+                                    <header>Create story</header>
                                     <div className="content">
                                         <Avatar src={user.pic} />
                                         <div className="details">

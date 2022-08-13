@@ -46,29 +46,41 @@ function getCookie(name) {
 }
 
 function Header() {
-    let location = useLocation();
-    let  checkheader= location.pathname.split('/')[1]
-    const [checkheaderu,setcheckheaderu]=useState(false)
-    useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/checkheader/')
-            .then(res => {
-                setcheckheaderu(res.data[0]);
-            })
-            .catch((err) => console.log(err))
-    }, [checkheader])
     const history = useHistory();
     const [value, setValue] = useState('')
-
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-            history.push("/home/search/" + event.target.value)
+            let temp = event.target.value
+            document.getElementById("searchinput").value = ""
+            history.push("/home/search/" + temp)
         }
     }
+    const [activehome , setactivehome]=useState('')
+    const [activegroup , setactivegroup]=useState('')
+    const [activelist , setactivelist]=useState('')
+    let location = useLocation();
+    let checkactive= location.pathname.split('/')[2]
+    useEffect(() => {
+        if (checkactive === "Home"){
+            setactivehome("header-option--active")
+            setactivegroup("")
+            setactivelist("")
+        }
+        else if (checkactive === "groups" || checkactive === "group") {
+            setactivegroup("header-option--active")
+            setactivehome("")
+            setactivelist("")
+        }else if (checkactive === "sugistions_list"){
+            setactivelist("header-option--active")
+            setactivehome("")
+            setactivegroup("")
+        }
+    },[checkactive])
     const users = useSelector((state) => state.UserReducer.direc)
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(User())
-    },[checkheader])
+    },[])
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -92,16 +104,66 @@ function Header() {
                 setfriends(res.data);
             })
             .catch((err) => console.log(err))
-    }, [checkheader])
-    let [Invisib, setInvisib] = useState(true)
-    const getNotification = () => {
-        let url = "http://127.0.0.1:8000/api/chatNotification/"
-        fetch(url)
-            .then(res => res.json())
-            .then(data => {
+    }, [])
+    const [Invisib, setInvisib] = useState(true)
+    // const getNotification = () => {
+    //     let url = "http://127.0.0.1:8000/api/chatNotification/"
+    //     axios.get(url)
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             let cou = 0
+    //             let chatNotificationBtn = document.getElementsByClassName("msg")
+    //             for (let i = 0; i < data.length; i++) {
+    //                 if (data[i] === 0) {
+    //                     cou = cou + 0
+    //                 } else {
+    //                     cou = cou + 1
+    //                     if (anchorEl === null) {
+    //                     } else {
+    //                         chatNotificationBtn[i].innerText = data[i]
+    //                     }
+    //                 }
+    //             }
+    //             if (cou === 0) {
+    //                 setInvisib(true)
+    //             } else {
+    //                 setInvisib(false)
+    //             }
+    //         })
+    //         .catch(error => {})
+    // }
+    const [notifications, setNotifications] = useState([])
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/postNotification/')
+            .then(res => {
+                setNotifications(res.data);
+            })
+            .catch((err) => console.log(err))
+    }, [notifications])
+    const [InviteNotive, setInviteNotive] = useState([])
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/inviteNotification/')
+            .then(res => {
+                setInviteNotive(res.data);
+            })
+            .catch((err) => console.log(err))
+    }, [InviteNotive])
+
+    const [notifyRequest, setnotifyRequest] = useState([])
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/notifyRequest/')
+            .then(res => {
+                setnotifyRequest(res.data);
+            })
+            .catch((err) => console.log(err))
+    }, [notifyRequest])
+    useEffect(() => {
+        axios.get("http://127.0.0.1:8000/api/chatNotification/")
+            .then(res => {
+                let data = res.data
                 let cou = 0
                 let chatNotificationBtn = document.getElementsByClassName("msg")
-                for (let i = 0; i < data.length; i++) {
+                for (let i = 0; i < res.data.length; i++) {
                     if (data[i] === 0) {
                         cou = cou + 0
                     } else {
@@ -118,43 +180,17 @@ function Header() {
                     setInvisib(false)
                 }
             })
-            .catch(error => console.log(error))
-    }
-    const [notifications, setNotifications] = useState([])
-    useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/postNotification/')
-            .then(res => {
-                setNotifications(res.data);
-            })
-            .catch((err) => console.log(err))
-    }, [checkheader])
-    const [InviteNotive, setInviteNotive] = useState([])
-    useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/inviteNotification/')
-            .then(res => {
-                setInviteNotive(res.data);
-            })
-            .catch((err) => console.log(err))
-    }, [checkheader])
-
-    const [notifyRequest, setnotifyRequest] = useState([])
-    useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/notifyRequest/')
-            .then(res => {
-                setnotifyRequest(res.data);
-            })
-            .catch((err) => console.log(err))
-    }, [checkheader])
-
+            .catch(error => {})
+    }, [notifyRequest])
     function renderTimestamp(timestamp) {
         let prefix = "";
         const timeDiff = Math.round(
             (new Date().getTime() - new Date(timestamp).getTime()) / 60000
         );
         if (timeDiff < 1) {
-            // less than one minute ago
+            // less than one minute agog
             prefix = "just now...";
-        } else if (timeDiff < 60 && timeDiff > 1) {
+        } else if (timeDiff < 60 && timeDiff >= 1) {
             // less than sixty minutes ago
             prefix = `${timeDiff} minutes ago`;
         } else if (timeDiff < 24 * 60 && timeDiff > 60) {
@@ -212,10 +248,8 @@ function Header() {
             .catch((err) => console.log(err))
         }).catch((err) => console.log(err))
     }
-    // setInterval(getNotification, 1000)
-    return (<>
-        {
-            checkheader !== "auth"  && checkheaderu === true ?
+    // setInterval(getNotification, 2000)
+    return (
             <div className="header">
             <div className="header-left">
                 <img
@@ -225,20 +259,20 @@ function Header() {
                 <>
                     <div className="header-input">
                         <SearchIcon />
-                        <input placeholder="Search Facebook" style={{ color: 'black' }} value={value}
+                        <input placeholder="Search Facebook" style={{ color: 'black' }} value={value} id="searchinput"
                             onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} type="text" />
                     </div>
                 </>
             </div>
             <div className="header-center">
-                <div className="header-option header-option--active">
+                <div className={"header-option "+ activehome }>
                     <Link to={`/home/Home/`}>
                         <HomeIcon fontSize="large" /></Link>
                 </div>
-                <div className="header-option">
+                <div className="header-option ">
                     <FlagIcon fontSize="large" />
                 </div>
-                <div className="header-option">
+                <div className={"header-option "+ activegroup }>
                     <Link to={`/home/groups/`}>
 
                         <GroupsIcon fontSize="large" /></Link>
@@ -248,7 +282,7 @@ function Header() {
                     <StoreIcon fontSize="large" />
 
                 </div>
-                <div className="header-option">
+                <div className={"header-option "+ activelist }>
                     <Link to={"/home/sugistions_list/"}>
                         <SupervisorAccountIcon fontSize="large" />
                     </Link>
@@ -459,9 +493,7 @@ function Header() {
                 </Menu>
             </div>
         </div>
-            : <></>
-        }
-    </>
+           
     )
 }
 

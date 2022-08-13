@@ -230,29 +230,40 @@ def login_user(request):
 
 @api_view(['POST'])
 def addpost(request):
-    if request.session.has_key('user_name'):
         user = Useraccount.objects.filter(
             id=int(request.session['user_id']))[0]
         newPost = Posts.objects.create(
             user=user, postcontent=request.data['postcontent'])
         if newPost:
-            friend_list = FrienList.objects.filter(user=user.id)
-            friends = friend_list[0].friends.all()
-            for friend in friends:
-                user_receiver = Useraccount.objects.filter(id=friend.id)[0]
-                notify = Notification.objects.create(
-                    user=user , body=" Add A new post ",
-                    user_receiver= user_receiver ,post=newPost,
-                )
-                notify.save()
-            try :
-                if request.data['imagecontent']:
-                    photo = Photos.objects.create(
-                        post=newPost, imagecontent=request.data['imagecontent'])
-                    photo.save()
-                return Response('successsfully')
-            except:
-                return Response('successsfully')
+            try:
+                friend_list = FrienList.objects.filter(user=user.id)
+                friends = friend_list[0].friends.all()
+                for friend in friends:
+                    user_receiver = Useraccount.objects.filter(id=friend.id)[0]
+                    notify = Notification.objects.create(
+                        user=user , body=" Add A new post ",
+                        user_receiver= user_receiver ,post=newPost,
+                    )
+                    notify.save()
+                try :
+                    if request.data['imagecontent']:
+                        photo = Photos.objects.create(
+                            post=newPost, imagecontent=request.data['imagecontent'])
+                        photo.save()
+                    return Response('successsfully')
+                except:
+                    return Response('successsfully')
+            except :
+                try :
+                    if request.data['imagecontent']:
+                        photo = Photos.objects.create(
+                            post=newPost, imagecontent=request.data['imagecontent'])
+                        photo.save()
+                    return Response('successsfully')
+                except:
+                    return Response('successsfully')
+
+
 
 @api_view(['POST'])
 def updateprofile(request):
@@ -329,17 +340,15 @@ def updateprofile(request):
 
 @api_view(['GET'])
 def postNotification(request):
-    if request.session.has_key('user_name'):
+    
         user_receiver = Useraccount.objects.filter(
             id=int(request.session['user_id']))[0]
         notifications = reversed(Notification.objects.filter(user_receiver=user_receiver , seen=False))
         if notifications:
             data = notifySerializer(notifications, many=True)
             return Response(data.data)
-        else:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-    else:
-        return redirect('/auth/login/')
+        
+    
 
 @api_view(['GET'])
 def requestNotification(request):
@@ -573,15 +582,11 @@ def friends_list(request, id):
 
 @api_view(['GET'])
 def friends_list_chat(request):
-    if request.session.has_key('user_name'):
-        user_id = int(request.session['user_id'])
-        user = Useraccount.objects.get(id=user_id)
-        friend_list = FrienList.objects.filter(user=user)
-        data = postUserSerial(friend_list[0].friends.all(), many=True)
-        return Response(data.data)
-    else:
-        return redirect('/auth/login/')
-
+            user_id = int(request.session['user_id'])
+            user = Useraccount.objects.get(id=user_id)
+            friend_list = FrienList.objects.filter(user=user)
+            data = postUserSerial(friend_list[0].friends.all(), many=True)
+            return Response(data.data)
 
 ################ chat views ##################
 @api_view(['GET'])
@@ -598,14 +603,13 @@ def chatIndex(request):
 
 @api_view(['GET'])
 def chatNotification(request):
-    if request.session.has_key('user_name'):
-        user = Useraccount.objects.filter(id=int(request.session['user_id']))[0]
         arr = []
         try :
-            friend_list = FrienList.objects.filter(user=user.id)
+            user = Useraccount.objects.get(id=int(request.session['user_id']))
+            friend_list = FrienList.objects.filter(user=user)
             friends = friend_list[0].friends.all()
             for friend in friends:
-                chats = ChatMessage.objects.filter(msg_sender__id=friend.user.id, msg_receiver=user, seen=False)
+                chats = ChatMessage.objects.filter(msg_sender=friend, msg_receiver=user, seen=False)
                 if chats.count() > 0 :
                     arr.append(chats.count())
                 else : 
@@ -613,8 +617,7 @@ def chatNotification(request):
             return JsonResponse(arr, safe=False)
         except:
             return JsonResponse(arr, safe=False)
-    else:
-        return redirect('/auth/login/')
+    
 
 
 
@@ -1473,10 +1476,15 @@ def createGroups(request):
 @api_view(['GET'])
 def checkheader(request):
     arr =[]
-    if request.session.has_key('user_name'):
-        arr.append(True)
-        return JsonResponse(arr,safe=False)
-    else:
+    try :
+        ise = request.session.has_key('user_name')
+        if ise:
+            arr.append(True)
+            return JsonResponse(arr,safe=False)
+        else:
+            arr.append(False)
+            return JsonResponse(arr,safe=False)
+    except : 
         arr.append(False)
         return JsonResponse(arr,safe=False)
 
